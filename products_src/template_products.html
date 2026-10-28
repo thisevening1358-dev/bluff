@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLUFF Products</title>
+<meta name="description" content="BLUFF의 출품작. 조명을 비추면 숨겨 둔 감정 기록이 드러납니다.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+<style>
+/* Desktop only (PC). Every size follows the 1920 Figma frame "2안 Products / Evening Sale (scroll)" through --u. */
+:root {
+  --u: calc(100vw / 1920);
+  --ink: #0c0c0c; --paper: #fbfbfb; --stone: #bdbdb9; --mute: #8f8f8a; --red: #e51212;
+  --warm: 255, 236, 206; --amber: 255, 227, 184;
+  --roll: cubic-bezier(.65, 0, .25, 1); --out: cubic-bezier(.16, 1, .3, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--ink); color-scheme: dark; scrollbar-color: #3a3a37 var(--ink); }
+body { background: var(--ink); color: var(--paper); font-family: Roboto, "Noto Sans KR", sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+::selection { background: var(--red); color: var(--paper); }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.kr { font-family: "Noto Sans KR", sans-serif; word-break: keep-all; }
+.abs { position: absolute; }
+.sec { position: relative; width: 100%; }
+main { overflow-x: clip; }
+
+/* ---------- header (same frame as the 2안 Brand page) ---------- */
+header { position: fixed; top: 0; left: 0; right: 0; height: 96px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 64px; z-index: 30; background: linear-gradient(180deg, rgba(12,12,12,.92), rgba(12,12,12,0)); }
+header .logo svg { width: 108px; height: 43px; display: block; }
+header nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 52px; font: 500 16px/1 Roboto, sans-serif; }
+header nav a, header nav span { color: rgba(251,251,251,.55); transition: color .25s ease; }
+header nav a:hover, header nav [aria-current] { color: var(--paper); }
+header .lang { font: 500 12px/1 "Roboto Mono", monospace; letter-spacing: .1em; color: var(--stone); }
+
+/* ---------- shared light behaviour: dark until hovered, then a warm museum spot ---------- */
+.spot { position: absolute; border-radius: 50%; pointer-events: none; opacity: .28; transition: opacity .7s ease;
+  background: radial-gradient(closest-side, rgba(var(--warm), .16) 0%, rgba(var(--warm), .13) 20%, rgba(var(--amber), .085) 40%,
+    rgba(var(--amber), .04) 62%, rgba(var(--amber), .012) 82%, rgba(var(--amber), 0) 100%); }
+.lightc { position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; opacity: 0; transition: opacity .6s ease;
+  background: radial-gradient(closest-side, rgba(255,244,226,.26) 0%, rgba(255,239,214,.2) 18%, rgba(var(--amber), .11) 38%,
+    rgba(var(--amber), .045) 60%, rgba(var(--amber), .012) 80%, rgba(var(--amber), 0) 100%); }
+.floor { position: absolute; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(0,0,0,.78), rgba(0,0,0,.36) 55%, transparent 100%); }
+.pic { position: absolute; object-fit: contain; filter: brightness(.4) saturate(.65); transition: filter .7s ease; }
+.ink { opacity: 0; transition: opacity .5s ease; pointer-events: none; }
+.shade { position: absolute; border-radius: 50%; filter: blur(calc(var(--u) * 14));
+  background: radial-gradient(closest-side, rgba(8,8,8,.92), rgba(8,8,8,.8) 30%, rgba(8,8,8,.45) 55%, rgba(8,8,8,.14) 78%, transparent); }
+.is-lit .spot { opacity: 1; } .is-lit .lightc { opacity: 1; } .is-lit .pic { filter: none; } .is-lit .ink { opacity: 1; }
+
+/* ---------- hero ---------- */
+.hero { height: calc(var(--u) * 1080); }
+.hero h1 { left: calc(var(--u) * 112); top: calc(var(--u) * 330); font: 900 calc(var(--u) * 168)/.88 Roboto, sans-serif; letter-spacing: -.04em; }
+.hero .lead { left: calc(var(--u) * 120); top: calc(var(--u) * 690); font-size: calc(var(--u) * 22); line-height: 1.7; color: var(--stone); }
+.hint { left: calc(var(--u) * 120); top: calc(var(--u) * 822); font: 500 calc(var(--u) * 13)/1 "Roboto Mono", monospace; letter-spacing: .14em; color: var(--mute); }
+/* bag object is laid out in its own 420 x 570 space, then scaled .84 like the Figma instance */
+.hbag { position: absolute; width: calc(var(--u) * 420); height: calc(var(--u) * 570); transform-origin: 0 0; }
+.hbag .spot { width: calc(var(--u) * 760); height: calc(var(--u) * 780); left: calc(var(--u) * -170); top: calc(var(--u) * -120); }
+.hbag .lightc { width: calc(var(--u) * 720); height: calc(var(--u) * 720); left: calc(var(--u) * -150); top: calc(var(--u) * -120); }
+.hbag .floor { width: calc(var(--u) * 340); height: calc(var(--u) * 44); left: calc(var(--u) * 40); top: calc(var(--u) * 540); }
+.hbag .pic { inset: 0; width: 100%; height: 100%; filter: brightness(.4) saturate(.65) drop-shadow(0 calc(var(--u) * 28) calc(var(--u) * 32) rgba(0,0,0,.6)); }
+.hbag.is-lit .pic { filter: drop-shadow(0 calc(var(--u) * 28) calc(var(--u) * 32) rgba(0,0,0,.6)); }
+.hbag .shade { width: calc(var(--u) * 440); height: calc(var(--u) * 340); left: calc(var(--u) * -10); top: calc(var(--u) * 105); }
+.hbag .big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 196); text-align: center; font: 900 calc(var(--u) * 104)/1 Roboto, sans-serif;
+  letter-spacing: -.04em; color: var(--red); text-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 24) rgba(0,0,0,.55); }
+.hbag .lab { position: absolute; left: 0; right: 0; top: calc(var(--u) * 316); text-align: center; font: 500 calc(var(--u) * 15)/1 "Roboto Mono", monospace;
+  letter-spacing: .18em; color: var(--paper); text-shadow: 0 2px calc(var(--u) * 10) rgba(0,0,0,.7); }
+.hbag .ink { position: absolute; inset: 0; }
+
+/* ---------- lot viewer ---------- */
+.lots { height: calc(var(--u) * 1080); overflow: hidden; }
+.tabs { left: calc(var(--u) * 120); top: calc(var(--u) * 168); display: flex; gap: calc(var(--u) * 40); z-index: 3; }
+.tab { display: flex; align-items: baseline; gap: calc(var(--u) * 12); opacity: .42; transition: opacity .3s ease; }
+.tab:hover { opacity: .75; } .tab[aria-selected="true"] { opacity: 1; }
+.tab .no { font: 500 calc(var(--u) * 14)/1 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--mute); }
+.tab .nm { font: 500 calc(var(--u) * 20)/1 Roboto, sans-serif; }
+.swap { transition: opacity .28s ease, transform .5s var(--out); }
+.swapping .swap { opacity: 0; transform: translateY(calc(var(--u) * 10)); }
+.lots h2 { left: calc(var(--u) * 114); top: calc(var(--u) * 236); font: 900 calc(var(--u) * 80)/.96 Roboto, sans-serif; letter-spacing: -.03em; }
+.lbl { font: 500 calc(var(--u) * 15)/1.2 "Noto Sans KR", sans-serif; color: var(--mute); }
+.attrib { position: absolute; left: calc(var(--u) * 120); top: calc(var(--u) * 504); font-size: calc(var(--u) * 22); line-height: 1.2; }
+.attrib::after { content: ""; position: absolute; left: calc(var(--u) * -3); right: calc(var(--u) * -3); top: 52%; height: calc(var(--u) * 3); background: var(--red);
+  transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
+.is-lit .attrib::after { transform: scaleX(1); transition-delay: .15s; }
+.actual { left: calc(var(--u) * 120); top: calc(var(--u) * 548); font: 500 calc(var(--u) * 20)/1.2 "Noto Sans KR", sans-serif; color: var(--red);
+  opacity: 0; transform: translateY(calc(var(--u) * -6)); transition: opacity .5s ease, transform .6s var(--out); }
+.is-lit .actual { opacity: 1; transform: none; transition-delay: .3s; }
+.thumb { left: calc(var(--u) * 120); top: calc(var(--u) * 656); width: calc(var(--u) * 60); height: calc(var(--u) * 84); object-fit: cover; border-radius: 2px;
+  box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 18) rgba(0,0,0,.5); }
+.prov { left: calc(var(--u) * 200); top: calc(var(--u) * 670); font-size: calc(var(--u) * 20); line-height: 1.2; }
+.prov small { display: block; margin-top: calc(var(--u) * 8); font-size: calc(var(--u) * 16); color: var(--mute); }
+.price { left: calc(var(--u) * 120); top: calc(var(--u) * 818); font: 500 calc(var(--u) * 22)/1 "Roboto Mono", monospace; letter-spacing: .04em; color: var(--stone); }
+.stage { position: absolute; left: calc(var(--u) * 700); top: calc(var(--u) * 226); width: calc(var(--u) * 520); height: calc(var(--u) * 705); }
+.lots > .spot { width: calc(var(--u) * 1180); height: calc(var(--u) * 1080); left: calc(var(--u) * 370); top: 0; }
+.lots > .lightc { width: calc(var(--u) * 900); height: calc(var(--u) * 900); left: calc(var(--u) * 510); top: calc(var(--u) * 20); }
+.lots > .floor { width: calc(var(--u) * 440); height: calc(var(--u) * 56); left: calc(var(--u) * 740); top: calc(var(--u) * 912); }
+.stage .pic { inset: 0; width: 100%; height: 100%; filter: brightness(.4) saturate(.65) drop-shadow(0 calc(var(--u) * 34) calc(var(--u) * 40) rgba(0,0,0,.55)); }
+.is-lit .stage .pic { filter: drop-shadow(0 calc(var(--u) * 34) calc(var(--u) * 40) rgba(0,0,0,.55)); }
+.stage .ink { position: absolute; inset: 0; }
+.stage .shade { width: calc(var(--u) * 500); height: calc(var(--u) * 300); left: calc(var(--u) * 10); top: calc(var(--u) * 250); }
+.n-big { position: absolute; left: 0; right: 0; top: calc(var(--u) * 300); text-align: center; font: 900 calc(var(--u) * 140)/1 Roboto, sans-serif; letter-spacing: -.03em;
+  color: var(--red); transform: rotate(-4deg) scale(.94); text-shadow: 0 calc(var(--u) * 8) calc(var(--u) * 28) rgba(0,0,0,.5); transition: transform .7s var(--out); }
+.is-lit .n-big { transform: rotate(-4deg); }
+.n-mono { position: absolute; left: calc(var(--u) * 30); top: calc(var(--u) * 560); font: 500 calc(var(--u) * 34)/1 "Roboto Mono", monospace; letter-spacing: .12em;
+  color: var(--red); transform: rotate(-2deg); text-shadow: 0 3px calc(var(--u) * 14) rgba(0,0,0,.7); white-space: nowrap; }
+.n-script { position: absolute; left: calc(var(--u) * -200); right: calc(var(--u) * -200); top: calc(var(--u) * 736); text-align: center;
+  font: italic 400 calc(var(--u) * 36)/1.2 "Libre Baskerville", serif; color: var(--red); }
+.report-title { left: calc(var(--u) * 1420); top: calc(var(--u) * 300); font: italic 400 calc(var(--u) * 34)/1.2 "Libre Baskerville", serif; }
+.report-sub { left: calc(var(--u) * 1420); top: calc(var(--u) * 352); font-size: calc(var(--u) * 16); color: var(--mute); }
+.key { left: calc(var(--u) * 1420); font-size: calc(var(--u) * 18); color: var(--stone); }
+/* odometer: a column of numbers slides through a clip window and lands back on 0 */
+.val { position: absolute; left: calc(var(--u) * 1516); width: calc(var(--u) * 230); height: calc(var(--u) * 84); overflow: hidden; }
+.strip { position: absolute; left: 0; right: 0; top: calc(var(--u) * -16); text-align: right; font: 900 calc(var(--u) * 104)/calc(var(--u) * 112) Roboto, sans-serif;
+  letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: var(--mute); opacity: .16;
+  transition: transform .5s ease-out, color .4s ease, opacity .4s ease; }
+.strip span { display: block; height: calc(var(--u) * 112); }
+.is-lit .strip { transform: translateY(calc(var(--u) * -112 * var(--steps))); color: var(--paper); opacity: 1;
+  transition: transform 1.6s var(--roll), color .4s ease, opacity .4s ease; }
+.unit { left: calc(var(--u) * 1754); font: 500 calc(var(--u) * 20)/1 "Roboto Mono", monospace; color: var(--mute); opacity: .3; transition: color .4s ease, opacity .4s ease; }
+.is-lit .unit { color: var(--paper); opacity: 1; }
+.verdict { left: calc(var(--u) * 1420); top: calc(var(--u) * 800); font-size: calc(var(--u) * 18); line-height: 1.6; }
+.verdict p { position: absolute; left: 0; top: 0; white-space: nowrap; transition: opacity .35s ease, transform .6s var(--out); }
+.verdict .wait { color: var(--mute); }
+.verdict .done { color: var(--red); font-weight: 500; opacity: 0; transform: translateY(calc(var(--u) * 8)); }
+.is-lit .verdict .wait { opacity: 0; }
+.is-lit .verdict .done { opacity: 1; transform: none; transition-delay: 1.45s; }   /* lands after the numbers settle on 0 */
+.zone { position: absolute; left: calc(var(--u) * 680); top: calc(var(--u) * 210); width: calc(var(--u) * 560); height: calc(var(--u) * 740); z-index: 2; }
+
+/* ---------- soda ---------- */
+.soda { height: calc(var(--u) * 1180); }
+.soda h2 { left: calc(var(--u) * 114); top: calc(var(--u) * 150); font: 900 calc(var(--u) * 116)/.95 Roboto, sans-serif; letter-spacing: -.04em; }
+.soda .lead { left: calc(var(--u) * 120); top: calc(var(--u) * 290); font-size: calc(var(--u) * 22); line-height: 1.7; color: var(--stone); }
+.can { position: absolute; top: calc(var(--u) * 470); width: calc(var(--u) * 300); height: calc(var(--u) * 660); }
+.can .spot { width: calc(var(--u) * 560); height: calc(var(--u) * 640); left: calc(var(--u) * -130); top: calc(var(--u) * -95); }
+.can .lightc { width: calc(var(--u) * 480); height: calc(var(--u) * 480); left: calc(var(--u) * -90); top: calc(var(--u) * -30); }
+.can .floor { width: calc(var(--u) * 220); height: calc(var(--u) * 30); left: calc(var(--u) * 40); top: calc(var(--u) * 440); }
+.can .pic { left: calc(var(--u) * 45); top: calc(var(--u) * 40); width: calc(var(--u) * 210); height: calc(var(--u) * 410);
+  filter: brightness(.4) saturate(.65) drop-shadow(0 calc(var(--u) * 22) calc(var(--u) * 26) rgba(0,0,0,.55)); transition: filter .7s ease, transform .6s var(--out); }
+.can.is-lit .pic { filter: drop-shadow(0 calc(var(--u) * 22) calc(var(--u) * 26) rgba(0,0,0,.55)); transform: translateY(calc(var(--u) * -6)); }
+.can h3 { position: absolute; left: 0; top: calc(var(--u) * 510); font: 500 calc(var(--u) * 22)/1.2 Roboto, sans-serif; }
+.can .meta { position: absolute; left: 0; top: calc(var(--u) * 546); font: 500 calc(var(--u) * 13)/1 "Roboto Mono", monospace; letter-spacing: .1em; color: var(--mute); white-space: pre; }
+.can .ink { position: absolute; left: 0; top: calc(var(--u) * 590); display: flex; align-items: baseline; gap: calc(var(--u) * 8); white-space: pre;
+  transform: translateY(calc(var(--u) * 8)); transition: opacity .5s ease, transform .6s var(--out); }
+.can.is-lit .ink { transform: none; }
+.can .ink b { font: 900 calc(var(--u) * 30)/1 Roboto, sans-serif; color: var(--red); }
+.can .ink i { font: 500 calc(var(--u) * 12)/1 "Roboto Mono", monospace; font-style: normal; letter-spacing: .12em; color: var(--red); }
+
+/* ---------- closing ---------- */
+.closing { height: calc(var(--u) * 700); }
+.closing h2 { left: calc(var(--u) * 114); top: calc(var(--u) * 220); font: 900 calc(var(--u) * 128)/1.1 Roboto, sans-serif; letter-spacing: -.04em; white-space: nowrap; }
+.closing h2 em { font: italic 400 1em/1.1 "Libre Baskerville", serif; letter-spacing: -.02em; color: var(--red); }
+.closing .lead { left: calc(var(--u) * 120); top: calc(var(--u) * 410); font-size: calc(var(--u) * 22); line-height: 1.7; color: var(--stone); }
+
+/* ---------- one entrance: copy rises once when its section arrives ---------- */
+.rise { transition: opacity .9s ease, transform 1.1s var(--out); }
+.js .rise { opacity: 0; transform: translateY(calc(var(--u) * 26)); }
+.js .in .rise { opacity: 1; transform: none; }
+.js .in .rise.d1 { transition-delay: .08s; } .js .in .rise.d2 { transition-delay: .16s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01s !important; transition-delay: 0s !important; }
+  .js .rise { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><symbol id="logo" viewBox="0 0 264.998 106" overflow="visible">{{LOGO_PATHS}}</symbol></defs>
+</svg>
+
+<header>
+  <a class="logo" href="BLUFF_2안_Brand.html" aria-label="BLUFF 브랜드 페이지"><svg viewBox="0 0 264.998 106"><use href="#logo" fill="#fbfbfb"/></svg></a>
+  <nav aria-label="Primary"><a href="BLUFF_2안_Brand.html">Brand</a><a href="#top" aria-current="page">Products</a><span>Popup AR</span></nav>
+  <span class="lang">KR / EN</span>
+</header>
+
+<main id="top">
+  <!-- hero: three bags waiting in the dark -->
+  <section class="sec hero" data-watch>
+    <h1 class="abs rise">CERTIFIED<br>NOTHING.</h1>
+    <p class="abs lead kr rise d1">BLUFF의 출품작.<br>조명을 비추면 숨겨 둔 감정 기록이 드러납니다.</p>
+    <p class="abs hint rise d2">HOVER TO LIGHT</p>
+    <div class="hbag" data-light tabindex="0" aria-label="QUAZIC CHIPS Herb, 열량 0 kcal" style="left: calc(var(--u) * 990); top: calc(var(--u) * 426); transform: rotate(-5deg) scale(.84)">
+      <div class="spot"></div><div class="floor"></div><img class="pic" src="{{IMG bag_mona}}" alt="" width="764" height="1036"><div class="lightc"></div>
+      <div class="ink"><div class="shade"></div><p class="big">0</p><p class="lab">KCAL</p></div></div>
+    <div class="hbag" data-light tabindex="0" aria-label="QUAZIC CHIPS Original Hot, 캡사이신 0%" style="left: calc(var(--u) * 1500); top: calc(var(--u) * 446); transform: rotate(6deg) scale(.84)">
+      <div class="spot"></div><div class="floor"></div><img class="pic" src="{{IMG bag_david}}" alt="" width="764" height="1036"><div class="lightc"></div>
+      <div class="ink"><div class="shade"></div><p class="big">0%</p><p class="lab">CAPSAICIN</p></div></div>
+    <div class="hbag" data-light tabindex="0" aria-label="QUAZIC CHIPS Blue Cheese, 나트륨 0 mg" style="left: calc(var(--u) * 1240); top: calc(var(--u) * 302); transform: rotate(2deg) scale(.84)">
+      <div class="spot"></div><div class="floor"></div><img class="pic" src="{{IMG bag_van}}" alt="" width="764" height="1036"><div class="lightc"></div>
+      <div class="ink"><div class="shade"></div><p class="big">0</p><p class="lab">MG SODIUM</p></div></div>
+  </section>
+
+  <!-- lot viewer: hover the bag, the spot comes on and the condition report counts up and lands back on 0 -->
+  <section class="sec lots" id="lots" data-watch aria-label="QUAZIC CHIPS">
+    <div class="spot"></div><div class="floor"></div><div class="lightc"></div>
+    <div class="abs tabs" role="tablist" aria-label="맛 선택"></div>
+    <h2 class="abs swap" data-f="title"></h2>
+    <p class="abs lbl" style="left: calc(var(--u) * 120); top: calc(var(--u) * 476)">추정</p>
+    <p class="attrib kr swap" data-f="attrib"></p>
+    <p class="abs actual kr" data-f="actual"></p>
+    <p class="abs lbl" style="left: calc(var(--u) * 120); top: calc(var(--u) * 626)">출처</p>
+    <img class="abs thumb swap" data-f="thumb" alt="" width="60" height="84">
+    <p class="abs prov kr swap"><span data-f="prov"></span><small data-f="provSub"></small></p>
+    <p class="abs lbl" style="left: calc(var(--u) * 120); top: calc(var(--u) * 790)">가격</p>
+    <p class="abs price">₩2,900</p>
+    <div class="stage swap">
+      <img class="pic" data-f="bag" alt="" width="764" height="1036">
+      <div class="ink" aria-hidden="true"><div class="shade"></div><p class="n-big" data-f="nBig"></p><p class="n-mono" data-f="nMono"></p><p class="n-script" data-f="nScript"></p></div>
+    </div>
+    <div class="zone" tabindex="0" aria-label="봉지에 조명 비추기"></div>
+    <p class="abs report-title">Condition report</p>
+    <p class="abs report-sub kr">감정서, QUAZIC CHIPS 60 g</p>
+    <div id="report"></div>
+    <div class="abs verdict kr" aria-live="polite"><p class="wait">조명을 비추면<br>감정이 시작됩니다.</p><p class="done">열량 등 없음.<br>향과 식감만 확인됨.</p></div>
+  </section>
+
+  <section class="sec soda" data-watch>
+    <h2 class="abs rise">BLUFF SODA</h2>
+    <p class="abs lead kr rise d1">출품작 04부터 08까지. 다섯 가지 맛, 모두 355 ml.<br>열량과 나트륨은 끝내 발견되지 않았습니다.</p>
+{{CANS}}
+  </section>
+
+  <section class="sec closing" data-watch>
+    <h2 class="abs rise">THE BLUFF IS <em>genuine.</em></h2>
+    <p class="abs lead kr rise d1">매운맛도, 짠맛도, 칼로리도 발견되지 않았습니다.<br>감정 결과, BLUFF에 남은 것은 향과 허세뿐입니다.</p>
+  </section>
+</main>
+
+{{FOOTER}}
+
+<script>
+(() => {
+  const root = document.documentElement;
+  root.classList.add('js');
+  // 100vw counts the scrollbar; scale the 1920 design to the real content width instead
+  const setU = () => { const u = root.clientWidth / 1920 + 'px'; root.style.setProperty('--u', u); root.style.setProperty('--u-page', u); };
+  setU(); addEventListener('resize', setU);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // one entrance per section
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold: .2});
+  document.querySelectorAll('[data-watch]').forEach(s => io.observe(s));
+
+  // hero bags and cans: the spot comes on while hovered or focused
+  document.querySelectorAll('[data-light]').forEach(el => {
+    const on = () => el.classList.add('is-lit'), off = () => el.classList.remove('is-lit');
+    el.addEventListener('pointerenter', on); el.addEventListener('pointerleave', off);
+    el.addEventListener('focus', on); el.addEventListener('blur', off);
+  });
+
+  // ---- lot viewer ----
+  const LOTS = [
+    {key: 'Original Hot', title: 'QUAZIC CHIPS<br>Original Hot', bag: '{{IMG bag_david}}', thumb: '{{IMG david}}',
+     attrib: '혀가 얼얼하게 매운맛', actual: '얼얼함 없음. 캡사이신 0%', prov: 'Michelangelo, 다비드', provSub: '1501-1504, BLUFF 덧칠본',
+     nBig: '0%', nMono: 'CAPSAICIN 0%', nScript: 'hot in name only'},
+    {key: 'Blue Cheese', title: 'QUAZIC CHIPS<br>Blue Cheese', bag: '{{IMG bag_van}}', thumb: '{{IMG van}}',
+     attrib: '꼬릿하고 짭짤한 블루치즈 맛', actual: '염분 없음. 나트륨 0 mg', prov: 'Vincent van Gogh, 자화상', provSub: '1886-1889 연작, BLUFF 덧칠본',
+     nBig: '0 mg', nMono: 'SODIUM 0 MG', nScript: 'no salt was found'},
+    {key: 'Herb', title: 'QUAZIC CHIPS<br>Herb', bag: '{{IMG bag_mona}}', thumb: '{{IMG mona}}',
+     attrib: '허브 향이 진하게 밴 스낵', actual: '향이 진함. 열량과 나트륨은 0', prov: 'Leonardo da Vinci, 모나리자', provSub: '1503-1519, BLUFF 덧칠본',
+     nBig: '0 kcal', nMono: 'NA 0 MG', nScript: 'herb, by scent only'}];
+  // the counts the report runs through before settling on 0
+  const ROWS = [['열량', 'kcal', [0, 120, 240, 360, 0]], ['나트륨', 'mg', [0, 150, 300, 450, 600, 0]], ['캡사이신', '%', [0, 2, 4, 6, 8, 10, 0]]];
+  const lots = document.getElementById('lots'), tabs = lots.querySelector('.tabs'), zone = lots.querySelector('.zone');
+  const u = n => `calc(var(--u) * ${n})`;
+  document.getElementById('report').innerHTML = ROWS.map(([k, unit, seq], i) =>
+    `<p class="abs key kr" style="top:${u(474 + i * 112)}">${k}</p>` +
+    `<div class="val" style="top:${u(442 + i * 112)}" role="img" aria-label="${k} 0 ${unit}"><div class="strip" style="--steps:${seq.length - 1}">${seq.map(n => `<span>${n}</span>`).join('')}</div></div>` +
+    `<p class="abs unit" style="top:${u(500 + i * 112)}">${unit}</p>`).join('');
+  tabs.innerHTML = LOTS.map((l, i) => `<button class="tab" role="tab" aria-selected="${i === 0}" data-i="${i}"><span class="no">0${i + 1}</span><span class="nm">${l.key}</span></button>`).join('');
+  const fields = lots.querySelectorAll('[data-f]');
+  const fill = l => fields.forEach(f => { const v = l[f.dataset.f]; if (f.tagName === 'IMG') f.src = v; else f.innerHTML = v; });
+  let current = 0, busy = false;
+  fill(LOTS[0]);
+  LOTS.forEach(l => { new Image().src = l.bag; });   // warm the cache so tab swaps don't flash
+  tabs.addEventListener('click', e => {
+    const b = e.target.closest('.tab'); if (!b || busy) return;
+    const i = +b.dataset.i; if (i === current) return;
+    current = i; tabs.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t === b));
+    lots.classList.remove('is-lit');
+    if (reduce) { fill(LOTS[i]); return; }
+    busy = true; lots.classList.add('swapping');
+    setTimeout(() => { fill(LOTS[i]); lots.classList.remove('swapping'); busy = false; }, 300);
+  });
+  const lit = on => lots.classList.toggle('is-lit', on);
+  zone.addEventListener('pointerenter', () => lit(true)); zone.addEventListener('pointerleave', () => lit(false));
+  zone.addEventListener('focus', () => lit(true)); zone.addEventListener('blur', () => lit(false));
+
+  // Back to top (footer)
+  document.querySelectorAll('[data-top]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}); }));
+})();
+</script>
+</body>
+</html>
