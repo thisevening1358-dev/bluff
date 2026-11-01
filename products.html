@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLUFF Products</title>
+<meta name="description" content="BLUFF 상품 페이지. BLUFF CHIPS, hung like masterpieces.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* BLUFF 1안: shared tokens, header and reveal helpers. Every length is a Figma pixel on the 1920 frame: calc(var(--u) * N). */
+:root {
+  --u: calc(100vw / 1920); --u-page: var(--u);
+  --ink: #0c0c0c; --paper: #fbfbfb; --stone: #bdbdb9; --mute: #8a8a86; --amber: 255, 227, 184;
+  --out: cubic-bezier(.16, 1, .3, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--ink); color-scheme: dark; overflow-x: hidden; scrollbar-color: #3a3a37 var(--ink); }
+body { background: var(--ink); color: var(--paper); font-family: Roboto, "Noto Sans KR", sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+::selection { background: #e51212; color: var(--paper); }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid #e51212; outline-offset: 4px; }
+.kr { font-family: "Noto Sans KR", sans-serif; word-break: keep-all; }
+.it { font-family: "Libre Baskerville", serif; font-style: italic; font-weight: 400; }
+.mono { font-family: "Roboto Mono", monospace; }
+.abs { position: absolute; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- header (Web/Header 1176:793): fixed throughout ---------- */
+.hdr { position: fixed; z-index: 50; left: 0; right: 0; top: 0; height: calc(var(--u) * 96); }
+.hdr .logo { position: absolute; left: calc(var(--u) * 64); top: calc(var(--u) * 26); width: calc(var(--u) * 108); height: calc(var(--u) * 43); }
+.hdr .logo svg { width: 100%; height: 100%; display: block; }
+.hdr nav { position: absolute; left: calc(var(--u) * 818); top: calc(var(--u) * 39); display: flex; gap: calc(var(--u) * 50); font: 500 calc(var(--u) * 16)/1.2 Roboto, sans-serif; }
+.hdr nav a, .hdr nav span { position: relative; color: rgba(251,251,251,.62); transition: color .3s ease; padding-bottom: calc(var(--u) * 6); }
+.hdr nav a:hover, .hdr nav [aria-current] { color: var(--paper); }
+.hdr nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
+.hdr nav a:hover::after, .hdr nav [aria-current]::after { transform: scaleX(1); }
+.hdr .lang { position: absolute; right: calc(var(--u) * 64); top: calc(var(--u) * 34); display: flex; align-items: center; gap: calc(var(--u) * 8); font: 400 calc(var(--u) * 13)/1 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--mute); }
+.hdr .lang button { position: relative; padding: calc(var(--u) * 6) 0; color: var(--mute); letter-spacing: inherit; transition: color .3s ease; }
+.hdr .lang button::after { content: ""; position: absolute; left: 0; right: .08em; bottom: calc(var(--u) * 2); height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
+.hdr .lang button:hover, .hdr .lang button[aria-pressed="true"] { color: var(--paper); }
+.hdr .lang button:hover::after { transform: scaleX(1); }
+/* English mode: the Korean copy is replaced and set in Roboto */
+html[lang="en"] .kr, html[lang="en"] .site-footer [data-en] { font-family: Roboto, sans-serif; word-break: normal; }
+
+/* the amber museum light, used as soft pools on the dark wall */
+.glow { position: absolute; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, rgba(var(--amber), .2), rgba(var(--amber), .06) 50%, rgba(var(--amber), 0)); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01s !important; transition-delay: 0s !important; animation-duration: .01s !important; animation-delay: 0s !important; }
+}
+
+/* ---------- Products · Exhibition (1390:758) ---------- */
+.page { position: relative; height: calc(var(--u) * 3675); }
+.hscrim { position: fixed; z-index: 40; left: 0; right: 0; top: 0; height: calc(var(--u) * 150); pointer-events: none; background: linear-gradient(180deg, rgba(12,12,12,.92), rgba(12,12,12,0)); }
+.intro h1 { position: absolute; left: calc(var(--u) * 200); top: calc(var(--u) * 140); font: 900 calc(var(--u) * 144)/1 Roboto, sans-serif; letter-spacing: -.04em; }
+.intro .irony { position: absolute; left: calc(var(--u) * 200); top: calc(var(--u) * 306); font-size: calc(var(--u) * 48); line-height: 1.25; color: var(--stone); }
+.intro .body { position: absolute; left: calc(var(--u) * 200); top: calc(var(--u) * 388); font-size: calc(var(--u) * 20); line-height: 1.7; color: var(--stone); }
+
+/* an exhibit: dim until the visitor comes close, lit on hover, opened for its label (Web/Exhibit Chip / Can) */
+.ex { position: absolute; --w: 380; --h: 838; --pw: 380; --ph: 515; --px: 0; --t: 559; --fs: 28; width: calc(var(--u) * var(--w)); height: calc(var(--u) * var(--h)); }
+.ex.can { --w: 220; --h: 760; --pw: 200; --ph: 450; --px: 10; --t: 494; --fs: 22; }
+.ex .wall { position: absolute; left: calc(var(--u) * (var(--w) / 2 - var(--w))); top: calc(var(--u) * -227); width: calc(var(--u) * var(--w) * 2); height: calc(var(--u) * 874); border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(var(--amber), .2), rgba(var(--amber), .06) 50%, rgba(var(--amber), 0)); opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+.ex.can .wall { top: calc(var(--u) * -69); height: calc(var(--u) * 529); }
+.ex .beam { position: absolute; left: calc(var(--u) * -136); top: calc(var(--u) * -300); width: calc(var(--u) * 652); height: calc(var(--u) * 746); opacity: 0; transition: opacity .6s ease; pointer-events: none; mix-blend-mode: screen; }
+.ex.can .beam { left: calc(var(--u) * -92); top: calc(var(--u) * -205); width: calc(var(--u) * 408); height: calc(var(--u) * 466); }
+.ex .beam svg { width: 100%; height: 100%; display: block; }
+.ex .plate { position: absolute; left: calc(var(--u) * var(--px)); top: calc(var(--u) * -12); width: calc(var(--u) * var(--pw)); height: calc(var(--u) * var(--ph)); cursor: pointer; }
+.ex .plate img { width: 100%; height: 100%; object-fit: contain; display: block; filter: brightness(.34) saturate(.7); transition: transform .6s var(--out), filter .6s ease; }   /* unlit: the work itself is dim, no box and no halo around it */
+.ex.lit .plate img, .ex.open .plate img { filter: none; }
+.ex .txt { position: absolute; left: 0; top: calc(var(--u) * var(--t)); width: calc(var(--u) * var(--w)); }
+.ex h3 { font: 900 calc(var(--u) * var(--fs))/1.18 Roboto, sans-serif; color: var(--stone); transition: color .4s ease; }
+.ex .price { position: absolute; right: 0; top: calc(var(--u) * 8); font: 500 calc(var(--u) * 15)/1.3 "Roboto Mono", monospace; opacity: 0; transition: opacity .4s ease; }
+.ex .line { margin-top: calc(var(--u) * 10); font-size: calc(var(--u) * 17); color: var(--stone); }
+.ex.can .line { font-size: calc(var(--u) * 15); }
+.ex .meta { margin-top: calc(var(--u) * 18); font: 500 calc(var(--u) * 12)/1.55 "Roboto Mono", monospace; letter-spacing: .1em; color: var(--mute); opacity: 0; transition: opacity .4s ease; white-space: pre-line; }
+.ex .detail { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .5s var(--out), opacity .4s ease; }
+.ex .detail > p { overflow: hidden; font-size: calc(var(--u) * 16); line-height: 1.7; color: var(--stone); padding-top: calc(var(--u) * 18); white-space: pre-line; }
+.ex.can .detail > p { font-size: calc(var(--u) * 15); }
+.ex .toggle { position: relative; margin-top: calc(var(--u) * 20); padding-bottom: calc(var(--u) * 4); font: 500 calc(var(--u) * 14)/1.15 Roboto, sans-serif; opacity: 0; transition: opacity .4s ease; }
+.ex .toggle::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(1); transform-origin: 0 50%; }
+.ex.lit .wall, .ex.lit .beam, .ex.open .wall, .ex.open .beam { opacity: 1; }
+.ex.lit .plate img, .ex.open .plate img { transform: translateY(calc(var(--u) * -6)); }
+.ex.lit h3, .ex.open h3 { color: var(--paper); }
+.ex.lit .price, .ex.lit .meta, .ex.lit .toggle, .ex.open .price, .ex.open .meta, .ex.open .toggle { opacity: 1; }
+.ex.open .detail { grid-template-rows: 1fr; opacity: 1; }
+
+.soda h2 { position: absolute; right: calc(var(--u) * 200); top: calc(var(--u) * 1790); font: 900 calc(var(--u) * 120)/1 Roboto, sans-serif; letter-spacing: -.04em; text-align: right; }
+.soda .irony { position: absolute; right: calc(var(--u) * 200); top: calc(var(--u) * 1930); font-size: calc(var(--u) * 40); line-height: 1.25; color: var(--stone); }
+.soda .body { position: absolute; right: calc(var(--u) * 200); top: calc(var(--u) * 2002); font-size: calc(var(--u) * 20); line-height: 1.7; color: var(--stone); }
+
+.closing h2 { position: absolute; left: calc(var(--u) * 114); top: calc(var(--u) * 3180); font: 900 calc(var(--u) * 128)/1.1 Roboto, sans-serif; letter-spacing: -.04em; white-space: nowrap; }
+.closing h2 em { font: italic 400 1em/1.1 "Libre Baskerville", serif; letter-spacing: -.02em; color: #e51212; }
+.closing p { position: absolute; left: calc(var(--u) * 120); top: calc(var(--u) * 3370); font-size: calc(var(--u) * 22); line-height: 1.7; color: var(--stone); }
+
+/* click to open: the light comes on and the condition report (2안) counts up, then lands on 0 */
+.ex { cursor: pointer; --roll: cubic-bezier(.65, 0, .25, 1); }
+.ex .plate { cursor: pointer; outline: none; }
+.ex .toggle { opacity: .55; }
+.ex .rep { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .5s var(--out), opacity .35s ease; }
+.ex .rep-in { overflow: hidden; }
+.ex .rw { display: grid; grid-template-columns: calc(var(--u) * 92) 1fr calc(var(--u) * 44); align-items: end; column-gap: calc(var(--u) * 10); padding-top: calc(var(--u) * 10); }
+.ex .rw:first-child { padding-top: calc(var(--u) * 22); }
+.ex .rw .k { font-size: calc(var(--u) * 15); line-height: 1.4; color: var(--stone); padding-bottom: calc(var(--u) * 8); }
+.ex .val { height: calc(var(--u) * 52); overflow: hidden; text-align: right; }
+.ex .strip { display: block; transform: translateY(0); transition: transform .45s ease-out; }
+.ex .strip b { display: block; height: calc(var(--u) * 52); font: 900 calc(var(--u) * 46)/calc(var(--u) * 52) Roboto, sans-serif; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.ex .un { font: 500 calc(var(--u) * 13)/1 "Roboto Mono", monospace; letter-spacing: .06em; color: var(--mute); padding-bottom: calc(var(--u) * 12); }
+.ex .verdict { margin-top: calc(var(--u) * 16); font-size: calc(var(--u) * 15); line-height: 1.6; font-weight: 500; color: #e51212; opacity: 0; transform: translateY(calc(var(--u) * 8)); transition: opacity .3s ease, transform .5s var(--out); }
+.ex.can .rw { grid-template-columns: calc(var(--u) * 64) 1fr calc(var(--u) * 36); column-gap: calc(var(--u) * 8); }
+.ex.can .val, .ex.can .strip b { height: calc(var(--u) * 42); }
+.ex.can .strip b { font-size: calc(var(--u) * 36); line-height: calc(var(--u) * 42); }
+.ex.can .rw .k { font-size: calc(var(--u) * 14); padding-bottom: calc(var(--u) * 6); }
+.ex.can .un { padding-bottom: calc(var(--u) * 9); }
+.ex.can .verdict { font-size: calc(var(--u) * 14); }
+.ex.open .rep { grid-template-rows: 1fr; opacity: 1; }
+.ex.open .strip { transform: translateY(calc(var(--u) * -52 * var(--steps))); transition: transform 1.6s var(--roll) calc(.25s + var(--r) * .14s); }
+.ex.can.open .strip { transform: translateY(calc(var(--u) * -42 * var(--steps))); }
+.ex.open .verdict { opacity: 1; transform: none; transition: opacity .5s ease 2s, transform .7s var(--out) 2s; }
+.ex.open .toggle { opacity: 1; }
+
+.rise { opacity: 0; transform: translateY(calc(var(--u) * 28)); transition: opacity 1s ease, transform 1.2s var(--out); transition-delay: calc(var(--i, 0) * 110ms); }
+.in .rise, .rise.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="logo" viewBox="0 0 264.998 106" overflow="visible"><path d="M24.4889 17.7507L24.3267 18.1274C25.2998 18.1274 26.1107 18.5041 26.9216 19.2576C27.7325 20.0111 33.4087 20.2936 44.1124 20.0111C54.8162 19.7285 60.6546 20.0111 61.4655 20.7645C62.2764 21.518 61.1411 23.3075 58.0598 26.1329C54.9784 28.9584 49.14 32.8199 40.7067 37.6232C32.2734 42.5207 28.0568 45.4403 28.0568 46.4763V48.0774L48.0047 45.7229C61.3033 44.216 69.8988 43.4625 73.9532 43.4625C78.0077 43.4625 80.4403 43.8392 81.2512 44.5927C82.0621 45.3462 82.5487 46.288 82.5487 47.324C82.5487 48.36 78.1698 50.7146 69.25 54.2935C60.3302 57.8724 54.1675 60.6979 50.7617 62.7699C47.1938 64.8419 44.9233 65.8779 44.1124 65.8779C43.1394 65.8779 40.2202 67.2907 35.3548 70.1161C30.4895 72.9416 28.0568 78.2158 28.0568 85.9388C28.0568 93.6618 27.5703 98.936 26.7594 101.761L25.462 106L24.1645 105.623C23.1915 105.34 22.5428 104.493 22.0562 102.892C21.5697 101.385 21.0832 96.9582 20.5966 89.7061L19.9479 78.8751L13.2986 82.7366C8.91979 85.2795 5.51405 86.4097 3.40574 86.1272L0 85.7504L0.648712 83.3959C1.13525 81.889 4.54099 79.4402 10.8659 76.0496C17.0287 72.6591 20.1101 68.2325 20.1101 62.8641V54.7644L13.4608 55.5179L6.81148 56.2713L5.51405 54.2935C4.70316 52.9749 6.97366 50.7146 12.3255 47.4182C17.6774 44.1218 20.2723 39.7894 20.2723 34.421V26.3213L14.9204 26.698L9.56851 27.0748L8.9198 25.0969C8.43326 23.7784 8.9198 22.9307 10.3794 22.4598C11.6768 21.9889 13.4608 21.7064 15.7313 21.7064C18.0018 21.7064 19.7857 21.0471 21.0832 19.7285C22.3806 18.41 23.5158 17.7507 24.4889 17.7507ZM38.9227 25.0027V24.8144L28.219 25.5678V31.313V37.1523L35.517 33.2908C40.3823 30.7479 42.815 29.241 42.815 28.77C42.815 28.2991 43.9503 27.4515 46.2208 26.1329L49.4643 24.2493L38.9227 25.0027ZM46.2208 51.0913L28.219 53.4458V59.9444L28.219 66.5372L46.2208 57.5899L64.0603 48.7367L46.2208 51.0913Z"/><path d="M70.6477 33.932L70.3233 34.3087C72.5938 34.8738 73.729 36.1923 73.729 38.1702C73.729 40.2422 72.5938 47.0233 70.4855 58.6078L67.0797 76.0315L89.6225 68.3086C104.705 63.1285 113.949 60.2089 117.517 59.4554C121.085 58.702 123.68 58.3252 125.464 58.3252C127.248 58.3252 128.545 58.6078 129.356 59.0787L130.654 59.8322L126.761 62.0925C124.166 63.5995 121.572 64.5413 118.977 64.8238C116.382 65.1064 114.76 65.4831 114.274 65.954C113.787 66.5191 112.165 67.0842 109.57 67.5551C106.976 68.026 104.705 68.7795 102.921 69.8155C101.137 70.8515 98.8667 71.605 96.2718 72.0759C93.677 72.5468 88.3251 74.3363 80.3783 77.4443C72.4316 80.5523 67.7285 82.9069 66.431 84.4138C65.1336 85.9207 64.4849 87.4276 64.4849 88.9345C64.4849 90.4415 63.3496 91.4775 61.2413 91.9484C58.9708 92.4193 57.3491 92.4193 56.5382 91.9484C55.7273 91.4775 55.2407 90.724 55.2407 89.688V88.1811L52.6459 89.3113C50.8619 90.0647 49.078 90.4415 47.294 90.4415H44.537L43.8883 88.0869C43.4017 86.58 44.6992 85.1672 47.7805 83.8487C50.8619 82.5301 53.2946 80.8348 55.0786 78.7628C56.8625 76.6908 58.6465 70.2864 60.4304 59.4554C62.2144 48.6244 63.8362 41.5607 65.2958 38.1702L67.2419 33.1785L70.6477 33.932Z"/><path d="M141.357 30.8411H141.033H143.628L144.439 33.4783C144.925 35.2677 144.276 39.035 142.492 44.686C140.708 50.3369 139.735 59.0017 139.735 70.5862C139.735 82.1706 139.249 88.4808 138.438 89.5168C137.465 90.5528 136.492 91.1179 135.681 91.1179C134.87 91.1179 134.059 90.8354 133.248 90.3645C132.437 89.8936 131.789 88.575 131.302 86.503C130.816 84.431 130.978 78.0266 131.951 67.1956L133.248 50.9962L125.95 60.2261C121.085 66.4421 117.517 69.8327 115.409 70.3036C113.138 70.7745 111.354 70.6803 110.057 69.8327C108.759 69.0792 108.111 64.6527 108.111 56.6471C108.111 48.6416 108.597 42.7081 109.408 38.8467C110.219 34.9852 111.516 32.819 113.3 32.3481C115.084 31.8772 116.382 31.8772 117.355 32.3481C118.328 32.819 118.328 35.6445 117.517 40.8245C116.544 46.0045 116.22 50.2427 116.706 53.5391L117.355 58.625L128.059 44.686C135.194 35.4561 139.573 30.8411 141.357 30.8411Z"/><path d="M260.619 4.76271L260.294 4.95107L264.997 5.3278L263.7 7.21145C262.727 8.53001 260.456 9.28347 257.051 9.56602C253.483 9.84856 251.212 10.2253 250.401 10.6962C249.428 11.1671 246.671 11.7322 242.293 12.2031C237.914 12.7682 231.913 13.8984 224.453 15.6879C216.993 17.4773 213.263 20.3028 213.263 24.1643V30.0036L225.913 27.2723C234.346 25.4829 240.833 24.4468 245.212 24.1643L251.861 23.7876V24.541C251.861 25.0119 245.212 26.9898 231.913 30.2862C218.615 33.6767 211.803 43.095 211.316 58.4467C210.83 73.8927 210.181 82.6516 209.37 84.7236L207.911 87.8317H205.965C204.667 87.8317 203.532 87.4549 202.721 86.6073C201.748 85.8538 201.261 82.5574 201.261 76.6239C201.261 70.6904 201.748 62.6849 202.721 52.6074L204.018 37.5382L196.072 39.0451C190.72 40.0811 187.314 40.3637 186.017 39.8928C184.719 39.4219 184.071 38.951 184.071 38.3859C184.071 37.8208 185.53 36.8789 188.612 35.5604C191.693 34.2418 194.937 33.3942 198.504 32.9233L203.856 32.1698L204.505 26.3305L205.154 20.5854L198.504 21.7156C194.126 22.469 191.044 23.2225 189.26 23.9759C187.476 24.7294 185.206 25.0119 182.611 24.7294L178.557 24.3527V22.7516C178.557 21.7156 182.935 20.2086 191.855 18.1366C200.775 16.0646 205.478 14.7461 205.965 14.2751C206.451 13.8042 207.749 13.5217 210.019 13.5217C212.29 13.5217 214.884 13.0508 217.966 12.0148C221.047 10.9788 228.183 9.47183 239.373 7.39982C250.401 5.3278 257.537 4.48016 260.619 4.76271Z"/><path d="M215.65 0.0527957L215.325 0.241159L220.029 0.617889L218.731 2.50154C217.758 3.82009 215.488 4.57355 212.082 4.8561C208.514 5.13865 206.243 5.51538 205.433 5.98629C204.46 6.4572 201.702 7.0223 197.324 7.49321C192.945 8.0583 186.944 9.1885 179.484 10.978C172.024 12.7674 168.294 15.5929 168.294 19.4544V25.2937L180.944 22.5624C189.377 20.7729 195.864 19.7369 200.243 19.4544L206.892 19.0777V19.8311C206.892 20.302 200.243 22.2799 186.944 25.5762C173.646 28.9668 166.834 38.3851 166.348 53.7368C165.861 69.1827 165.212 77.9417 164.402 80.0137L162.942 83.1217H160.996C159.698 83.1217 158.563 82.745 157.752 81.8974C156.779 81.1439 156.293 77.8475 156.293 71.914C156.293 65.9805 156.779 57.975 157.752 47.8975L159.05 32.8283L151.103 34.3352C145.751 35.3712 142.345 35.6538 141.048 35.1829C139.75 34.712 139.102 34.241 139.102 33.6759C139.102 33.1108 140.561 32.169 143.643 30.8505C146.724 29.5319 149.968 28.6843 153.536 28.2134L158.887 27.4599L159.536 21.6206L160.185 15.8755L153.536 17.0056C149.157 17.7591 146.075 18.5126 144.291 19.266C142.507 20.0195 140.237 20.302 137.642 20.0195L133.588 19.6428V18.0416C133.588 17.0056 137.967 15.4987 146.886 13.4267C155.806 11.3547 160.509 10.0361 160.996 9.56522C161.482 9.09431 162.78 8.81177 165.05 8.81177C167.321 8.81177 169.916 8.34085 172.997 7.30484C176.078 6.26884 183.214 4.76192 194.404 2.68991C205.433 0.617889 212.568 -0.229754 215.65 0.0527957Z"/></symbol></defs></svg>
+<div class="hscrim" aria-hidden="true"></div>
+<header class="hdr">
+  <a class="logo" href="index.html" aria-label="BLUFF 브랜드 페이지" data-en-aria="BLUFF brand page"><svg viewBox="0 0 264.998 106"><use href="#logo" fill="#fbfbfb"/></svg></a>
+  <nav aria-label="Primary"><a href="index.html">Brand</a><a href="#top" data-top aria-current="page">Products</a><a href="popup.html">Popup AR</a></nav>
+  <p class="lang" role="group" aria-label="Language"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span aria-hidden="true">/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></p>
+</header>
+
+<main class="page" id="top">
+  <section class="intro" data-reveal aria-label="BLUFF CHIPS">
+    <h1 class="rise">BLUFF CHIPS</h1>
+    <p class="irony it rise" lang="en" style="--i:1">Hung like masterpieces.</p>
+    <p class="body kr rise" style="--i:2" data-en="No salt, no capsaicin.<br>An exhibition of snacks that bluff with aroma alone.">짠맛도 캡사이신도 없이,<br>향만으로 허세를 부리는 스낵을 전시합니다.</p>
+  </section>
+  <article class="ex chip" data-group="chips" style="left: calc(var(--u) * 200); top: calc(var(--u) * 600)" aria-label="Original Hot">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Original Hot"><img src="assets/bag_david.webp?v=1" alt="" width="764" height="1036" loading="lazy"></div>
+    <div class="txt"><h3>Original Hot</h3><span class="price">&#8361;2,900</span><p class="line it" lang="en">Quazic Chips, after Michelangelo</p><p class="meta">60 G</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg, 캡사이신 0 %"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>120</b><b>240</b><b>360</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>150</b><b>300</b><b>450</b><b>600</b><b>0</b></span></span><span class="un">mg</span></div><div class="rw" style="--r:2"><span class="k kr" data-en="Capsaicin">캡사이신</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:6"><b>0</b><b>2</b><b>4</b><b>6</b><b>8</b><b>10</b><b>0</b></span></span><span class="un">%</span></div><p class="verdict kr" data-en="No calories, sodium or capsaicin.&lt;br&gt;Only aroma and crunch were found." style="--r:3">열량, 나트륨, 캡사이신 없음.<br>향과 식감만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="All the heat in the aroma, none of the pain.
+With 0% capsaicin, your nose reacts before your tongue.">매운 향은 그대로, 통증은 없이.
+캡사이신 0%로 혀 대신 코가 먼저 반응합니다.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex chip" data-group="chips" style="left: calc(var(--u) * 770); top: calc(var(--u) * 600)" aria-label="Blue Cheese">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Blue Cheese"><img src="assets/bag_van.webp?v=1" alt="" width="764" height="1036" loading="lazy"></div>
+    <div class="txt"><h3>Blue Cheese</h3><span class="price">&#8361;2,900</span><p class="line it" lang="en">Quazic Chips, after Van Gogh</p><p class="meta">60 G</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg, 캡사이신 0 %"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>120</b><b>240</b><b>360</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>150</b><b>300</b><b>450</b><b>600</b><b>0</b></span></span><span class="un">mg</span></div><div class="rw" style="--r:2"><span class="k kr" data-en="Capsaicin">캡사이신</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:6"><b>0</b><b>2</b><b>4</b><b>6</b><b>8</b><b>10</b><b>0</b></span></span><span class="un">%</span></div><p class="verdict kr" data-en="No calories, sodium or capsaicin.&lt;br&gt;Only aroma and crunch were found." style="--r:3">열량, 나트륨, 캡사이신 없음.<br>향과 식감만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="Rich blue cheese aroma, 0 mg sodium.
+All the flavor, none of the salt.">진한 블루치즈 향, 나트륨은 0 mg.
+짠맛 없이 풍미만 남겼습니다.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex chip" data-group="chips" style="left: calc(var(--u) * 1340); top: calc(var(--u) * 600)" aria-label="Herb">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Herb"><img src="assets/bag_mona.webp?v=1" alt="" width="764" height="1036" loading="lazy"></div>
+    <div class="txt"><h3>Herb</h3><span class="price">&#8361;2,900</span><p class="line it" lang="en">Quazic Chips, after Leonardo</p><p class="meta">60 G</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg, 캡사이신 0 %"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>120</b><b>240</b><b>360</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>150</b><b>300</b><b>450</b><b>600</b><b>0</b></span></span><span class="un">mg</span></div><div class="rw" style="--r:2"><span class="k kr" data-en="Capsaicin">캡사이신</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:6"><b>0</b><b>2</b><b>4</b><b>6</b><b>8</b><b>10</b><b>0</b></span></span><span class="un">%</span></div><p class="verdict kr" data-en="No calories, sodium or capsaicin.&lt;br&gt;Only aroma and crunch were found." style="--r:3">열량, 나트륨, 캡사이신 없음.<br>향과 식감만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="Coated in basil and herb aroma.
+The lightest, cleanest bluff.">바질과 허브 향을 입혔습니다.
+가장 가볍고 담백한 허세.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <section class="soda" data-reveal aria-label="BLUFF SODA">
+    <h2 class="rise">BLUFF SODA</h2>
+    <p class="irony it rise" lang="en" style="--i:1">Five cans, one straight face.</p>
+    <p class="body kr rise" style="--i:2" data-en="355 ml, 0 kcal, 0 mg sodium. Only aroma on top of the fizz.">355 ml, 0 kcal, 나트륨 0 mg. 탄산 위에 향만 얹었습니다.</p>
+  <article class="ex can" data-group="cans" style="left: calc(var(--u) * 200); top: calc(var(--u) * 2170)" aria-label="Cherry Hot Tonic">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Cherry Hot Tonic"><img src="assets/can1.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+    <div class="txt"><h3>Cherry Hot Tonic</h3><p class="line it" lang="en">Bluff Soda, Do Not Drink</p><p class="meta">355 ML</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>40</b><b>80</b><b>120</b><b>140</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>15</b><b>30</b><b>45</b><b>0</b></span></span><span class="un">mg</span></div><p class="verdict kr" data-en="No calories or sodium.&lt;br&gt;Only aroma and fizz were found." style="--r:2">열량, 나트륨 없음.<br>향과 탄산만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="A cherry tonic with
+a layer of heat on top.
+The warning is a joke.">체리 향에 매운 향을
+한 겹 얹은 토닉.
+경고문은 농담입니다.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex can" data-group="cans" style="left: calc(var(--u) * 525); top: calc(var(--u) * 2170)" aria-label="Acid Lime Fizz">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Acid Lime Fizz"><img src="assets/can2.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+    <div class="txt"><h3>Acid Lime Fizz</h3><p class="line it" lang="en">Bluff Soda, Mugshot</p><p class="meta">355 ML</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>40</b><b>80</b><b>120</b><b>140</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>15</b><b>30</b><b>45</b><b>0</b></span></span><span class="un">mg</span></div><p class="verdict kr" data-en="No calories or sodium.&lt;br&gt;Only aroma and fizz were found." style="--r:2">열량, 나트륨 없음.<br>향과 탄산만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="Sour lime aroma
+with a strong fizz.">시큼한 라임 향과
+강한 탄산을 담았습니다.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex can" data-group="cans" style="left: calc(var(--u) * 850); top: calc(var(--u) * 2170)" aria-label="Blue Cheese Cola">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Blue Cheese Cola"><img src="assets/can3.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+    <div class="txt"><h3>Blue Cheese Cola</h3><p class="line it" lang="en">Bluff Soda, Fizz</p><p class="meta">355 ML</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>40</b><b>80</b><b>120</b><b>140</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>15</b><b>30</b><b>45</b><b>0</b></span></span><span class="un">mg</span></div><p class="verdict kr" data-en="No calories or sodium.&lt;br&gt;Only aroma and fizz were found." style="--r:2">열량, 나트륨 없음.<br>향과 탄산만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="Cola with blue cheese aroma.
+The most suspicious pairing.">콜라에 블루치즈 향.
+가장 의심스러운 조합.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex can" data-group="cans" style="left: calc(var(--u) * 1175); top: calc(var(--u) * 2170)" aria-label="Red Sansho Tonic">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Red Sansho Tonic"><img src="assets/can4.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+    <div class="txt"><h3>Red Sansho Tonic</h3><p class="line it" lang="en">Bluff Soda, Bleeding Art</p><p class="meta">355 ML</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>40</b><b>80</b><b>120</b><b>140</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>15</b><b>30</b><b>45</b><b>0</b></span></span><span class="un">mg</span></div><p class="verdict kr" data-en="No calories or sodium.&lt;br&gt;Only aroma and fizz were found." style="--r:2">열량, 나트륨 없음.<br>향과 탄산만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="A tonic that borrows only
+the tingling aroma of sansho.
+Your tongue stays calm.">산초의 얼얼한 향만
+빌려 온 토닉.
+혀는 얼얼하지 않습니다.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  <article class="ex can" data-group="cans" style="left: calc(var(--u) * 1500); top: calc(var(--u) * 2170)" aria-label="Counterfeit Lime">
+    <div class="wall" aria-hidden="true"></div><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+    <div class="plate" role="button" tabindex="0" aria-label="Counterfeit Lime"><img src="assets/can5.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+    <div class="txt"><h3>Counterfeit Lime</h3><p class="line it" lang="en">Bluff Soda, Counterfeit</p><p class="meta">355 ML</p>
+      <div class="rep" role="img" aria-label="열량 0 kcal, 나트륨 0 mg"><div class="rep-in"><div class="rw" style="--r:0"><span class="k kr" data-en="Calories">열량</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:5"><b>0</b><b>40</b><b>80</b><b>120</b><b>140</b><b>0</b></span></span><span class="un">kcal</span></div><div class="rw" style="--r:1"><span class="k kr" data-en="Sodium">나트륨</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:4"><b>0</b><b>15</b><b>30</b><b>45</b><b>0</b></span></span><span class="un">mg</span></div><p class="verdict kr" data-en="No calories or sodium.&lt;br&gt;Only aroma and fizz were found." style="--r:2">열량, 나트륨 없음.<br>향과 탄산만 확인됨.</p></div></div>
+      <div class="detail"><p class="kr" data-en="A fake lime aroma,
+more real than the real thing.">진짜보다 더 진짜 같은
+가짜 라임 향.</p></div><button class="toggle" type="button" aria-expanded="false">Details</button></div>
+  </article>
+  </section>
+  <section class="closing" data-reveal aria-label="The bluff is genuine.">
+    <h2 class="rise" lang="en">THE BLUFF IS <em>genuine.</em></h2>
+    <p class="kr rise" style="--i:1" data-en="No heat, no salt, no calories were found.<br>All that is left of BLUFF is aroma and bluff.">매운맛도, 짠맛도, 칼로리도 발견되지 않았습니다.<br>BLUFF에 남은 것은 향과 허세뿐입니다.</p>
+  </section>
+</main>
+<style>
+.site-footer { --fu: var(--u-page, calc(100vw / 1920)); position: relative; height: calc(var(--fu) * 835); background: #111111; color: #fbfbfb;
+  font-family: Roboto, "Noto Sans KR", sans-serif; overflow: hidden; }
+.site-footer * { box-sizing: border-box; margin: 0; padding: 0; }
+.site-footer .f-news { position: absolute; left: calc(var(--fu) * 64); top: calc(var(--fu) * 104); width: calc(var(--fu) * 560); }
+.site-footer .f-title { font: 900 calc(var(--fu) * 88)/1 Roboto, sans-serif; letter-spacing: -.03em; }
+.site-footer .f-sub { margin-top: calc(var(--fu) * 20); font: 400 calc(var(--fu) * 18)/1.2 "Noto Sans KR", sans-serif; color: #bdbdb9; }
+.site-footer .f-field { margin-top: calc(var(--fu) * 22); }
+.site-footer label { display: block; padding-top: calc(var(--fu) * 16); font: 500 calc(var(--fu) * 13)/1.2 "Noto Sans KR", sans-serif; color: #bdbdb9; }
+.site-footer .f-row { margin-top: calc(var(--fu) * 10); display: flex; height: calc(var(--fu) * 60); }
+.site-footer input { flex: 0 0 calc(var(--fu) * 440); border: 0; outline: 0; background: #242424; color: #fbfbfb;
+  padding: 0 calc(var(--fu) * 22); font: 400 calc(var(--fu) * 16)/1 Roboto, sans-serif; border-radius: 0; }
+.site-footer input::placeholder { color: #8a8a86; }
+.site-footer input:focus-visible { box-shadow: inset 0 0 0 2px #e51212; }
+.site-footer button { flex: 0 0 calc(var(--fu) * 120); border: 0; background: #fbfbfb; color: #0c0c0c; cursor: pointer; border-radius: 0;
+  font: 700 calc(var(--fu) * 15)/1 "Noto Sans KR", sans-serif; transition: background-color .2s ease; }
+.site-footer button:hover { background: #e51212; color: #fbfbfb; }
+.site-footer .f-col { position: absolute; top: calc(var(--fu) * 116); display: grid; gap: calc(var(--fu) * 14); }
+.site-footer .f-col h4 { font: 500 calc(var(--fu) * 12)/1.3 "Roboto Mono", monospace; letter-spacing: .12em; color: #8a8a86; margin-bottom: calc(var(--fu) * 20); }
+.site-footer .f-col a, .site-footer .f-col span { font: 500 calc(var(--fu) * 20)/1.15 Roboto, sans-serif; letter-spacing: -.01em; color: #fbfbfb; text-decoration: none; }
+.site-footer .f-col .soft { color: #bdbdb9; }
+.site-footer .f-col a:hover { color: #e51212; }
+.site-footer .f-sig { position: absolute; left: calc(var(--fu) * 64); top: calc(var(--fu) * 456); width: calc(var(--fu) * 421); height: calc(var(--fu) * 168); }
+.site-footer .f-meta { position: absolute; left: calc(var(--fu) * 64); right: calc(var(--fu) * 64); top: calc(var(--fu) * 724); height: calc(var(--fu) * 40);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; font: 400 calc(var(--fu) * 13)/1 "Roboto Mono", monospace; color: #8a8a86; }
+.site-footer .f-meta .credit { text-align: center; letter-spacing: .08em; } .site-footer .f-meta .copy { letter-spacing: .04em; }
+.site-footer .f-top { justify-self: end; display: inline-flex; align-items: center; gap: calc(var(--fu) * 8); color: #fbfbfb; text-decoration: none;
+  font: 500 calc(var(--fu) * 14)/1 Roboto, sans-serif; }
+.site-footer .f-top svg { width: calc(var(--fu) * 18); height: calc(var(--fu) * 18); transition: transform .3s cubic-bezier(.16,1,.3,1); }
+.site-footer .f-top:hover svg { transform: translateY(-3px); }
+</style>
+<footer class="site-footer" id="siteFooter">
+  <div class="f-news">
+    <h3 class="f-title">Stay bluffing.</h3>
+    <p class="f-sub" data-en="Be the first to know when a new work goes up.">새 작품이 걸리면 가장 먼저 알려드릴게요.</p>
+    <form class="f-field" onsubmit="event.preventDefault()">
+      <label for="footerEmail" data-en="Email">이메일</label>
+      <div class="f-row"><input id="footerEmail" type="email" placeholder="you@example.com" autocomplete="email"><button type="submit" data-en="Subscribe">구독하기</button></div>
+    </form>
+  </div>
+  <nav class="f-col" style="left: calc(var(--fu) * 1080)" aria-label="Explore"><h4>EXPLORE</h4>
+    <a href="index.html">Brand</a><a href="#top" data-top>Products</a><a href="popup.html">Popup AR</a></nav>
+  <div class="f-col" style="left: calc(var(--fu) * 1370)"><h4>FOLLOW</h4><span>Instagram</span><span class="soft">@bluff.gallery</span></div>
+  <div class="f-col" style="left: calc(var(--fu) * 1660)"><h4>VISIT</h4><span>www.bluff.com</span><span class="soft">Popup schedule TBA</span></div>
+  <svg class="f-sig" viewBox="0 0 264.998 106" aria-label="BLUFF"><use href="#logo" fill="#fbfbfb"/></svg>
+  <div class="f-meta">
+    <span class="copy">© 2026 BLUFF. Good taste is a bluff.</span>
+    <span class="credit">YUHAN UNIVERSITY&nbsp;&nbsp;BX DESIGN</span>
+    <a class="f-top" href="#top" data-top>Back to top
+      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 14.25V3.75M13.5 8.25L9 3.75L4.5 8.25" stroke="#FBFBFB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</footer>
+
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fit = () => document.documentElement.style.setProperty('--u', document.documentElement.clientWidth / 1920 + 'px');
+  fit(); addEventListener('resize', fit);
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold: .15});
+  // the section boxes have no height (their type is positioned on the page grid), so each line of type is watched itself
+  document.querySelectorAll('[data-reveal] .rise, .ex').forEach(s => io.observe(s));
+
+  // ---- exhibits: the light follows the visitor; Details opens the label, Close folds it ----
+  const exs = [...document.querySelectorAll('.ex')];
+  const setOpen = (ex, open) => {
+    const tg = ex.querySelector('.toggle');
+    ex.classList.toggle('open', open); tg.textContent = open ? 'Close' : 'Details'; tg.setAttribute('aria-expanded', String(open));
+  };
+  const choose = ex => {
+    const open = !ex.classList.contains('open');
+    for (const o of exs) if (o !== ex && o.dataset.group === ex.dataset.group) { o.classList.remove('lit'); if (o.classList.contains('open')) setOpen(o, false); }
+    ex.classList.toggle('lit', open); setOpen(ex, open);
+  };
+  exs.forEach(ex => {
+    ex.addEventListener('click', e => { if (!e.target.closest('a')) choose(ex); });
+    ex.querySelector('.plate').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(ex); } });
+    ex.querySelector('.toggle').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); });
+  });
+  // ---- KR / EN: every [data-en] element keeps its Korean in data-kr and swaps to English; English is set in Roboto (see base.css) ----
+  // The switch reads as a refocus: visible copy blurs out, the words and the typeface change while it is soft, then it comes back sharp.
+  (() => {
+    const els = [...document.querySelectorAll('[data-en]')], aria = [...document.querySelectorAll('[data-en-aria]')], alts = [...document.querySelectorAll('[data-en-alt]')];
+    els.forEach(e => e.dataset.kr = e.innerHTML); aria.forEach(e => e.dataset.krAria = e.getAttribute('aria-label')); alts.forEach(e => e.dataset.krAlt = e.alt);
+    const btns = [...document.querySelectorAll('.lang button')];
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    const OUT = 260, IN = 520, STEP = 26, MAXLAG = 160;   // ms
+    let cur = 'ko', busy = [];
+
+    const apply = l => {
+      const en = l === 'en';
+      document.documentElement.lang = en ? 'en' : 'ko';
+      els.forEach(e => e.innerHTML = en ? e.dataset.en : e.dataset.kr);
+      aria.forEach(e => e.setAttribute('aria-label', en ? e.dataset.enAria : e.dataset.krAria));
+      alts.forEach(e => e.alt = en ? e.dataset.enAlt : e.dataset.krAlt);
+    };
+    // copy the visitor can see right now: on screen and already revealed (not still waiting in its own blur-in)
+    const seen = () => els.filter(e => {
+      const r = e.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight || !r.width) return false;
+      let o = 1; for (let n = e; n && n !== document.body; n = n.parentElement) o *= +getComputedStyle(n).opacity;
+      const b = /blur\(([\d.]+)px\)/.exec(getComputedStyle(e).filter);
+      return o > .5 && (!b || +b[1] < 1);
+    }).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+    const set = (l, animate = true) => {
+      if (l === cur) return;
+      cur = l;
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+      try { localStorage.setItem('bluff.lang', l); } catch (_) {}
+      busy.forEach(a => a.cancel()); busy = [];
+      const vis = animate && !still.matches ? seen() : [];
+      if (!vis.length) { apply(l); return; }
+      const lag = i => Math.min(i * STEP, MAXLAG);
+      // out: soften and dim, staggered top to bottom
+      busy = vis.map((e, i) => e.animate([{filter: 'blur(0)', opacity: 1}, {filter: 'blur(.22em)', opacity: .18}],
+        {duration: OUT, delay: lag(i), easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards'}));
+      // swap once the last line is fully soft, then bring every line back into focus in the same order
+      setTimeout(() => {
+        if (cur !== l) return;
+        apply(l);
+        busy.forEach(a => a.cancel());
+        busy = vis.map((e, i) => e.animate([{filter: 'blur(.22em)', opacity: .18}, {filter: 'blur(0)', opacity: 1}],
+          {duration: IN, delay: lag(i), easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards'}));
+      }, OUT + lag(vis.length - 1));
+    };
+    btns.forEach(b => b.addEventListener('click', () => set(b.dataset.lang)));
+    let saved = 'ko'; try { saved = localStorage.getItem('bluff.lang') || 'ko'; } catch (_) {}
+    if (saved === 'en') set('en', false);
+  })();
+  document.querySelectorAll('[data-top]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}); }));
+})();
+</script>
+</body>
+</html>
