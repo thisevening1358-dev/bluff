@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0c0c">
+<title>BLUFF Products</title>
+<meta name="description" content="BLUFF 상품 페이지. BLUFF CHIPS, hung like masterpieces.">
+<link rel="icon" href="data:,">
+<script>if (innerWidth >= 768 && !/[?&]mobile/.test(location.search)) location.replace('../products.html' + location.hash);</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Noto+Sans+KR:wght@400;500;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* BLUFF mobile: shared tokens, header, full-screen menu, footer and reveal helpers. Lengths are the Figma 393 frame in px. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out .28s cubic-bezier(.4, 0, 1, 1) both; }
+::view-transition-new(root) { animation: vt-in .5s cubic-bezier(.16, 1, .3, 1) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; } }
+
+:root {
+  --ink: #0c0c0c; --paper: #fbfbfb; --stone: #bdbdb9; --mute: #8a8a86; --red: #e51212; --amber: 255, 227, 184;
+  --out: cubic-bezier(.16, 1, .3, 1); --pad: 24px; --head: 56px;
+  --kr: "Noto Sans KR", sans-serif;
+}
+html[lang="en"] { --kr: Roboto, sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--ink); color-scheme: dark; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+main, .mfoot { overflow-x: clip; }
+body { background: var(--ink); color: var(--paper); font-family: Roboto, "Noto Sans KR", sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent; }
+::selection { background: var(--red); color: var(--paper); }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+img { display: block; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.kr { font-family: var(--kr); word-break: keep-all; }
+html[lang="en"] .kr { word-break: normal; }
+.it { font-family: "Libre Baskerville", serif; font-style: italic; font-weight: 400; }
+.mono { font-family: "Roboto Mono", monospace; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.glow { position: absolute; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, rgba(var(--amber), .2), rgba(var(--amber), .06) 50%, rgba(var(--amber), 0)); }
+
+/* text buttons: type alone, the line underneath draws in when touched */
+.tbtn { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: 500 14px/1 Roboto, var(--kr); color: var(--paper); }
+.tbtn::after { content: ""; position: absolute; left: 0; right: 0; bottom: 12px; height: 1px; background: currentColor; transform-origin: 0 50%; transition: transform .5s var(--out); }
+.tbtn:active::after { transform: scaleX(.4); }
+.tbtn:active { opacity: .8; }
+
+/* ---------- header: the logo and one menu icon ---------- */
+.hdr { position: fixed; z-index: 70; left: 0; right: 0; top: 0; height: var(--head); padding-top: env(safe-area-inset-top); box-sizing: content-box;
+  background: linear-gradient(180deg, rgba(12,12,12,.85), rgba(12,12,12,0)); transition: background-color .4s ease; }
+.hdr .logo { position: absolute; left: var(--pad); top: calc(env(safe-area-inset-top) + 14px); width: 72px; height: 29px; }
+.hdr .logo svg { width: 100%; height: 100%; display: block; }
+.hdr .burger { position: absolute; right: 14px; top: calc(env(safe-area-inset-top) + 6px); width: 44px; height: 44px; }
+.hdr .burger i { position: absolute; left: 11px; width: 22px; height: 2px; background: var(--paper); transition: transform .55s var(--out), opacity .25s ease; }
+.hdr .burger i:nth-child(1) { top: 14px; } .hdr .burger i:nth-child(2) { top: 21px; } .hdr .burger i:nth-child(3) { top: 28px; }
+.menu-open .hdr .burger i:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-open .hdr .burger i:nth-child(2) { opacity: 0; transform: scaleX(.2); }
+.menu-open .hdr .burger i:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.menu-open .hdr { background-color: transparent; }
+
+/* ---------- menu: a full-screen room; the pages rise in, the language sits at the bottom ---------- */
+.mmenu { position: fixed; z-index: 60; inset: 0; display: flex; flex-direction: column; padding: calc(env(safe-area-inset-top) + 130px) var(--pad) calc(env(safe-area-inset-bottom) + 40px);
+  background: var(--ink); visibility: hidden; clip-path: inset(0 0 100% 0); transition: clip-path .7s var(--out), visibility 0s linear .7s; overscroll-behavior: contain; }
+.mmenu .glow { left: -160px; top: -260px; width: 713px; height: 560px; opacity: .6; }
+.menu-open .mmenu { visibility: visible; clip-path: inset(0 0 0 0); transition: clip-path .7s var(--out), visibility 0s; }
+.mmenu nav { position: relative; display: grid; justify-items: start; gap: 6px; }
+.mmenu nav a { position: relative; display: block; overflow: hidden; padding: 4px 0 10px; font: 900 clamp(50px, 14.6vw, 64px)/1 Roboto, sans-serif; letter-spacing: -.035em; color: var(--stone); }
+.mmenu nav a > span { display: block; transform: translateY(110%); transition: transform .8s var(--out), color .3s ease; transition-delay: calc(.12s + var(--i) * .07s); }
+.mmenu nav a::after { content: ""; position: absolute; left: 2px; right: 2px; bottom: 4px; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: 0 50%; transition: transform .7s var(--out) .5s; }
+.mmenu nav a[aria-current] { color: var(--paper); }
+.menu-open .mmenu nav a > span { transform: none; }
+.menu-open .mmenu nav a[aria-current]::after { transform: scaleX(1); }
+.mmenu nav a:active > span { color: var(--paper); }
+.mmenu .tag { position: relative; margin-top: 36px; font-size: 18px; color: var(--stone); opacity: 0; transition: opacity .6s ease .45s; }
+.mmenu .foot { position: relative; margin-top: auto; display: grid; gap: 22px; opacity: 0; transform: translateY(12px); transition: opacity .6s ease .5s, transform .8s var(--out) .5s; }
+.menu-open .mmenu .tag, .menu-open .mmenu .foot { opacity: 1; transform: none; }
+.mmenu .lang { display: flex; align-items: center; gap: 4px; font: 500 13px/1 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--mute); }
+.mmenu .lang button { position: relative; min-width: 44px; min-height: 44px; padding: 0 10px; color: var(--mute); letter-spacing: inherit; transition: color .3s ease; }
+.mmenu .lang button:first-child { padding-left: 0; min-width: 34px; text-align: left; }
+.mmenu .lang button::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 12px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
+.mmenu .lang button:first-child::after { left: 0; }
+.mmenu .lang button[aria-pressed="true"] { color: var(--paper); }
+.mmenu .lang button[aria-pressed="true"]::after { transform: scaleX(1); }
+.mmenu .meta { font: 500 13px/1.7 Roboto, sans-serif; color: var(--stone); }
+.mmenu .meta small { display: block; font: 500 10px/1.7 "Roboto Mono", monospace; letter-spacing: .06em; color: var(--mute); }
+html.menu-open, html.menu-open body { overflow: hidden; }
+
+/* ---------- reveal on scroll ---------- */
+.rise { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform 1.1s var(--out); transition-delay: calc(var(--i, 0) * 90ms); }
+.in .rise, .rise.in { opacity: 1; transform: none; }
+
+/* ---------- footer (mobile footer in Figma) ---------- */
+.mfoot { position: relative; padding: 56px var(--pad) calc(env(safe-area-inset-bottom) + 40px); background: linear-gradient(180deg, var(--ink), #111 120px); }
+.mfoot h3 { font: 900 46px/1 Roboto, sans-serif; letter-spacing: -.03em; }
+.mfoot .sub { margin-top: 14px; font-size: 14px; line-height: 1.6; color: var(--stone); }
+.mfoot label { display: block; margin-top: 30px; font: 500 12px/1.2 var(--kr); color: var(--stone); }
+.mfoot .row { margin-top: 10px; display: flex; height: 52px; }
+.mfoot input { flex: 1 1 auto; min-width: 0; border: 0; outline: 0; border-radius: 0; background: #242424; color: var(--paper); padding: 0 16px; font: 400 16px/1 Roboto, sans-serif; }
+.mfoot input::placeholder { color: var(--mute); }
+.mfoot input:focus-visible { box-shadow: inset 0 0 0 2px var(--red); }
+.mfoot .row button { flex: 0 0 100px; border-radius: 0; background: var(--paper); color: var(--ink); font: 700 14px/1 var(--kr); transition: background-color .2s ease, color .2s ease; }
+.mfoot .row button:active { background: var(--red); color: var(--paper); }
+.mfoot .done { margin-top: 10px; min-height: 1.4em; font: 500 13px/1.4 var(--kr); color: var(--stone); }
+.mfoot .cols { margin-top: 40px; display: grid; grid-template-columns: 176px 1fr; }
+.mfoot .cols h4 { font: 500 10px/1.3 "Roboto Mono", monospace; letter-spacing: .12em; color: var(--mute); }
+.mfoot .cols p { margin-top: 14px; font: 500 15px/1.6 Roboto, sans-serif; }
+.mfoot .cols p span { display: block; color: var(--stone); }
+.mfoot .sig { display: block; margin-top: 64px; width: 96px; height: 38px; }
+.mfoot .bottom { margin-top: 24px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.mfoot .bottom small { font: 500 10px/1.7 "Roboto Mono", monospace; letter-spacing: .04em; color: var(--mute); }
+.mfoot .bottom .tbtn { flex: none; font-size: 13px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01s !important; transition-delay: 0s !important; animation-duration: .01s !important; animation-delay: 0s !important; }
+  @view-transition { navigation: none; }
+}
+
+.intro { position: relative; padding: calc(env(safe-area-inset-top) + 100px) var(--pad) 0; }
+.intro h1, .soda h2 { font: 900 clamp(50px, 15.3vw, 66px)/1 Roboto, sans-serif; letter-spacing: -.04em; }
+.intro .irony, .soda .irony { margin-top: 12px; font-size: 20px; line-height: 1.25; color: var(--stone); }
+.intro .body, .soda .body { margin-top: 18px; font-size: 14px; line-height: 1.7; color: var(--stone); }
+
+/* ---------- a shelf: swipe through the works; all of them hang dim until one is tapped ---------- */
+.shelf { position: relative; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; list-style: none; }
+.shelf::-webkit-scrollbar { display: none; }
+.ex { position: relative; flex: none; scroll-snap-align: center; cursor: pointer; outline: none; -webkit-user-select: none; user-select: none; }
+.ex .wall { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .6s ease;
+  background: radial-gradient(closest-side, rgba(var(--amber), .22), rgba(var(--amber), .07) 50%, rgba(var(--amber), 0)); }
+.ex .beam { position: absolute; pointer-events: none; opacity: 0; transition: opacity .6s ease; mix-blend-mode: screen; }
+.ex .beam svg { width: 100%; height: 100%; display: block; }
+.ex .plate { position: relative; transition: transform .6s var(--out); }
+.ex .plate img { width: 100%; height: 100%; object-fit: contain; filter: brightness(.34) saturate(.7); transition: filter .6s ease, transform .6s var(--out); }
+.ex.near .plate img { filter: brightness(.46) saturate(.75); }
+.ex.lit .wall, .ex.lit .beam { opacity: 1; }
+.ex.lit .plate img { filter: none; transform: translateY(-6px); }
+.ex:active .plate { transform: scale(.985); }
+.chips { transition: transform .6s var(--out); transform-origin: 50% 0; }
+.sheet-on .chips { transform: scale(.84); }
+
+.chips { margin-top: 44px; padding: 0 calc(50% - 145px); }
+.chips .ex { width: 290px; height: 393px; }
+.chips .ex .plate { width: 290px; height: 393px; }
+.chips .ex .wall { left: -145px; top: -170px; width: 580px; height: 660px; }
+.chips .ex .beam { left: -104px; top: -230px; width: 498px; height: 570px; }
+.label { position: relative; padding: 28px var(--pad) 0; min-height: 150px; }
+.label .nm { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.label h3 { font: 900 26px/1.18 Roboto, sans-serif; color: var(--stone); transition: color .4s ease; }
+.label .price { font: 500 12px/1 "Roboto Mono", monospace; color: var(--mute); }
+.label .line { margin-top: 8px; font-size: 13px; color: var(--stone); }
+.label .swap { transition: opacity .25s ease, filter .3s ease; }
+.label.out .swap { opacity: 0; filter: blur(6px); }
+.label .tbtn { margin-top: 10px; }
+.dots { position: absolute; right: var(--pad); bottom: 14px; display: flex; gap: 6px; }
+.dots i { width: 14px; height: 2px; background: var(--paper); opacity: .22; transition: opacity .4s ease, width .5s var(--out); }
+.dots i.on { opacity: 1; width: 24px; }
+
+.soda { position: relative; padding: 130px 0 0; }
+.soda .head { padding: 0 var(--pad); }
+.cans { margin-top: 48px; padding: 0 var(--pad); gap: 18px; scroll-padding: 0 var(--pad); }
+.cans .ex { width: 150px; scroll-snap-align: start; }
+.cans .ex .plate { width: 150px; height: 337px; }
+.cans .ex .wall { left: -75px; top: -120px; width: 300px; height: 470px; }
+.cans .ex .beam { left: -60px; top: -170px; width: 270px; height: 340px; }
+.cans .cap { position: relative; margin-top: 18px; }
+.cans h3 { font: 900 17px/1.12 Roboto, sans-serif; color: var(--stone); min-height: 2.24em; transition: color .4s ease; }
+.cans .line { margin-top: 8px; font-size: 11px; line-height: 1.4; color: var(--mute); min-height: 2.8em; }
+.cans .tbtn { min-height: 40px; font-size: 12px; color: var(--stone); }
+.cans .ex.lit h3, .chips-on .label h3 { color: var(--paper); }
+
+.closing { position: relative; padding: 170px var(--pad) 180px; }
+.closing h2 { font: 900 clamp(46px, 14.2vw, 60px)/1 Roboto, sans-serif; letter-spacing: -.04em; }
+.closing h2 em { display: block; font: italic 400 1em/1.1 "Libre Baskerville", serif; letter-spacing: -.02em; color: var(--red); padding-bottom: .08em; }
+.closing p { margin-top: 26px; font-size: 15px; line-height: 1.7; color: var(--stone); }
+
+/* ---------- the condition report: a sheet rises from the bottom; the figures roll up through a normal snack and land on 0 ---------- */
+.scrim { position: fixed; z-index: 80; inset: 0; background: rgba(12,12,12,.32); opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility 0s linear .45s; }
+.sheet-on .scrim { opacity: 1; visibility: visible; transition: opacity .45s ease, visibility 0s; }
+.sheet { position: fixed; z-index: 81; left: 0; right: 0; bottom: 0; max-height: 62svh; overflow-y: auto; overscroll-behavior: contain; padding: 30px var(--pad) calc(env(safe-area-inset-bottom) + 26px);
+  background: #151514; transform: translateY(105%); transition: transform .6s var(--out); --roll: cubic-bezier(.65, 0, .25, 1); touch-action: pan-y; }
+.sheet-on .sheet { transform: translateY(var(--dy, 0px)); }
+.sheet.dragging { transition: none; }
+.sheet .grab { position: absolute; left: 0; right: 0; top: 0; height: 30px; display: grid; place-items: center; touch-action: none; cursor: grab; }
+.sheet .grab::before { content: ""; width: 36px; height: 4px; border-radius: 2px; background: rgba(138,138,134,.6); }
+.sheet .nm { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.sheet h3 { font: 900 28px/1.15 Roboto, sans-serif; letter-spacing: -.015em; }
+.sheet .price { font: 500 13px/1 "Roboto Mono", monospace; }
+.sheet .line { margin-top: 8px; font-size: 13px; color: var(--stone); }
+.sheet .meta { margin-top: 10px; font: 500 11px/1.4 "Roboto Mono", monospace; letter-spacing: .1em; color: var(--mute); }
+.rep { margin-top: 18px; }
+.rw { display: grid; grid-template-columns: 1fr auto 44px; align-items: end; column-gap: 8px; height: 56px; }
+.rw .k { font-size: 14px; line-height: 1.4; color: var(--stone); padding-bottom: 10px; }
+.val { height: 48px; overflow: hidden; text-align: right; }
+.strip { display: block; transform: translateY(0); }
+.strip b { display: block; height: 48px; font: 900 44px/48px Roboto, sans-serif; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.rw .un { font: 500 12px/1 "Roboto Mono", monospace; letter-spacing: .06em; color: var(--mute); padding-bottom: 12px; }
+.roll .strip { transform: translateY(calc(-48px * var(--steps))); transition: transform 1.6s var(--roll) calc(.35s + var(--r) * .14s); }
+.verdict { margin-top: 14px; font-size: 14px; line-height: 1.6; font-weight: 500; color: var(--red); opacity: 0; transform: translateY(8px); }
+.roll .verdict { opacity: 1; transform: none; transition: opacity .5s ease 2.1s, transform .7s var(--out) 2.1s; }
+.detail { margin-top: 12px; font-size: 14px; line-height: 1.7; color: var(--stone); white-space: pre-line; opacity: 0; }
+.roll .detail { opacity: 1; transition: opacity .6s ease 2.4s; }
+.sheet .tbtn { margin-top: 10px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="logo" viewBox="0 0 264.998 106" overflow="visible"><path d="M24.4889 17.7507L24.3267 18.1274C25.2998 18.1274 26.1107 18.5041 26.9216 19.2576C27.7325 20.0111 33.4087 20.2936 44.1124 20.0111C54.8162 19.7285 60.6546 20.0111 61.4655 20.7645C62.2764 21.518 61.1411 23.3075 58.0598 26.1329C54.9784 28.9584 49.14 32.8199 40.7067 37.6232C32.2734 42.5207 28.0568 45.4403 28.0568 46.4763V48.0774L48.0047 45.7229C61.3033 44.216 69.8988 43.4625 73.9532 43.4625C78.0077 43.4625 80.4403 43.8392 81.2512 44.5927C82.0621 45.3462 82.5487 46.288 82.5487 47.324C82.5487 48.36 78.1698 50.7146 69.25 54.2935C60.3302 57.8724 54.1675 60.6979 50.7617 62.7699C47.1938 64.8419 44.9233 65.8779 44.1124 65.8779C43.1394 65.8779 40.2202 67.2907 35.3548 70.1161C30.4895 72.9416 28.0568 78.2158 28.0568 85.9388C28.0568 93.6618 27.5703 98.936 26.7594 101.761L25.462 106L24.1645 105.623C23.1915 105.34 22.5428 104.493 22.0562 102.892C21.5697 101.385 21.0832 96.9582 20.5966 89.7061L19.9479 78.8751L13.2986 82.7366C8.91979 85.2795 5.51405 86.4097 3.40574 86.1272L0 85.7504L0.648712 83.3959C1.13525 81.889 4.54099 79.4402 10.8659 76.0496C17.0287 72.6591 20.1101 68.2325 20.1101 62.8641V54.7644L13.4608 55.5179L6.81148 56.2713L5.51405 54.2935C4.70316 52.9749 6.97366 50.7146 12.3255 47.4182C17.6774 44.1218 20.2723 39.7894 20.2723 34.421V26.3213L14.9204 26.698L9.56851 27.0748L8.9198 25.0969C8.43326 23.7784 8.9198 22.9307 10.3794 22.4598C11.6768 21.9889 13.4608 21.7064 15.7313 21.7064C18.0018 21.7064 19.7857 21.0471 21.0832 19.7285C22.3806 18.41 23.5158 17.7507 24.4889 17.7507ZM38.9227 25.0027V24.8144L28.219 25.5678V31.313V37.1523L35.517 33.2908C40.3823 30.7479 42.815 29.241 42.815 28.77C42.815 28.2991 43.9503 27.4515 46.2208 26.1329L49.4643 24.2493L38.9227 25.0027ZM46.2208 51.0913L28.219 53.4458V59.9444L28.219 66.5372L46.2208 57.5899L64.0603 48.7367L46.2208 51.0913Z"/><path d="M70.6477 33.932L70.3233 34.3087C72.5938 34.8738 73.729 36.1923 73.729 38.1702C73.729 40.2422 72.5938 47.0233 70.4855 58.6078L67.0797 76.0315L89.6225 68.3086C104.705 63.1285 113.949 60.2089 117.517 59.4554C121.085 58.702 123.68 58.3252 125.464 58.3252C127.248 58.3252 128.545 58.6078 129.356 59.0787L130.654 59.8322L126.761 62.0925C124.166 63.5995 121.572 64.5413 118.977 64.8238C116.382 65.1064 114.76 65.4831 114.274 65.954C113.787 66.5191 112.165 67.0842 109.57 67.5551C106.976 68.026 104.705 68.7795 102.921 69.8155C101.137 70.8515 98.8667 71.605 96.2718 72.0759C93.677 72.5468 88.3251 74.3363 80.3783 77.4443C72.4316 80.5523 67.7285 82.9069 66.431 84.4138C65.1336 85.9207 64.4849 87.4276 64.4849 88.9345C64.4849 90.4415 63.3496 91.4775 61.2413 91.9484C58.9708 92.4193 57.3491 92.4193 56.5382 91.9484C55.7273 91.4775 55.2407 90.724 55.2407 89.688V88.1811L52.6459 89.3113C50.8619 90.0647 49.078 90.4415 47.294 90.4415H44.537L43.8883 88.0869C43.4017 86.58 44.6992 85.1672 47.7805 83.8487C50.8619 82.5301 53.2946 80.8348 55.0786 78.7628C56.8625 76.6908 58.6465 70.2864 60.4304 59.4554C62.2144 48.6244 63.8362 41.5607 65.2958 38.1702L67.2419 33.1785L70.6477 33.932Z"/><path d="M141.357 30.8411H141.033H143.628L144.439 33.4783C144.925 35.2677 144.276 39.035 142.492 44.686C140.708 50.3369 139.735 59.0017 139.735 70.5862C139.735 82.1706 139.249 88.4808 138.438 89.5168C137.465 90.5528 136.492 91.1179 135.681 91.1179C134.87 91.1179 134.059 90.8354 133.248 90.3645C132.437 89.8936 131.789 88.575 131.302 86.503C130.816 84.431 130.978 78.0266 131.951 67.1956L133.248 50.9962L125.95 60.2261C121.085 66.4421 117.517 69.8327 115.409 70.3036C113.138 70.7745 111.354 70.6803 110.057 69.8327C108.759 69.0792 108.111 64.6527 108.111 56.6471C108.111 48.6416 108.597 42.7081 109.408 38.8467C110.219 34.9852 111.516 32.819 113.3 32.3481C115.084 31.8772 116.382 31.8772 117.355 32.3481C118.328 32.819 118.328 35.6445 117.517 40.8245C116.544 46.0045 116.22 50.2427 116.706 53.5391L117.355 58.625L128.059 44.686C135.194 35.4561 139.573 30.8411 141.357 30.8411Z"/><path d="M260.619 4.76271L260.294 4.95107L264.997 5.3278L263.7 7.21145C262.727 8.53001 260.456 9.28347 257.051 9.56602C253.483 9.84856 251.212 10.2253 250.401 10.6962C249.428 11.1671 246.671 11.7322 242.293 12.2031C237.914 12.7682 231.913 13.8984 224.453 15.6879C216.993 17.4773 213.263 20.3028 213.263 24.1643V30.0036L225.913 27.2723C234.346 25.4829 240.833 24.4468 245.212 24.1643L251.861 23.7876V24.541C251.861 25.0119 245.212 26.9898 231.913 30.2862C218.615 33.6767 211.803 43.095 211.316 58.4467C210.83 73.8927 210.181 82.6516 209.37 84.7236L207.911 87.8317H205.965C204.667 87.8317 203.532 87.4549 202.721 86.6073C201.748 85.8538 201.261 82.5574 201.261 76.6239C201.261 70.6904 201.748 62.6849 202.721 52.6074L204.018 37.5382L196.072 39.0451C190.72 40.0811 187.314 40.3637 186.017 39.8928C184.719 39.4219 184.071 38.951 184.071 38.3859C184.071 37.8208 185.53 36.8789 188.612 35.5604C191.693 34.2418 194.937 33.3942 198.504 32.9233L203.856 32.1698L204.505 26.3305L205.154 20.5854L198.504 21.7156C194.126 22.469 191.044 23.2225 189.26 23.9759C187.476 24.7294 185.206 25.0119 182.611 24.7294L178.557 24.3527V22.7516C178.557 21.7156 182.935 20.2086 191.855 18.1366C200.775 16.0646 205.478 14.7461 205.965 14.2751C206.451 13.8042 207.749 13.5217 210.019 13.5217C212.29 13.5217 214.884 13.0508 217.966 12.0148C221.047 10.9788 228.183 9.47183 239.373 7.39982C250.401 5.3278 257.537 4.48016 260.619 4.76271Z"/><path d="M215.65 0.0527957L215.325 0.241159L220.029 0.617889L218.731 2.50154C217.758 3.82009 215.488 4.57355 212.082 4.8561C208.514 5.13865 206.243 5.51538 205.433 5.98629C204.46 6.4572 201.702 7.0223 197.324 7.49321C192.945 8.0583 186.944 9.1885 179.484 10.978C172.024 12.7674 168.294 15.5929 168.294 19.4544V25.2937L180.944 22.5624C189.377 20.7729 195.864 19.7369 200.243 19.4544L206.892 19.0777V19.8311C206.892 20.302 200.243 22.2799 186.944 25.5762C173.646 28.9668 166.834 38.3851 166.348 53.7368C165.861 69.1827 165.212 77.9417 164.402 80.0137L162.942 83.1217H160.996C159.698 83.1217 158.563 82.745 157.752 81.8974C156.779 81.1439 156.293 77.8475 156.293 71.914C156.293 65.9805 156.779 57.975 157.752 47.8975L159.05 32.8283L151.103 34.3352C145.751 35.3712 142.345 35.6538 141.048 35.1829C139.75 34.712 139.102 34.241 139.102 33.6759C139.102 33.1108 140.561 32.169 143.643 30.8505C146.724 29.5319 149.968 28.6843 153.536 28.2134L158.887 27.4599L159.536 21.6206L160.185 15.8755L153.536 17.0056C149.157 17.7591 146.075 18.5126 144.291 19.266C142.507 20.0195 140.237 20.302 137.642 20.0195L133.588 19.6428V18.0416C133.588 17.0056 137.967 15.4987 146.886 13.4267C155.806 11.3547 160.509 10.0361 160.996 9.56522C161.482 9.09431 162.78 8.81177 165.05 8.81177C167.321 8.81177 169.916 8.34085 172.997 7.30484C176.078 6.26884 183.214 4.76192 194.404 2.68991C205.433 0.617889 212.568 -0.229754 215.65 0.0527957Z"/></symbol></defs></svg>
+<header class="hdr">
+  <a class="logo" href="index.html" aria-label="BLUFF 브랜드 페이지" data-en-aria="BLUFF brand page"><svg viewBox="0 0 264.998 106"><use href="#logo" fill="#fbfbfb"/></svg></a>
+  <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="mmenu" aria-label="메뉴 열기" data-en-aria="Open menu"><i></i><i></i><i></i></button>
+</header>
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <div class="glow" aria-hidden="true"></div>
+  <nav aria-label="Primary"><a href="index.html" style="--i:0"><span>Brand</span></a><a href="products.html" aria-current="page" style="--i:1"><span>Products</span></a><a href="popup.html" style="--i:2"><span>Popup AR</span></a></nav>
+  <p class="tag it" lang="en">Good taste is a bluff.</p>
+  <div class="foot">
+    <p class="lang" role="group" aria-label="Language"><button type="button" data-lang="ko" aria-pressed="true">KR</button><span aria-hidden="true">/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></p>
+    <p class="meta">Instagram&nbsp;&nbsp;@bluff.gallery<small>© 2026 BLUFF</small></p>
+  </div>
+</div>
+
+<main id="top">
+  <section class="intro" data-reveal aria-label="BLUFF CHIPS">
+    <h1 class="rise">BLUFF CHIPS</h1>
+    <p class="irony it rise" lang="en" style="--i:1">Hung like masterpieces.</p>
+    <p class="body kr rise" style="--i:2" data-en="No salt, no capsaicin.<br>An exhibition of snacks that bluff with aroma alone.">짠맛도 캡사이신도 없이,<br>향만으로 허세를 부리는 스낵을 전시합니다.</p>
+  </section>
+  <section data-reveal aria-label="Chips">
+    <ul class="shelf chips rise" id="chips" style="--i:3">
+      <li class="ex" data-kind="chip" data-i="0" role="button" tabindex="0" aria-label="Original Hot, Quazic Chips, after Michelangelo">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/bag_david.webp?v=1" alt="" width="764" height="1036"></div>
+      </li>
+      <li class="ex" data-kind="chip" data-i="1" role="button" tabindex="0" aria-label="Blue Cheese, Quazic Chips, after Van Gogh">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/bag_van.webp?v=1" alt="" width="764" height="1036" loading="lazy"></div>
+      </li>
+      <li class="ex" data-kind="chip" data-i="2" role="button" tabindex="0" aria-label="Herb, Quazic Chips, after Leonardo">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/bag_mona.webp?v=1" alt="" width="764" height="1036" loading="lazy"></div>
+      </li>
+    </ul>
+    <div class="label rise" id="chipLabel" style="--i:4" aria-live="polite">
+      <div class="swap"><div class="nm"><h3 id="chipName"></h3><span class="price">&#8361;2,900</span></div><p class="line it" lang="en" id="chipLine"></p></div>
+      <button class="tbtn" type="button" id="chipTap" data-en="Tap to light">탭해서 조명 켜기</button>
+      <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <section class="soda" data-reveal aria-label="BLUFF SODA">
+    <div class="head">
+      <h2 class="rise">BLUFF SODA</h2>
+      <p class="irony it rise" lang="en" style="--i:1">Five cans, one straight face.</p>
+      <p class="body kr rise" style="--i:2" data-en="355 ml, 0 kcal, 0 mg sodium.<br>Only aroma on top of the fizz.">355 ml, 0 kcal, 나트륨 0 mg.<br>탄산 위에 향만 얹었습니다.</p>
+    </div>
+    <ul class="shelf cans rise" id="cans" style="--i:3">
+      <li class="ex can" data-kind="can" data-i="0" role="button" tabindex="0" aria-label="Cherry Hot Tonic, Bluff Soda, Do Not Drink">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/can1.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+        <div class="cap"><h3>Cherry Hot Tonic</h3><p class="line it" lang="en">Bluff Soda, Do Not Drink</p><span class="tbtn" aria-hidden="true">Tap</span></div>
+      </li>
+      <li class="ex can" data-kind="can" data-i="1" role="button" tabindex="0" aria-label="Acid Lime Fizz, Bluff Soda, Mugshot">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/can2.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+        <div class="cap"><h3>Acid Lime Fizz</h3><p class="line it" lang="en">Bluff Soda, Mugshot</p><span class="tbtn" aria-hidden="true">Tap</span></div>
+      </li>
+      <li class="ex can" data-kind="can" data-i="2" role="button" tabindex="0" aria-label="Blue Cheese Cola, Bluff Soda, Fizz">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/can3.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+        <div class="cap"><h3>Blue Cheese Cola</h3><p class="line it" lang="en">Bluff Soda, Fizz</p><span class="tbtn" aria-hidden="true">Tap</span></div>
+      </li>
+      <li class="ex can" data-kind="can" data-i="3" role="button" tabindex="0" aria-label="Red Sansho Tonic, Bluff Soda, Bleeding Art">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/can4.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+        <div class="cap"><h3>Red Sansho Tonic</h3><p class="line it" lang="en">Bluff Soda, Bleeding Art</p><span class="tbtn" aria-hidden="true">Tap</span></div>
+      </li>
+      <li class="ex can" data-kind="can" data-i="4" role="button" tabindex="0" aria-label="Counterfeit Lime, Bluff Soda, Counterfeit">
+        <i class="wall" aria-hidden="true"></i><div class="beam" aria-hidden="true"><svg preserveAspectRatio="xMidYMid meet" aria-hidden="true" viewBox="0 0 652 746" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="mix-blend-mode:screen" filter="url(#fCB)"><g clip-path="url(#cCB)"><path d="M283.022 154.311H368.355L617.244 865.422H34.1333L283.022 154.311Z" fill="url(#pCB0)"/><path d="M297.383 126.578H353.995L519.111 598.044H132.267L297.383 126.578Z" fill="url(#pCB1)"/><path d="M308.31 126.578H343.068L444.445 416H206.934L308.31 126.578Z" fill="url(#pCB2)"/></g></g><defs><filter id="fCB" x="-28.4444" y="-34.1333" width="708.267" height="779.378" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="17.0667"/></filter><linearGradient id="pCB0" x1="325.689" y1="154.311" x2="325.689" y2="865.422" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB1" x1="325.689" y1="126.578" x2="325.689" y2="598.044" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><linearGradient id="pCB2" x1="325.689" y1="126.578" x2="325.689" y2="416" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE3B8" stop-opacity="0.18"/><stop offset="1" stop-color="#FFE3B8" stop-opacity="0"/></linearGradient><clipPath id="cCB"><rect width="640" height="711.111" fill="white" transform="translate(5.68896)"/></clipPath></defs></svg>
+</div>
+        <div class="plate"><img src="../assets/can5.webp?v=2" alt="" width="322" height="724" loading="lazy"></div>
+        <div class="cap"><h3>Counterfeit Lime</h3><p class="line it" lang="en">Bluff Soda, Counterfeit</p><span class="tbtn" aria-hidden="true">Tap</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="closing" data-reveal aria-label="The bluff is genuine.">
+    <h2 class="rise" lang="en">THE BLUFF IS <em>genuine.</em></h2>
+    <p class="kr rise" style="--i:1" data-en="No heat, no salt, no calories were found.<br>All that is left of BLUFF is aroma and bluff.">매운맛도, 짠맛도, 칼로리도<br>발견되지 않았습니다.<br>BLUFF에 남은 것은 향과 허세뿐입니다.</p>
+  </section>
+</main>
+<footer class="mfoot" id="siteFooter">
+  <h3>Stay bluffing.</h3>
+  <p class="sub kr" data-en="Be the first to know when a new work goes up.">새 작품이 걸리면 가장 먼저 알려드릴게요.</p>
+  <form id="sub" novalidate>
+    <label for="footerEmail" class="kr" data-en="Email">이메일</label>
+    <div class="row"><input id="footerEmail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email"><button type="submit" class="kr" data-en="Subscribe">구독하기</button></div>
+    <p class="done kr" id="subDone" aria-live="polite"></p>
+  </form>
+  <div class="cols">
+    <div><h4>FOLLOW</h4><p>Instagram<span>@bluff.gallery</span></p></div>
+    <div><h4>VISIT</h4><p>www.bluff.com<span>Popup TBA</span></p></div>
+  </div>
+  <svg class="sig" viewBox="0 0 264.998 106" aria-label="BLUFF"><use href="#logo" fill="#fbfbfb"/></svg>
+  <div class="bottom"><small>© 2026 BLUFF. Good taste is a bluff.<br>YUHAN UNIVERSITY&nbsp;&nbsp;BX DESIGN</small><a class="tbtn" href="#top" data-top>Back to top ↑</a></div>
+</footer>
+
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="false" aria-labelledby="shName" aria-hidden="true">
+  <div class="grab" id="grab" aria-hidden="true"></div>
+  <div class="nm"><h3 id="shName"></h3><span class="price" id="shPrice"></span></div>
+  <p class="line it" lang="en" id="shLine"></p>
+  <p class="meta" id="shMeta"></p>
+  <div class="rep" id="shRep"></div>
+  <p class="verdict kr" id="shVerdict"></p>
+  <p class="detail kr" id="shDetail"></p>
+  <button class="tbtn" type="button" id="shClose" data-en="Close">닫기</button>
+</aside>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DATA = {"chip": [{"name": "Original Hot", "line": "Quazic Chips, after Michelangelo", "ko": "매운 향은 그대로, 통증은 없이.\n캡사이신 0%로 혀 대신 코가 먼저 반응합니다.", "en": "All the heat in the aroma, none of the pain.\nWith 0% capsaicin, your nose reacts before your tongue."}, {"name": "Blue Cheese", "line": "Quazic Chips, after Van Gogh", "ko": "진한 블루치즈 향, 나트륨은 0 mg.\n짠맛 없이 풍미만 남겼습니다.", "en": "Rich blue cheese aroma, 0 mg sodium.\nAll the flavor, none of the salt."}, {"name": "Herb", "line": "Quazic Chips, after Leonardo", "ko": "바질과 허브 향을 입혔습니다.\n가장 가볍고 담백한 허세.", "en": "Coated in basil and herb aroma.\nThe lightest, cleanest bluff."}], "can": [{"name": "Cherry Hot Tonic", "line": "Bluff Soda, Do Not Drink", "ko": "체리 향에 매운 향을 한 겹 얹은 토닉.\n경고문은 농담입니다.", "en": "A cherry tonic with a layer of heat on top.\nThe warning is a joke."}, {"name": "Acid Lime Fizz", "line": "Bluff Soda, Mugshot", "ko": "시큼한 라임 향과 강한 탄산을 담았습니다.", "en": "Sour lime aroma with a strong fizz."}, {"name": "Blue Cheese Cola", "line": "Bluff Soda, Fizz", "ko": "콜라에 블루치즈 향.\n가장 의심스러운 조합.", "en": "Cola with blue cheese aroma.\nThe most suspicious pairing."}, {"name": "Red Sansho Tonic", "line": "Bluff Soda, Bleeding Art", "ko": "산초의 얼얼한 향만 빌려 온 토닉.\n혀는 얼얼하지 않습니다.", "en": "A tonic that borrows only the tingling aroma of sansho.\nYour tongue stays calm."}, {"name": "Counterfeit Lime", "line": "Bluff Soda, Counterfeit", "ko": "진짜보다 더 진짜 같은 가짜 라임 향.", "en": "A fake lime aroma, more real than the real thing."}], "report": {"chip": {"rows": [["열량", "Calories", "kcal", [0, 120, 240, 360, 0]], ["나트륨", "Sodium", "mg", [0, 150, 300, 450, 600, 0]], ["캡사이신", "Capsaicin", "%", [0, 2, 4, 6, 8, 10, 0]]], "ko": "열량, 나트륨, 캡사이신 없음.<br>향과 식감만 확인됨.", "en": "No calories, sodium or capsaicin.<br>Only aroma and crunch were found."}, "can": {"rows": [["열량", "Calories", "kcal", [0, 40, 80, 120, 140, 0]], ["나트륨", "Sodium", "mg", [0, 15, 30, 45, 0]]], "ko": "열량, 나트륨 없음.<br>향과 탄산만 확인됨.", "en": "No calories or sodium.<br>Only aroma and fizz were found."}}};
+  // ---- menu: the icon turns into a cross and the room opens from the top ----
+  const rootEl = document.documentElement, burger = document.getElementById('burger'), menu = document.getElementById('mmenu');
+  const setMenu = on => { rootEl.classList.toggle('menu-open', on); burger.setAttribute('aria-expanded', String(on)); menu.setAttribute('aria-hidden', String(!on));
+    const en = rootEl.lang === 'en'; burger.setAttribute('aria-label', on ? (en ? 'Close menu' : '메뉴 닫기') : (en ? 'Open menu' : '메뉴 열기'));
+    if (on) setTimeout(() => menu.querySelector('nav a').focus({preventScroll: true}), 350); };
+  burger.addEventListener('click', () => setMenu(!rootEl.classList.contains('menu-open')));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && rootEl.classList.contains('menu-open')) { setMenu(false); burger.focus(); } });
+  menu.querySelectorAll('nav a').forEach(a => a.addEventListener('click', e => { if (a.hasAttribute('aria-current')) { e.preventDefault(); setMenu(false); scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}); } }));
+  // ---- footer: subscribe answers in place; back to top ----
+  const sub = document.getElementById('sub');
+  sub && sub.addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('footerEmail').value.trim(), en = rootEl.lang === 'en', ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+    document.getElementById('subDone').textContent = ok ? (en ? 'Subscribed. See you at the next work.' : '구독되었습니다. 다음 작품에서 만나요.') : (en ? 'Check the email address.' : '이메일 주소를 확인해 주세요.'); });
+  document.querySelectorAll('[data-top]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}); }));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold: .15, rootMargin: '0px 0px -6% 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(s => io.observe(s));
+  const EN = () => document.documentElement.lang === 'en';
+
+  // ---- chip shelf: the label below follows the bag in the middle ----
+  const chips = document.getElementById('chips'), chipEx = [...chips.children], lab = document.getElementById('chipLabel'), dots = [...lab.querySelectorAll('.dots i')];
+  let cur = -1;
+  const showChip = i => { if (i === cur) return; const first = cur < 0; cur = i; chipEx.forEach((e, j) => e.classList.toggle('near', j === i)); dots.forEach((d, j) => d.classList.toggle('on', j === i));
+    const fill = () => { const d = DATA.chip[i]; document.getElementById('chipName').textContent = d.name; document.getElementById('chipLine').textContent = d.line; lab.classList.remove('out'); };
+    if (first || reduce) fill(); else { lab.classList.add('out'); setTimeout(fill, 220); } };
+  const ratios = new Map();
+  const cio = new IntersectionObserver(es => { es.forEach(e => ratios.set(e.target, e.intersectionRatio)); let b = 0, bi = 0; chipEx.forEach((e, i) => { const r = ratios.get(e) || 0; if (r > b) { b = r; bi = i; } }); showChip(bi); },
+    {root: chips, threshold: [.25, .5, .75, 1]});
+  chipEx.forEach(e => cio.observe(e));
+  showChip(0);
+  // open on the middle bag
+  requestAnimationFrame(() => { chips.scrollLeft = 0; });
+
+  // ---- the condition report sheet ----
+  const sheet = document.getElementById('sheet'), scrim = document.getElementById('scrim'), root = document.documentElement;
+  let openEx = null;
+  const fillSheet = (kind, d) => {
+    document.getElementById('shName').textContent = d.name;
+    document.getElementById('shPrice').innerHTML = kind === 'chip' ? '&#8361;2,900' : '';
+    document.getElementById('shLine').textContent = d.line;
+    document.getElementById('shMeta').textContent = kind === 'chip' ? '60 G' : '355 ML';
+    const R = DATA.report[kind];
+    document.getElementById('shRep').innerHTML = R.rows.map((r, i) => `<div class="rw" style="--r:${i}"><span class="k kr">${EN() ? r[1] : r[0]}</span><span class="val" aria-hidden="true"><span class="strip" style="--steps:${r[3].length - 1}">${r[3].map(n => `<b>${n}</b>`).join('')}</span></span><span class="un">${r[2]}</span></div>`).join('');
+    document.getElementById('shRep').setAttribute('aria-label', R.rows.map(r => `${EN() ? r[1] : r[0]} 0 ${r[2]}`).join(', '));
+    document.getElementById('shVerdict').innerHTML = EN() ? R.en : R.ko;
+    document.getElementById('shDetail').textContent = EN() ? d.en : d.ko;
+  };
+  const open = ex => {
+    if (openEx === ex) { close(); return; }
+    document.querySelectorAll('.ex.lit').forEach(o => o.classList.remove('lit'));
+    openEx = ex; ex.classList.add('lit');
+    const kind = ex.dataset.kind, d = DATA[kind][+ex.dataset.i];
+    sheet.classList.remove('roll'); fillSheet(kind, d);
+    // the shelf moves up so the lit work stays in sight above the sheet
+    const shelf = ex.parentElement, top = shelf.getBoundingClientRect().top + scrollY - (kind === 'chip' ? 64 : 120);
+    scrollTo({top, behavior: reduce ? 'auto' : 'smooth'});
+    if (shelf.classList.contains('cans')) ex.scrollIntoView({inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth'});
+    sheet.style.removeProperty('--dy'); root.classList.add('sheet-on'); sheet.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(() => requestAnimationFrame(() => sheet.classList.add('roll')));
+    setTimeout(() => document.getElementById('shClose').focus({preventScroll: true}), 600);
+  };
+  const close = () => { if (!openEx) return; const ex = openEx; openEx = null; ex.classList.remove('lit'); root.classList.remove('sheet-on'); sheet.setAttribute('aria-hidden', 'true'); sheet.classList.remove('roll'); };
+  document.querySelectorAll('.ex').forEach(ex => {
+    ex.addEventListener('click', () => open(ex));
+    ex.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(ex); } });
+  });
+  document.getElementById('chipTap').addEventListener('click', () => open(chipEx[cur]));
+  document.getElementById('shClose').addEventListener('click', close);
+  scrim.addEventListener('click', close);
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  // drag the sheet down to put the light out
+  const grab = document.getElementById('grab'); let g = null;
+  const startDrag = e => { if (sheet.scrollTop > 0 && e.currentTarget === sheet) return; g = {y: e.clientY, id: e.pointerId, dy: 0}; };
+  grab.addEventListener('pointerdown', e => { startDrag(e); grab.setPointerCapture(e.pointerId); sheet.classList.add('dragging'); });
+  grab.addEventListener('pointermove', e => { if (!g) return; g.dy = Math.max(0, e.clientY - g.y); sheet.style.setProperty('--dy', g.dy + 'px'); });
+  const endDrag = () => { if (!g) return; sheet.classList.remove('dragging'); const dy = g.dy; g = null; if (dy > 90) close(); else sheet.style.removeProperty('--dy'); };
+  grab.addEventListener('pointerup', endDrag); grab.addEventListener('pointercancel', endDrag);
+  let ty = null;
+  sheet.addEventListener('touchstart', e => { ty = sheet.scrollTop <= 0 ? e.touches[0].clientY : null; }, {passive: true});
+  sheet.addEventListener('touchmove', e => { if (ty === null) return; const dy = e.touches[0].clientY - ty; if (dy > 0) { sheet.classList.add('dragging'); sheet.style.setProperty('--dy', dy + 'px'); } }, {passive: true});
+  sheet.addEventListener('touchend', () => { if (ty === null) return; ty = null; sheet.classList.remove('dragging'); const dy = parseFloat(sheet.style.getPropertyValue('--dy')) || 0; if (dy > 90) close(); else sheet.style.removeProperty('--dy'); });
+
+  // ---- KR / EN: every [data-en] element keeps its Korean in data-kr and swaps to English; English is set in Roboto (see base.css) ----
+  // The switch reads as a refocus: visible copy blurs out, the words and the typeface change while it is soft, then it comes back sharp.
+  (() => {
+    const els = [...document.querySelectorAll('[data-en]')], aria = [...document.querySelectorAll('[data-en-aria]')], alts = [...document.querySelectorAll('[data-en-alt]')];
+    els.forEach(e => e.dataset.kr = e.innerHTML); aria.forEach(e => e.dataset.krAria = e.getAttribute('aria-label')); alts.forEach(e => e.dataset.krAlt = e.alt);
+    const btns = [...document.querySelectorAll('.lang button')];
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    const OUT = 260, IN = 520, STEP = 26, MAXLAG = 160;   // ms
+    let cur = 'ko', busy = [];
+
+    const apply = l => {
+      const en = l === 'en';
+      document.documentElement.lang = en ? 'en' : 'ko';
+      els.forEach(e => e.innerHTML = en ? e.dataset.en : e.dataset.kr);
+      aria.forEach(e => e.setAttribute('aria-label', en ? e.dataset.enAria : e.dataset.krAria));
+      alts.forEach(e => e.alt = en ? e.dataset.enAlt : e.dataset.krAlt);
+    };
+    // copy the visitor can see right now: on screen and already revealed (not still waiting in its own blur-in)
+    const seen = () => els.filter(e => {
+      const r = e.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight || !r.width) return false;
+      let o = 1; for (let n = e; n && n !== document.body; n = n.parentElement) o *= +getComputedStyle(n).opacity;
+      const b = /blur\(([\d.]+)px\)/.exec(getComputedStyle(e).filter);
+      return o > .5 && (!b || +b[1] < 1);
+    }).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+    const set = (l, animate = true) => {
+      if (l === cur) return;
+      cur = l;
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+      try { localStorage.setItem('bluff.lang', l); } catch (_) {}
+      busy.forEach(a => a.cancel()); busy = [];
+      const vis = animate && !still.matches ? seen() : [];
+      if (!vis.length) { apply(l); return; }
+      const lag = i => Math.min(i * STEP, MAXLAG);
+      // out: soften and dim, staggered top to bottom
+      busy = vis.map((e, i) => e.animate([{filter: 'blur(0)', opacity: 1}, {filter: 'blur(.22em)', opacity: .18}],
+        {duration: OUT, delay: lag(i), easing: 'cubic-bezier(.4,0,1,1)', fill: 'forwards'}));
+      // swap once the last line is fully soft, then bring every line back into focus in the same order
+      setTimeout(() => {
+        if (cur !== l) return;
+        apply(l);
+        busy.forEach(a => a.cancel());
+        busy = vis.map((e, i) => e.animate([{filter: 'blur(.22em)', opacity: .18}, {filter: 'blur(0)', opacity: 1}],
+          {duration: IN, delay: lag(i), easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards'}));
+      }, OUT + lag(vis.length - 1));
+    };
+    btns.forEach(b => b.addEventListener('click', () => set(b.dataset.lang)));
+    let saved = 'ko'; try { saved = localStorage.getItem('bluff.lang') || 'ko'; } catch (_) {}
+    if (saved === 'en') set('en', false);
+  })();
+  // the sheet and the shelf label are written in script, so they follow the language too
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setTimeout(() => { if (openEx) fillSheet(openEx.dataset.kind, DATA[openEx.dataset.kind][+openEx.dataset.i]); }, 300)));
+})();
+</script>
+</body>
+</html>
