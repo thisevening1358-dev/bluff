@@ -333,10 +333,10 @@ html, body { height: 100%; overflow: hidden; }
 .route .n { display: none; }
 .route .c { font-size: 12px; color: var(--stone); }
 .route button[aria-current] .c { color: var(--paper); }
-.zoned .route { padding-top: 6px; background: linear-gradient(0deg, #141413 70%, rgba(20,20,19,0)); bottom: 0; padding-bottom: calc(env(safe-area-inset-bottom) + 18px); }
+.zoned .route { padding-top: 26px; background: linear-gradient(0deg, #141413 80%, rgba(20,20,19,0)); bottom: 0; padding-bottom: calc(env(safe-area-inset-bottom) + 18px); }
 
 /* a world opens as a sheet from the bottom; the model lifts above it */
-.zone { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 56svh; padding: 28px var(--pad) calc(env(safe-area-inset-bottom) + 96px); background: #141413;
+.zone { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: calc(56svh + 20px); padding: 28px var(--pad) calc(env(safe-area-inset-bottom) + 116px); background: #141413;
   translate: 0 48px; scrollbar-width: none; }
 .zone::before { content: ""; position: absolute; left: calc(50% - 18px); top: 12px; width: 36px; height: 4px; border-radius: 2px; background: rgba(138,138,134,.6); }
 .zoned .zone { translate: 0 0; }
@@ -391,6 +391,9 @@ html, body { height: 100%; overflow: hidden; }
 .hud { visibility: hidden; transition: opacity .6s ease, visibility 0s linear .6s; }
 .walking.walk-ready .hud { visibility: visible; transition: opacity .6s ease, visibility 0s; }
 .hud .prompt { pointer-events: none; } .walking.walk-ready .hud .prompt.on { pointer-events: auto; }
+
+/* a sheet being pulled down follows the finger */
+.zone.pull, .card.pull { transition: none !important; }
 
 </style>
 <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -932,7 +935,7 @@ function nearest() {
 function fillCard(m, Z) {
   card.innerHTML = `<p class="meta"><span class="dot">${m[0]}</span><span>${Z.en} ${zName(Z)}</span></p><h3>${mName(m)}</h3>${EN() ? '' : `<p class="en">${m[3]}</p>`}<p class="what kr">${mWhat(m)}</p>
     <p class="tag">${mTag(m)}</p><p class="note kr">${tr('미션 체험은 팝업 현장에서만 할 수 있어요.', 'Missions can only be played at the popup itself.')}</p>
-    <button class="close" type="button"><span class="btn-key">E</span>${tr('닫고 계속 걷기', 'Close and keep walking')}</button>`;
+    <button class="close" type="button"><span class="btn-key">E</span>${tr('닫기', 'Close')}</button>`;
   card.querySelector('.close').addEventListener('click', () => closeCard(true));
 }
 function openCard(id) {
@@ -1096,6 +1099,20 @@ const JOY = {f: 0, r: 0};
   canvas.addEventListener('pointerup', lift); canvas.addEventListener('pointercancel', lift);
   prompt.addEventListener('click', () => { if (walk.near && !walk.card) openCard(walk.near[0]); });
   $('#gateGo').addEventListener('click', () => { hint.classList.remove('gone'); setTimeout(() => hint.classList.add('gone'), 4200); });
+}
+{
+  // pull a sheet down to put it away: the world sheet goes back to the whole model, the mission sheet closes
+  const pull = (el, ready, away) => {
+    let y0 = null, dy = 0;
+    el.addEventListener('touchstart', e => { y0 = ready() && el.scrollTop <= 0 ? e.touches[0].clientY : null; dy = 0; }, {passive: true});
+    el.addEventListener('touchmove', e => { if (y0 === null) return; dy = e.touches[0].clientY - y0;
+      if (dy > 0) { el.classList.add('pull'); el.style.translate = `0 ${dy}px`; } else { el.classList.remove('pull'); el.style.translate = ''; } }, {passive: true});
+    const end = () => { if (y0 === null) return; y0 = null; el.classList.remove('pull');
+      if (dy > 80) { el.style.translate = '0 100%'; away(); setTimeout(() => { el.style.translate = ''; }, 650); } else el.style.translate = ''; dy = 0; };
+    el.addEventListener('touchend', end); el.addEventListener('touchcancel', end);
+  };
+  pull(zoneEl, () => mode !== 'overview' && mode !== 'walk' && !fly, () => go('overview'));
+  pull(card, () => !!walk.card, () => closeCard(true));
 }
 
 window.__ar = {setLang, go, ZONES, renderer, scene, camera, enterWalk, leaveWalk, walk, openCard, kick};
