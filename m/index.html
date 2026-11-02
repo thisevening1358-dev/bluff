@@ -169,8 +169,8 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
 
 /* ---------- naming ---------- */
 .nm { padding-top: 110px; padding-bottom: 110px; overflow: hidden; }
-.nm .word { font-size: 118px; line-height: 1.1; letter-spacing: -.03em; margin-left: -4px; }
-.nm .pron { margin-top: 4px; font: 500 11px/1.3 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--stone); white-space: pre; }
+.nm .word { font-size: 118px; line-height: 1.1; letter-spacing: -.03em; margin-left: -4px; padding-bottom: .12em; }
+.nm .pron { margin-top: 10px; font: 500 11px/1.3 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--stone); white-space: pre; }
 .nm .defs { margin-top: 52px; display: grid; gap: 30px; }
 .nm .def { display: grid; grid-template-columns: 36px 1fr; }
 .nm .def i { font: 400 11px/26px "Roboto Mono", monospace; font-style: normal; color: var(--mute); }
@@ -226,15 +226,18 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
 .tz .in .arr path { stroke-dashoffset: 0; }
 
 /* HEAT: four compounds on a swipe rail; the card in the middle of the screen is the one under the light */
-.tz .rail { margin-top: 44px; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--pad); padding: 0 var(--pad) 8px;
+.tz .rail { margin-top: 0; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--pad); padding: 64px var(--pad) 40px;
   list-style: none; scrollbar-width: none; overscroll-behavior-x: contain; }
 .tz .rail::-webkit-scrollbar { display: none; }
-.tz .card { position: relative; flex: 0 0 min(300px, calc(100vw - 72px)); scroll-snap-align: start; padding: 24px 10px 20px; outline: none;
-  opacity: 0; transform: translateX(40px); transition: opacity .9s ease, transform 1.1s var(--out); transition-delay: calc(.1s + var(--i) * .1s); }
-.tz .in .card { opacity: 1; transform: none; }
-.tz .card::before { content: ""; position: absolute; inset: -20px -30px; pointer-events: none; opacity: 0; transition: opacity .7s ease;
+.tz .card { position: relative; flex: 0 0 min(300px, calc(100vw - 72px)); scroll-snap-align: start; scroll-snap-stop: always; padding: 24px 10px 20px; outline: none; }
+/* only the inside moves: the card box itself stays put, so its snap point never shifts */
+.tz .card .ci { opacity: 0; transform: translateX(40px); transition: opacity .9s ease, transform 1.1s var(--out); transition-delay: calc(.1s + var(--i) * .1s); }
+.tz .in .card .ci { opacity: .42; transform: scale(.94); transition: opacity .55s ease, transform .7s cubic-bezier(.34, 1.4, .64, 1); transition-delay: 0s; transform-origin: 50% 60%; }
+.tz .in .card.lit .ci { opacity: 1; transform: none; }
+.tz .card::before { content: ""; position: absolute; inset: -56px -28px -30px; pointer-events: none; opacity: 0; transition: opacity .7s ease;
   background: radial-gradient(ellipse 55% 50% at 50% 46%, rgba(var(--amber), .15), rgba(var(--amber), .045) 60%, rgba(var(--amber), 0)); }
 .tz .card > * { position: relative; }
+.tz .card .ci > * { position: relative; }
 .tz .card .nmc { font: 900 34px/1 Roboto, sans-serif; letter-spacing: -.02em; color: var(--stone); transition: color .4s ease; min-height: 2em; display: flex; align-items: flex-end; }
 .tz .card .src { margin-top: 10px; font: 500 14px/1.4 var(--kr); color: var(--mute); transition: color .4s ease; }
 .tz .card .rw { margin-top: 26px; display: flex; gap: 20px; align-items: baseline; }
@@ -253,12 +256,12 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
 .tz .card.lit svg { color: var(--red); }
 .tz .card.lit svg .area { opacity: .14; }
 .tz .card.lit .cv { color: var(--red); }
-.tz .tabs { margin: 18px var(--pad) 0; display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
+.tz .tabs { margin: -12px var(--pad) 0; display: flex; gap: 18px; overflow-x: hidden; pointer-events: none; scrollbar-width: none; }
 .tz .tabs::-webkit-scrollbar { display: none; }
-.tz .tabs button { position: relative; flex: none; min-height: 44px; font: 500 10px/1 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--mute); white-space: nowrap; transition: color .3s ease; }
-.tz .tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 12px; height: 1px; background: var(--paper); transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
-.tz .tabs button[aria-current] { color: var(--paper); }
-.tz .tabs button[aria-current]::after { transform: scaleX(1); }
+.tz .tabs span { position: relative; flex: none; padding: 14px 0; font: 500 10px/1 "Roboto Mono", monospace; letter-spacing: .08em; color: var(--mute); white-space: nowrap; transition: color .3s ease; }
+.tz .tabs span::after { content: ""; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: var(--paper); transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--out); }
+.tz .tabs span[aria-current] { color: var(--paper); }
+.tz .tabs span[aria-current]::after { transform: scaleX(1); }
 
 /* ---------- Gallery x Graffiti ---------- */
 .gg { padding-left: 0; padding-right: 0; padding-top: 120px; }
@@ -387,36 +390,36 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
   </div>
   <div data-reveal>
     <ul class="rail" id="rail" aria-label="Four compounds">
-      <li class="card" tabindex="0" data-i="0" style="--i:0" aria-label="Piperine">
+      <li class="card" tabindex="0" data-i="0" style="--i:0" aria-label="Piperine"><div class="ci">
         <p class="nmc" lang="en">Piperine</p><p class="src kr" data-en="Pepper">후추</p>
         <div class="rw"><p class="rec">TRPV1</p><p class="where kr" data-en="Tongue">혀</p></div>
         <svg viewBox="0 0 320 120" aria-hidden="true"><path d="M0 110.5H320" stroke="#3A3A37" fill="none"/><path class="area" d="M0 110 C60 110 80 40 140 36 C200 32 260 34 320 50 L320 110 L0 110Z"/><path class="line" d="M0 110 C60 110 80 40 140 36 C200 32 260 34 320 50" pathLength="1"/></svg>
         <p class="cv kr" data-en="Deep, slow and lasting">묵직하게, 은은하게 오래</p>
         <p class="desc kr" data-en="The pain-triggering compound in pepper. Like capsaicin, it binds to TRPV1 on the tongue for a deep, slow-burning warmth.">후추에 든 통각 자극 물질입니다. 캡사이신처럼 TRPV1에 결합해 묵직하고 은은하게 타오르는 열감을 만듭니다.</p>
-      </li>
-      <li class="card" tabindex="0" data-i="1" style="--i:1" aria-label="Allyl Isothiocyanate">
+      </div></li>
+      <li class="card" tabindex="0" data-i="1" style="--i:1" aria-label="Allyl Isothiocyanate"><div class="ci">
         <p class="nmc" lang="en">Allyl Isothiocyanate</p><p class="src kr" data-en="Wasabi, Mustard, Horseradish">와사비, 겨자, 겨자무</p>
         <div class="rw"><p class="rec">TRPA1</p><p class="where kr" data-en="Nose tip, Mouth lining">코끝, 입안 점막</p></div>
         <svg viewBox="0 0 320 120" aria-hidden="true"><path d="M0 110.5H320" stroke="#3A3A37" fill="none"/><path class="area" d="M0 110 C18 110 28 12 56 12 C84 12 100 96 170 106 C230 112 280 110 320 110 L320 110 L0 110Z"/><path class="line" d="M0 110 C18 110 28 12 56 12 C84 12 100 96 170 106 C230 112 280 110 320 110" pathLength="1"/></svg>
         <p class="cv kr" data-en="A sharp sting, a quick fade">톡 쏘고, 빠르게 사라짐</p>
         <p class="desc kr" data-en="Unlike chili, it works the TRPA1 receptors in the nose and the lining of the mouth. Highly volatile, it stings the tip of the nose and fades fast.">고추 계열과 달리 코와 입안 점막의 TRPA1 수용체를 직접 자극합니다. 휘발성이 강해 코끝을 톡 쏘고, 비교적 빠르게 사라집니다.</p>
-      </li>
-      <li class="card" tabindex="0" data-i="2" style="--i:2" aria-label="Gingerol & Shogaol">
+      </div></li>
+      <li class="card" tabindex="0" data-i="2" style="--i:2" aria-label="Gingerol & Shogaol"><div class="ci">
         <p class="nmc" lang="en">Gingerol &amp; Shogaol</p><p class="src kr" data-en="Ginger">생강</p>
         <div class="rw"><p class="rec kr" data-en="Heat, pain receptors">열, 통각 수용체</p><p class="where kr" data-en="Tongue">혀</p></div>
         <svg viewBox="0 0 320 120" aria-hidden="true"><path d="M0 110.5H320" stroke="#3A3A37" fill="none"/><path class="area" d="M0 110 C50 110 70 50 130 46 C200 42 250 76 320 92 L320 110 L0 110Z"/><path class="line" d="M0 110 C50 110 70 50 130 46 C200 42 250 76 320 92" pathLength="1"/></svg>
         <p class="cv kr" data-en="Warm and sharp">따뜻하게, 알싸하게</p>
         <p class="desc kr" data-en="The active compounds in ginger work the tongue’s heat and pain receptors. A warmth close to capsaicin, with a sharp, bitter edge of its own.">생강의 활성 화합물로 혀의 열 수용체와 통각 수용체를 자극합니다. 캡사이신과 비슷한 온열감에 알싸하고 쌉싸름한 향미가 더해집니다.</p>
-      </li>
-      <li class="card" tabindex="0" data-i="3" style="--i:3" aria-label="Sanshool">
+      </div></li>
+      <li class="card" tabindex="0" data-i="3" style="--i:3" aria-label="Sanshool"><div class="ci">
         <p class="nmc" lang="en">Sanshool</p><p class="src kr" data-en="Sansho, Chopi, Mala">산초, 초피, 마라</p>
         <div class="rw"><p class="rec kr" data-en="Pain + touch nerves">통각 + 촉각 신경</p><p class="where kr" data-en="Tongue, Lips">혀, 입술</p></div>
         <svg viewBox="0 0 320 120" aria-hidden="true"><path d="M0 110.5H320" stroke="#3A3A37" fill="none"/><path class="area" d="M0 110 C24 110 36 54 64 50 Q80 32 96 50 Q112 68 128 50 Q144 32 160 50 Q176 68 192 52 Q208 36 224 54 C256 70 292 84 320 94 L320 110 L0 110Z"/><path class="line" d="M0 110 C24 110 36 54 64 50 Q80 32 96 50 Q112 68 128 50 Q144 32 160 50 Q176 68 192 52 Q208 36 224 54 C256 70 292 84 320 94" pathLength="1"/></svg>
         <p class="cv kr" data-en="A buzzing, numbing tingle">찌릿한 진동, 얼얼함</p>
         <p class="desc kr" data-en="It scrambles the touch nerves as well as pain receptors, sending a numbing, buzzing vibration along with the heat.">통각 수용체뿐 아니라 촉각 신경까지 교란합니다. 혀가 마비되는 듯한 진동감과 함께 물리적인 매운 자극을 전달합니다.</p>
-      </li>
+      </div></li>
     </ul>
-    <div class="tabs" id="tabs" role="tablist" aria-label="Compounds"><button type="button" data-i="0">Piperine</button><button type="button" data-i="1">Allyl Isothiocyanate</button><button type="button" data-i="2">Gingerol &amp; Shogaol</button><button type="button" data-i="3">Sanshool</button></div>
+    <div class="tabs" id="tabs" aria-hidden="true"><span data-i="0">Piperine</span><span data-i="1">Allyl Isothiocyanate</span><span data-i="2">Gingerol &amp; Shogaol</span><span data-i="3">Sanshool</span></div>
   </div>
 </section>
 
@@ -526,7 +529,7 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
   document.querySelectorAll('[data-reveal]').forEach(s => io.observe(s));
 
   // ---- HEAT rail: the card that settles in view is lit; the names below follow it and jump to it ----
-  const rail = document.getElementById('rail'), cards = [...rail.children], tabs = [...document.querySelectorAll('#tabs button')];
+  const rail = document.getElementById('rail'), cards = [...rail.children], tabs = [...document.querySelectorAll('#tabs span')];
   const light = c => { cards.forEach(o => o.classList.toggle('lit', o === c)); tabs.forEach(t => t.toggleAttribute('aria-current', t.dataset.i === c.dataset.i));
     const t = tabs[+c.dataset.i], tb = t && t.parentElement; if (t && (t.offsetLeft < tb.scrollLeft || t.offsetLeft + t.offsetWidth > tb.scrollLeft + tb.clientWidth)) tb.scrollTo({left: t.offsetLeft - tb.offsetLeft, behavior: reduce ? 'auto' : 'smooth'}); };
   const seen = new Map();
@@ -534,8 +537,14 @@ html[lang="en"] .mf h2 { font-family: Roboto, sans-serif; line-height: 1.3; lett
     let best = null, br = .55; seen.forEach((r, c) => { if (r > br) { br = r; best = c; } }); if (best && !best.classList.contains('lit')) light(best); },
     {root: rail, threshold: [.3, .55, .7, .85, 1]});
   cards.forEach(c => rio.observe(c));
-  tabs.forEach(t => t.addEventListener('click', () => { const c = cards[+t.dataset.i]; rail.scrollTo({left: c.offsetLeft - rail.offsetLeft - 24 + 10, behavior: reduce ? 'auto' : 'smooth'}); light(c); }));
   cards.forEach(c => c.addEventListener('focus', () => light(c)));
+  let lastLeft = rail.scrollLeft, settleT = 0;
+  const settle = () => { const dir = Math.sign(rail.scrollLeft - lastLeft); lastLeft = rail.scrollLeft; if (!dir || reduce) return;
+    const c = cards.find(o => o.classList.contains('lit')); if (!c) return;
+    c.querySelector('.ci').animate([{translate: `${dir * 10}px 0`}, {translate: `${dir * -3}px 0`, offset: .55}, {translate: '0 0'}], {duration: 420, easing: 'cubic-bezier(.2, .8, .2, 1)'});
+    if (navigator.vibrate) try { navigator.vibrate(6); } catch (_) {} };
+  if ('onscrollend' in rail) rail.addEventListener('scrollend', settle);
+  else rail.addEventListener('scroll', () => { clearTimeout(settleT); settleT = setTimeout(settle, 90); }, {passive: true});
 
   // ---- Gallery x Graffiti: drag anywhere on the picture, or step with the arrow keys ----
   const cmp = document.getElementById('cmp'), stage = document.getElementById('stage'), handle = document.getElementById('handle');
