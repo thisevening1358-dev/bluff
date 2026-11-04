@@ -103,6 +103,12 @@ header .lang { align-items: center; }
 .zone .spaces { margin-top: 22px; display: grid; grid-template-columns: 48px 1fr; gap: 18px 12px; }
 .zone .spaces dt { font: 500 11px/1.9 "Roboto Mono", monospace; letter-spacing: .06em; color: var(--mute); }
 .zone .spaces dd { font: 700 15px/1.5 Roboto, var(--kr); letter-spacing: .01em; }
+.zone .spaces dd small { display: block; margin-top: 3px; font: 400 13px/1.5 var(--kr); letter-spacing: 0; color: var(--stone); }
+.zone .stamp { margin-top: 14px; font: 900 22px/1.1 Roboto, sans-serif; letter-spacing: -.01em; }
+.zone .note { margin-top: 8px; font-size: 14px; line-height: 1.7; color: var(--stone); }
+.zone .rewards { margin-top: 14px; display: grid; gap: 4px; }
+.zone .rewards dt { margin-top: 10px; font: 700 14px/1.4 var(--kr); }
+.zone .rewards dd { font-size: 13px; line-height: 1.6; color: var(--stone); }
 .zone ol { margin-top: 22px; list-style: none; display: grid; gap: 26px; }
 .zone li { display: grid; grid-template-columns: 30px 1fr; gap: 16px; align-items: start; }
 .zone li .dot { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--pc); color: var(--pt); font: 700 11px/1 "Roboto Mono", monospace;
@@ -474,44 +480,48 @@ const deg = d => d * Math.PI / 180;
 // ---------- the site, in metres: x runs west to east (45 m), z north to south (25 m) ----------
 // zones and missions follow the E안 floor plan (02) and mission list (04)
 const ZONES = {
-  overview: {code: '전체', name: '전체 보기', name_en: 'Overview', sub: '340평 U자 동선', target: [22.5, 0, 13.4], az: -30, el: 47, dist: 86, shift: -.1},
-  in: {code: 'IN', name: '입구 홀', name_en: "Entrance Hall", lead_en: "Eating and buying happen only at the entrance and the exit. Pick up the case file here and head into the three scenes.", steps_en: [["Queue", "An indoor line made of police-tape stanchions. Entry by time slot."], ["Ticket, QR", "Reservation QR check and an entry wristband."], ["Mission book", "Pick up the case file (the mission book) and a pen."], ["Welcome chip", "One mini bag of CRISPY CHIP each, used in the B2 crunch mission."], ["Briefing", "A 60-second case video, then in through GATE A."]], en: 'ENTRANCE HALL', sub: '미션북 · 웰컴 칩', color: '#fbfbfb', text: '#0c0c0c', meta: '98㎡',
+  overview: {code: '전체', name: '전체 보기', name_en: 'Overview', sub: '340평 U자 동선', target: [22.5, 0, 12.5], az: 38, el: 42, dist: 90, shift: -.1},
+  in: {code: 'IN', name: '입구 홀', name_en: "Entrance Hall", lead_en: "Eating and buying happen only at the entrance and the exit. Pick up the case file here and head into the three scenes.", steps_en: [["Queue", "Wait along the red-belt stanchions. 30 people enter every 20 minutes."], ["Ticket, QR", "Your reservation QR is checked at the reception, and you get an entry wristband."], ["Mission book", "Pick up the case file, a 16-page A5 book, and a pen."], ["Welcome chip", "One bag each from the shelf, used in missions A2 and B2."], ["Registration", "Sign in as an investigator and press your fingerprint with the hall's ink pad."], ["Briefing", "When the 60-second case briefing ends, GATE A opens."]], en: 'ENTRANCE HALL', sub: '미션북, 웰컴 칩', color: '#fbfbfb', text: '#0c0c0c', meta: '14 × 7M', meta_en: '14 × 7M',
     lead: '먹고 사는 일은 입구와 출구에서만. 여기서 사건 파일을 받고 세 현장으로 들어갑니다.',
-    target: [7.4, 0, 21.4], az: -24, el: 48, dist: 34, shift: .2, chip: [7.2, 21.6],
-    steps: [['대기열', '폴리스 라인 차단봉으로 만든 실내 대기 줄. 회차별 입장.'], ['발권 · QR', '예약 QR 확인, 입장 팔찌 착용.'], ['미션북', '사건 파일(미션북)과 펜 수령.'],
-      ['웰컴 칩', 'CRISPY CHIP 미니 1인 1봉. B2 크런치 미션에 사용.'], ['브리핑', '60초 사건 개요 영상, GATE A로 입장.']]},
-  a: {code: 'A', name: '미술관', name_en: "Gallery", lead_en: "The space of good taste everyone agrees on. BLUFF hides between the masterpieces and their captions.", meta_en: "252㎡, about 15 min", en: 'WORLD A', sub: '미션 2 + 보너스', color: '#1f6fe5', meta: '252㎡ · 약 15분',
-    lead: '모두가 인정하는 좋은 취향의 공간. 명화와 캡션 사이에 BLUFF가 숨어 있습니다.',
-    target: [7.2, 0, 9.2], az: -26, el: 48, dist: 42, shift: .2, chip: [4.6, 15.6],
-    spaces: [['A-00', 'CAPTION GATE', '규칙판 · 레터링 · 티켓 포디움'], ['A-01', 'GALLERY', '명화 3점 · 흉상'], ['A-02', 'SOUND OF CRUNCH', '흡음 부스 3 (H2.2)'], ['A-03', 'PLEASE DO TOUCH.', '블루 룸 · 받침대 3 · 칩 · 도장 데스크']]},
-  b: {code: 'B', name: '사건 현장', name_en: "Crime Scene", lead_en: "Good taste has been stolen. Start at the empty frame and collect the evidence and the confessions.", meta_en: "234㎡, about 20 min", en: 'WORLD B', sub: '미션 2 + 보너스', color: '#e51212', meta: '234㎡ · 약 20분',
-    lead: '좋은 취향이 도난당했습니다. 빈 액자에서 시작해 증거와 자백을 모읍니다.',
-    target: [22.6, 0, 9.2], az: -26, el: 48, dist: 42, shift: .2, chip: [22.5, 3.2],
-    spaces: [['B-01', 'THE EMPTY FRAME', '빈 금색 액자 · 레드 테이프 저지선 · 분필 윤곽선'], ['B-02', 'EVIDENCE ROOM', '증거물 선반 · B1 단서 테이블'], ['B-03', 'INTERROGATION', '레드 룸 · 가짜 거울 · 데시벨 모니터'], ['B-04', 'LINE-UP', '키 눈금 벽 · 카메라 · 인화']]},
-  c: {code: 'C', name: '거리', name_en: "Street", lead_en: "Outside the gallery, a street of graffiti. Leave today's stress on the wall and close the case.", meta_en: "252㎡, about 15 min", en: 'WORLD C', sub: '미션 2 + 보너스', color: '#c6f21a', text: '#0c0c0c', meta: '252㎡ · 약 15분',
-    lead: '갤러리 밖, 그래피티의 거리. 오늘의 스트레스를 벽에 남기고 사건을 종결합니다.',
-    target: [37.9, 0, 9.2], az: -26, el: 48, dist: 42, shift: .2, chip: [37.4, 2.4],
-    spaces: [['C-01', 'SHUTTER GATE', 'H2.1 셔터 · 열린 문 0.9M'], ['C-02', 'THE BUFF WALL', '북측 14M 벽 · 덧칠 패치 · 태그 · 도구함'], ['C-03', 'DESTROYING CRUNCH', '고무 바닥 · 스테이션 3 · 게이지 스크린'], ['C-04', 'MIDNIGHT ARCHIVE', '타임랩스 스크린 · 사진 패널 4'], ['C-05', 'CASE CLOSED', '화이트 바닥 · 데스크 · 대기 라인']]},
-  out: {code: 'OUT', name: '출구 홀', name_en: "Exit Hall", lead_en: "A case file with three stamps turns into a reward token here. Tasting and buying happen only at the exit.", steps_en: [["Token exchange", "The CASE CLOSED mission book is checked and a reward token handed out."], ["Reward machine", "One random limited goodie per token."], ["SODA BAR", "BLUFF SODA tasting, and cans to buy."], ["BLUFF SHOP", "Limited three-pack sets, goods and sticker packs."], ["Checkout", "One counter. Out the exit with a RED shopping bag."]], en: 'EXIT HALL', sub: '보상 · 구매', color: '#fbfbfb', text: '#0c0c0c', meta: '98㎡',
-    lead: '도장 3개를 모은 사건 파일은 여기서 보상 토큰으로 바뀝니다. 시식과 구매도 출구에서만.',
-    target: [37.8, 0, 21.4], az: -24, el: 48, dist: 34, shift: .2, chip: [37.8, 21.8],
-    steps: [['토큰 교환', 'CASE CLOSED 미션북 확인, 보상 토큰 지급.'], ['보상 자판기', '토큰으로 한정 굿즈 랜덤 1개 뽑기.'], ['SODA BAR', 'BLUFF SODA 시음 · 캔 구매.'],
-      ['BLUFF SHOP', '한정 3종 세트, 굿즈, 스티커 팩.'], ['계산', '계산대 한 곳. RED 쇼핑백을 들고 출구로.']]},
+    target: [7, 0, 21.5], az: 30, el: 46, dist: 34, shift: .2, chip: [7.4, 20.6],
+    steps: [['대기열', '레드 벨트 스탠션을 따라 기다립니다. 20분마다 30명 입장.'], ['발권, QR', '리셉션 카운터에서 예약 QR 확인, 입장 팔찌 착용.'], ['미션북', '사건 파일(A5 16쪽)과 펜 수령.'],
+      ['웰컴 칩', '선반에서 1인 1봉. A2, B2 미션에 씁니다.'], ['수사관 등록', '이름을 적고 입구 홀 인주로 지문을 찍습니다.'], ['브리핑', '60초 사건 브리핑이 끝나면 GATE A가 열립니다.']]},
+  a: {code: 'A', name: '미술관', name_en: "Gallery", lead_en: "Don't admire. Doubt. BLUFF hides between the masterpieces and their captions.", meta_en: "252㎡, about 15 min", en: 'WORLD A', sub: '미션 2 + 보너스', color: '#0e6edb', meta: '252㎡, 약 15분',
+    lead: '감상하지 말고, 의심하라. 명화와 캡션 사이에 BLUFF가 숨어 있습니다.',
+    target: [7, 0, 9], az: 30, el: 46, dist: 42, shift: .2, chip: [3.2, 13.2],
+    stamp: ['APPRAISED FAKE.', 'A1, A2를 마치면 세계 출구 도장 데스크에서 찍어 줍니다.', 'Stamped at the stamp desk by the world exit, once A1 and A2 are done.'],
+    spaces: [['A-00', 'CAPTION GATE', '관람 규칙판, 티켓 확인 포디움', 'Rule board, ticket podium'], ['A-01', 'GALLERY OF GOOD TASTE', '명화 3점, A1 미션 패널, 다비드 흉상, 벤치 2', 'Three masterpieces, A1 panel, David bust, two benches'], ['A-02', 'SOUND OF CRUNCH', '흡음 부스 3 (H2.2)', 'Three sound booths (H2.2)'], ['A-03', 'PLEASE DO TOUCH.', '블루 룸, 받침대 3, 포토 스팟, 도장 데스크 A', 'Blue room, three plinths, photo spots, stamp desk A']]},
+  b: {code: 'B', name: '사건 현장', name_en: "Crime Scene", lead_en: "Evidence stays as sound. Good taste has been stolen: start at the empty frame and collect the evidence and the confessions.", meta_en: "234㎡, about 20 min", en: 'WORLD B', sub: '미션 2 + 보너스', color: '#e51212', meta: '234㎡, 약 20분',
+    lead: '증거는 소리로 남는다. 좋은 취향이 도난당했습니다. 빈 액자에서 시작해 증거와 자백을 모읍니다.',
+    target: [22.5, 0, 9], az: 30, el: 46, dist: 42, shift: .2, chip: [24.5, 4.4],
+    stamp: ['CONFESSED.', 'B1, B2를 마치면 세계 출구 도장 데스크에서 찍어 줍니다.', 'Stamped at the stamp desk by the world exit, once B1 and B2 are done.'],
+    spaces: [['B-01', 'THE EMPTY FRAME', '빈 금색 액자 2.2 × 2.8, 사건 개요 패널, 레드 테이프 저지선, 분필 윤곽선', 'Empty gold frame 2.2 × 2.8, case panel, red tape cordon, chalk outline'], ['B-02', 'EVIDENCE ROOM', '증거물 선반 4.0M, B1 단서 테이블 2대', '4.0M evidence shelf, two B1 clue tables'], ['B-03', 'INTERROGATION', '레드 룸, 가짜 반투명 거울 3.2M, 취조 테이블, 순위 모니터 55"', 'Red room, 3.2M fake mirror, interrogation table, 55" ranking monitor'], ['B-04', 'LINE-UP', '키 눈금 벽, 촬영 위치, 혐의 팻말 랙, 도장 데스크 B', 'Height wall, photo spot, charge sign rack, stamp desk B']]},
+  c: {code: 'C', name: '거리', name_en: "Street", lead_en: "Outside the gallery, a street of graffiti. Tonight, the wall is yours. Leave today's stress on it and close the case.", meta_en: "252㎡, about 15 min", en: 'WORLD C', sub: '미션 2 + 보너스', color: '#c4e313', text: '#0c0c0c', meta: '252㎡, 약 15분',
+    lead: '갤러리 밖, 그래피티의 거리. 오늘 밤, 벽은 당신 것입니다. 스트레스를 벽에 남기고 사건을 종결합니다.',
+    target: [38, 0, 9], az: 30, el: 46, dist: 42, shift: .2, chip: [34.6, 10.4],
+    stamp: ['WALL BUFFED.', 'C1, C2를 마치면 C 세계 끝 CASE CLOSED 데스크에서 찍어 줍니다. 도장 3개면 마지막 도장 CASE CLOSED.', 'Stamped at the CASE CLOSED desk at the end of world C, once C1 and C2 are done. Three stamps earn the final CASE CLOSED stamp.'],
+    spaces: [['C-01', 'SHUTTER GATE', '롤링 셔터, 라임 LED, GATE C, 바닥 스텐실', 'Rolling shutter, lime LED, GATE C, floor stencil'], ['C-02', 'THE BUFF WALL', '북측 14M 벽, 태그 구간 H0.5-2.2, 마커 카트 2, BUFF 도구함', '14M north wall, tag zone H0.5-2.2, two marker carts, BUFF tool box'], ['C-03', 'DESTROYING CRUNCH', '악력 스테이션 Ø1.2 × 3, 게이지 스크린 3', 'Three Ø1.2 grip stations, three gauge screens'], ['C-04', 'MIDNIGHT ARCHIVE', '타임랩스 스크린 3.0M, 아카이브 패널 4', '3.0M time-lapse screen, four archive panels'], ['C-05', 'CASE CLOSED', '화이트 바닥, 도장 C + 최종 도장 데스크', 'White floor, desk for stamp C and the final stamp']]},
+  out: {code: 'OUT', name: '출구 홀', name_en: "Exit Hall", lead_en: "Tear out the reward coupon and bring it here. Tasting and buying happen only at the exit, and you can buy even with stamps missing.", steps_en: [["Token exchange", "Hand in the torn-out coupon at the desk for a reward token."], ["Reward dispenser", "Drop in the token and an evidence bag falls out: a keyring, coaster or sticker, at random."], ["Soda bar", "Taste BLUFF SODA and buy cans."], ["Shop shelves", "Limited three-pack sets, goods and soda."], ["RED checkout", "One counter. Out the exit with a RED shopping bag."]], en: 'EXIT HALL', sub: '보상, 구매', color: '#fbfbfb', text: '#0c0c0c', meta: '14 × 7M', meta_en: '14 × 7M',
+    lead: '교환권을 뜯어 이곳으로 옵니다. 시식과 구매도 출구에서만. 도장이 모자라도 구매는 할 수 있습니다.',
+    target: [38, 0, 21.5], az: 30, el: 46, dist: 34, shift: .2, chip: [37.6, 23.8],
+    steps: [['토큰 교환', '뜯어 온 교환권을 데스크에 내면 보상 토큰으로 바꿔 줍니다.'], ['보상 자판기', '토큰을 넣으면 증거물 봉투가 떨어집니다. 키링, 코스터, 스티커 중 랜덤 1개.'], ['소다 바', 'BLUFF SODA 시음, 캔 구매.'],
+      ['숍 선반', '한정 3종 세트, 굿즈, 소다 캔.'], ['RED 계산대', '계산대 한 곳. RED 쇼핑백을 들고 출구로.']],
+    rewards: [['도장 0-2개', '구매만 가능 (지름길 이용자 포함)', '0-2 stamps', 'Buying only (shortcut users included)'], ['도장 3개', '보상 토큰 1', '3 stamps', 'One reward token'], ['도장 3개 + 보너스 2개 이상', '보상 토큰 2, 머그샷 사진 1장 추가 인화', '3 stamps + 2 or more bonuses', 'Two reward tokens and one extra mugshot print']]},
 };
 const ORDER = ['in', 'a', 'b', 'c', 'out'];
-// missions: id, zone, name, english, what you do, minutes, main / bonus, stamp, position, what you do (English)
+// missions: id, zone, name, english, what you do, minutes, main / bonus, stamp, position, what you do (English). Copy from the final mission book (E-22 to E-24).
 const MISSIONS = [
-  ['A1', 'a', '가짜를 찾아라', 'SPOT THE BLUFF', '명화 3점 중 BLUFF 칩이 몰래 그려진 한 점을 찾아 작품 번호를 미션북에 적는다.', 3, 1, '', [4.9, 6.5], "Find the one painting of the three where a BLUFF chip has been slipped in, and write its number in the mission book."],
-  ['A2', 'a', '작품에 손대시오', 'PLEASE DO TOUCH', '웰컴 칩을 받침대에 올려 ‘내 작품’으로 전시하고, 빈 캡션 카드에 작품명을 써서 촬영한다.', 4, 1, 'A', [11.4, 10.0], "Set your welcome chip on a plinth as “my work”, write a title on the blank caption card and take a photo."],
-  ['A3', 'a', '오디오 가이드 퀴즈', 'AUDIO GUIDE', '헤드폰으로 씹는 소리 3개를 듣고 어떤 스낵인지 맞힌다. QUAZIC CHIPS, BITE JERKY, CHEWY BITE.', 3, 0, '', [11.2, 3.2], "Listen to three crunch sounds on headphones and name the snack: QUAZIC CHIPS, BITE JERKY or CHEWY BITE."],
-  ['B1', 'b', '증거 수집', 'EVIDENCE', '증거물 봉투 3개 속 단서 카드를 모아 ‘좋은 취향을 훔친 범인’을 추리해 적는다.', 6, 1, '', [19.4, 8.6], "Gather the clue cards from three evidence bags and name the culprit who stole good taste."],
-  ['B2', 'b', '크런치 자백', 'CONFESSION', '웰컴 칩을 씹어 소리 크기를 측정한다. 기준 데시벨을 넘기면 ‘자백 인정’.', 4, 1, 'B', [25.5, 8.9], "Crunch the welcome chip while the volume is measured. Beat the decibel line and the confession stands."],
-  ['B3', 'b', '머그샷', 'LINE-UP', '혐의 팻말을 들고 키 눈금 벽 앞에서 촬영, 즉석 인화 사진을 미션북에 붙인다.', 3, 0, '', [19.0, 13.6], "Hold up the charge sign in front of the height wall for your photo, then stick the instant print in the mission book."],
-  ['C1', 'c', '한 줄 고백', 'TAG', 'BUFF WALL에 마커로 오늘의 스트레스 한 줄과 사인을 남긴다. 벽은 매일 밤 회색으로 덮인다.', 4, 1, '', [40.6, 1.6], "Leave one line of today’s stress and your tag on the BUFF WALL. The wall is painted grey every night."],
-  ['C2', 'c', '크런치 파괴', 'DESTROY', '악력기와 스퀴시로 화면 속 ‘스트레스 게이지’를 끝까지 채운다.', 3, 1, 'C', [34.0, 8.2], "Fill the on-screen stress gauge to the top with grip trainers and squishies."],
-  ['C3', 'c', '어제의 벽', 'ARCHIVE', '어젯밤 지워진 벽 사진에서 태그를 찾는다. 재방문하면 지워진 내 태그를 찾는 미션으로 바뀐다.', 3, 0, '', [40.4, 6.2], "Find tags in photos of last night’s wiped wall. Come back and it turns into a hunt for your own wiped tag."],
+  ['A1', 'a', '가짜를 찾아라', 'SPOT THE BLUFF', '명화 세 점 중 하나에 BLUFF 칩이 몰래 그려져 있다. 진품과 가짜를 표시하고, 가짜 작품 번호를 적어.', 3, 1, '', [4.06, 6.02], "A BLUFF chip has been slipped into one of the three masterpieces. Mark real or fake, and write down the number of the fake."],
+  ['A2', 'a', '작품에 손대시오', 'PLEASE DO TOUCH', '웰컴 칩을 받침대에 올려 ‘내 작품’으로 전시해. 현장 캡션 카드에 내용을 옮겨 적고 작품 옆에 세운 뒤 촬영.', 4, 1, 'A', [10.92, 9.22], "Set your welcome chip on a plinth as “my work”. Fill in a caption card, stand it beside the work and take a photo."],
+  ['A3', 'a', '오디오 가이드 퀴즈', 'AUDIO GUIDE', '헤드폰으로 씹는 소리 세 개를 듣고 어떤 스낵인지 골라. QUAZIC CHIPS, BITE JERKY, CHEWY BITE.', 3, 0, '', [10.8, 2.2], "Listen to three crunch sounds on headphones and pick the snack: QUAZIC CHIPS, BITE JERKY or CHEWY BITE."],
+  ['B1', 'b', '증거 수집', 'EVIDENCE', '증거물 봉투 세 개에서 단서 카드를 한 장씩 꺼내 칸에 붙여. 세 장이 모이면 범인이 보인다.', 6, 1, '', [19.33, 9.24], "Take one clue card from each of three evidence bags and stick them in. With all three, the culprit comes into view."],
+  ['B2', 'b', '크런치 자백', 'CONFESSION', '웰컴 칩을 마이크 앞에서 크게 씹어. 기준선을 넘기면 ‘자백 인정’. 순위 모니터에 이름이 오른다.', 4, 1, 'B', [26.03, 8.58], "Crunch the welcome chip loudly into the mic. Beat the line and the confession stands, and your name goes up on the ranking monitor."],
+  ['B3', 'b', '머그샷', 'LINE-UP', '혐의 팻말을 들고 키 눈금 벽 앞에서 촬영. 즉석 사진을 미션북 칸에 붙여.', 3, 0, '', [21.78, 12.83], "Hold up a charge sign in front of the height wall for your photo, then stick the instant print in the mission book."],
+  ['C1', 'c', '한 줄 고백', 'TAG', 'BUFF WALL에 마커로 오늘의 스트레스 한 줄과 사인을 남긴다. 벽은 매일 밤 회색으로 덮인다.', 4, 1, '', [39, 1.2], "Leave one line of today’s stress and your tag on the BUFF WALL. The wall is painted grey every night."],
+  ['C2', 'c', '크런치 파괴', 'DESTROY', '악력기와 스퀴시로 화면 속 ‘스트레스 게이지’를 끝까지 채워. 채운 만큼 미션북 칸을 칠해.', 3, 1, 'C', [34.33, 7.41], "Fill the on-screen stress gauge to the top with grip trainers and squishies, then colour in the same amount in the mission book."],
+  ['C3', 'c', '어제의 벽', 'ARCHIVE', '어젯밤 지워진 벽 사진에서 태그를 찾아. 재방문하면 지워진 내 태그를 찾는 미션으로 바뀐다.', 3, 0, '', [39.4, 8], "Find tags in photos of last night’s wiped wall. Come back and it turns into a hunt for your own wiped tag."],
 ];
-const DESKS = {a: [12.2, 11.3], b: [25.8, 17.2], c: [39.6, 16.2]};
+const DESKS = {a: [12.22, 11.42], b: [25.73, 17.33], c: [40.65, 15.93]};
 
 // ---------- language: the same choice as the brand and product pages (localStorage 'bluff.lang') ----------
 let LANG = 'ko'; try { LANG = localStorage.getItem('bluff.lang') === 'en' ? 'en' : 'ko'; } catch (e) {}
@@ -539,12 +549,12 @@ renderer.setSize(W, H, false);
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x2a2a2a, 1.25));
 const sun = new THREE.DirectionalLight(0xfff1df, 2.6);
-sun.position.set(22.5 + 16, 38, 12.5 - 20); sun.target.position.set(22.5, 0, 12.5);
+sun.position.set(22.5 + 20, 36, 12.5 + 18); sun.target.position.set(22.5, 0, 12.5);
 sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, {left: -32, right: 32, top: 26, bottom: -26, near: 5, far: 90});
 sun.shadow.bias = -.0004; sun.shadow.normalBias = .03; sun.shadow.radius = 4;
 scene.add(sun, sun.target);
-const fill = new THREE.DirectionalLight(0xc9d6ff, .45); fill.position.set(-20, 18, 40); scene.add(fill);
+const fill = new THREE.DirectionalLight(0xc9d6ff, .45); fill.position.set(-10, 18, 40); scene.add(fill);
 
 // ---------- materials: every box of the same material is merged into one draw ----------
 const BUCKET = {};
@@ -552,13 +562,18 @@ function mat(name, color, o = {}) {
   BUCKET[name] = {geos: [], mat: new THREE.MeshStandardMaterial({color, roughness: o.r ?? .88, metalness: o.m ?? 0,
     emissive: o.e ?? 0x000000, emissiveIntensity: o.ei ?? 1}), shadow: o.shadow ?? true};
 }
-mat('base', 0xd6d5d0); mat('hall', 0x2a2a29); mat('hallWall', 0x1d1d1c);
-mat('aFloor', 0xe6e5e1); mat('aWall', 0xf3f2ee); mat('blue', 0x1f6fe5, {r: .7}); mat('staff', 0xa4a39e);
-mat('black', 0x121212, {r: .6}); mat('bFloor', 0x252524); mat('bWall', 0x2e2e2d); mat('red', 0xd81616, {r: .7});
-mat('gold', 0xbf9644, {r: .32, m: .75}); mat('cFloor', 0x8c8c88); mat('cWall', 0xa2a29e); mat('white', 0xf2f1ed);
-mat('stock', 0x6b6b67); mat('grey', 0x7b7b77); mat('figure', 0xbcbcb7, {r: .75});
-mat('lime', 0xc6f21a, {e: 0x9ebf0f, ei: .55, r: .6}); mat('chip', 0xe0ae47, {r: .55, m: .2}); mat('mirror', 0x2a2d31, {r: .12, m: .9});
-const route = [];                                    // dashes of the walking line, drawn unlit
+mat('base', 0x2b2b2a); mat('hall', 0x2c2c2c); mat('hallWall', 0x1e1e1d);
+mat('aFloor', 0xd2d1cc); mat('aWall', 0xecece8); mat('blue', 0x0e6edb, {r: .7}); mat('staff', 0x6e6e6b);
+mat('black', 0x161616, {r: .6}); mat('bFloor', 0x1e1e1e); mat('bWall', 0x2c2c2c); mat('bWall2', 0x40403e); mat('red', 0xe51212, {r: .7});
+mat('gold', 0xb08d3e, {r: .32, m: .75}); mat('cFloor', 0x969692); mat('cWall', 0x969692); mat('cWall2', 0xa5a5a0); mat('rubber', 0x282828); mat('white', 0xf5f5f2);
+mat('stockFloor', 0xaaaaa6); mat('stockWall', 0xbdbdb9); mat('tan', 0xbea06e); mat('grey', 0x6e6e6b); mat('pole', 0x5a5a58, {r: .5});
+mat('figure', 0xbcbcb7, {r: .75}); mat('figureB', 0x465a78, {r: .75}); mat('figureC', 0xc8b9a0, {r: .75}); mat('figureD', 0x222222, {r: .75}); mat('skin', 0xa0968c, {r: .75});
+mat('lime', 0xc4e313, {e: 0x9ebf0f, ei: .55, r: .6}); mat('chip', 0xe0ae47, {r: .55, m: .2}); mat('mirror', 0x5a6064, {r: .12, m: .9});
+// the floor tape: one unlit colour per stretch of the route
+const TAPES = {};
+function tape(color, pts, w = .18) { const list = TAPES[color] = TAPES[color] || [];
+  for (let i = 0; i < pts.length - 1; i++) { const [x0, z0] = pts[i], [x1, z1] = pts[i + 1], g = new THREE.BoxGeometry(Math.abs(x1 - x0) + w, .02, Math.abs(z1 - z0) + w);
+    g.translate((x0 + x1) / 2, .05, (z0 + z1) / 2); list.push(g); } }
 // everything a visitor would bump into (taller than a step, lower than a head) is also kept as a floor-plan box for walking
 const SOLID = [];
 const solid = (x0, z0, x1, z1, y0, y1) => { if (y1 > .35 && y1 - y0 > .25 && y0 < 1.7) SOLID.push([Math.min(x0, x1), Math.min(z0, z1), Math.max(x0, x1), Math.max(z0, z1)]); };
@@ -573,75 +588,113 @@ const T = .2;
 function wallX(name, x, z0, z1, h, gaps = []) { let s = z0; for (const [a, b] of [...gaps, [z1, z1]]) { if (a > s) box(name, x - T / 2, s, x + T / 2, a, 0, h); s = b; } }
 function wallZ(name, z, x0, x1, h, gaps = []) { let s = x0; for (const [a, b] of [...gaps, [x1, x1]]) { if (a > s) box(name, s, z - T / 2, a, z + T / 2, 0, h); s = b; } }
 const floor = (name, x0, z0, x1, z1, y = .03) => box(name, x0, z0, x1, z1, 0, y);
+const post = (x, z, h, name = 'pole', r = .05) => cyl(name, x, z, r, 0, h, 10);
 
-// plinth, then the floor of every room
-box('base', -.45, -.45, 45.45, 25.45, -.5, 0);
-floor('hall', 0, 18, 14.1, 25); floor('stock', 14.1, 18, 29, 25); floor('black', 29, 18, 30.8, 25); floor('hall', 30.8, 18, 45, 25);
-floor('aFloor', 0, 0, 14.1, 18); floor('blue', 8.1, 5.2, 14.1, 12, .035); floor('staff', 9.2, 12, 14.1, 18, .035);
-floor('black', 14.1, 0, 16, 18); floor('bFloor', 16, 0, 29, 18); floor('black', 29, 0, 30.8, 18);
-floor('cFloor', 30.8, 0, 45, 18); floor('white', 36.7, 12, 45, 18, .035);
+// ---------- measured off the final 3D structure board (Figma E-42, E-44 to E-47): floors, in metres ----------
+box('base', -.3, -.3, 45.3, 25.3, -.3, 0);
+floor('aFloor', 0, 0, 8, 12); floor('bFloor', 8, 0, 14, 5); floor('blue', 8, 5, 14, 12); floor('aFloor', 0, 12, 9, 18); floor('staff', 9, 12, 14, 18);
+floor('bFloor', 14, 0, 29, 18); floor('rubber', 29, 0, 31, 25);
+floor('cFloor', 31, 0, 45, 4); floor('rubber', 31, 4, 38, 12); floor('cFloor', 38, 4, 45, 12); floor('cFloor', 31, 12, 37, 18); floor('white', 37, 12, 45, 18);
+floor('hall', 0, 18, 14, 25); floor('stockFloor', 14, 18, 29, 25); floor('hall', 31, 18, 45, 25);
 
-// outer shell: the far walls (north, east) stand 4 m, the near ones (south, west) are cut low like a model
-wallZ('aWall', -T / 2, 0, 14.1, 4); wallZ('hallWall', -T / 2, 14.1, 16, 4); wallZ('bWall', -T / 2, 16, 29, 4); wallZ('hallWall', -T / 2, 29, 30.8, 4); wallZ('cWall', -T / 2, 30.8, 45, 4);
-wallX('cWall', 45 + T / 2, -T, 18, 4); wallX('hallWall', 45 + T / 2, 18, 25 + T, 4);
-wallX('aWall', -T / 2, -T, 18, .55); wallX('hallWall', -T / 2, 18, 25 + T, .55);
-wallZ('hallWall', 25 + T / 2, -T, 45 + T, .55, [[.5, 2.4], [42.4, 44.3]]);
-// partitions, 2.4 m
+// outer shell: the north and west walls stand 4 m, as on the board; the south and east sides stay open so the model can be read
+wallX('aWall', -T / 2, -T, 18, 4); wallX('hallWall', -T / 2, 18, 25, 4);
+wallZ('aWall', -T / 2, 0, 8, 4); wallZ('hallWall', -T / 2, 8, 16, 4); wallZ('bWall', -T / 2, 16, 29, 4); wallZ('hallWall', -T / 2, 29, 31, 4); wallZ('cWall2', -T / 2, 31, 45, 4);
+SOLID.push([-.3, 25, 45.3, 25.3], [45, -.3, 45.3, 25.3]);       // the open sides still stop a walker
+// partitions, 2.4 m (the board draws them at 1.6 m only to keep the inside visible)
 const P = 2.4;
-wallX('aWall', 14.1, 0, 18, P, [[10.4, 12.3]]); wallX('bWall', 16, 0, 18, P, [[2.9, 4.8]]);
-wallX('bWall', 29, 0, 18, P, [[14.6, 16.4]]); wallX('cWall', 30.8, 0, 18, P, [[14.6, 16.4]]);
-wallZ('aWall', 18, 0, 14.1, P, [[7.3, 9.0]]); wallZ('hallWall', 18, 14.1, 29, P); wallZ('hallWall', 18, 29, 30.8, P, [[29.1, 30.7]]); wallZ('cWall', 18, 30.8, 45, P, [[40.0, 41.6]]);
-wallX('hallWall', 14.1, 18, 25, P); wallX('hallWall', 29, 18, 25, P); wallX('hallWall', 30.8, 18, 25, P, [[21.4, 23.0]]);
-box('black', 30.7, 14.6, 30.9, 16.4, 2.1, P);                  // the shutter, rolled up over the gate
+wallX('hallWall', 8, 0, 5, P, [[2, 4]]); wallX('blue', 8, 5, 12, P); wallZ('blue', 5, 8, 14, P, [[10, 12]]);
+wallZ('aWall', 12, 0, 9, P, [[2.5, 4.5]]); wallZ('staff', 12, 9, 14, P); wallX('staff', 9, 12, 18, P, [[15.5, 17]]);
+wallX('hallWall', 14, 0, 18, P, [[9.5, 11]]); wallX('stockWall', 14, 18, 25, P, [[20.5, 22]]);
+wallX('bWall', 16, 0, 12, P, [[1.5, 3]]); wallX('bWall2', 16, 12, 18, P);
+wallZ('bWall', 6, 16, 22, P, [[20.5, 22]]); wallZ('red', 6, 22, 29, P); wallX('red', 22, 6, 12, P, [[9.5, 11]]); wallZ('bWall2', 12, 16, 29, P, [[24, 26]]);
+wallX('hallWall', 29, 0, 25, P, [[14.5, 16]]);
+wallX('cWall2', 31, 0, 4, P); wallX('cWall', 31, 4, 18, P, [[13.5, 16.5]]); wallX('hallWall', 31, 18, 25, P, [[21, 23]]);
+wallZ('cWall', 4, 31, 38, P, [[33, 35]]); wallZ('bWall', 4, 38, 45, P, [[40, 42]]); wallX('bWall', 38, 4, 12, P);
+wallZ('cWall', 12, 31, 37, P, [[33, 35]]); wallZ('aWall', 12, 37, 45, P, [[40.1, 42.1]]); wallX('aWall', 37, 12, 18, P);
+wallZ('hallWall', 18, 0, 14, P, [[3, 5]]); wallZ('stockWall', 18, 14, 29, P); wallZ('hallWall', 18, 31, 45, P, [[41.1, 43.1]]);
 
+// ---------- entrance hall ----------
+for (let i = 0; i < 6; i++) for (const x of [.98, 2.18, 3.38]) post(x, 19.15 + i, .92);                 // 1 queue stanchions
+for (let i = 1; i < 6; i++) box('red', .98, 19.13 + i, 3.38, 19.17 + i, .84, .9);
+box('hallWall', 5.6, 22.84, 6.5, 23.54, 0, .75); box('hallWall', 6.5, 22.84, 12.4, 23.54, 0, 1.05);      // 2 reception, 6.8 m with a 0.75 m low end
+box('white', 5.75, 23, 6.25, 23.35, .75, .87); box('red', 9.02, 22.93, 9.62, 23.33, 1.05, 1.23);
+box('bWall2', 6.02, 18.13, 7.62, 18.53, 0, 1.4);                                                          // 3 welcome chip shelf
+for (const y of [.12, .54, .96]) for (let i = 0; i < 5; i++) box('red', 6.06 + i * .3, 18.24, 6.29 + i * .3, 18.56, y, y + .3);
+box('hallWall', 10.26, 17.75, 13.14, 17.88, .7, 2.38);                                                    // 4 briefing screen frame, 2.8 x 1.6
+box('blue', 2.91, 17.94, 5.11, 18.06, 2.4, 2.95); post(3.02, 18, 2.4); post(5, 18, 2.4);                  // 5 GATE A sign (S1)
 // ---------- WORLD A ----------
-wallZ('blue', 5.2, 8.1, 14.1, P); wallX('blue', 8.1, 5.2, 8.9, P);
-wallZ('staff', 12, 9.2, 14.1, P); wallX('staff', 9.2, 12, 18, P);
-box('aWall', 1.2, 13.45, 6.8, 13.7, 0, P);                   // caption gate
-for (const [x, z] of [[9.4, 3.2], [11.3, 3.2], [13.2, 3.2]]) box('black', x - .62, z - .62, x + .62, z + .62, 0, 2.2);   // sound booths
-for (const [x, z] of [[10.3, 7.6], [12.7, 7.0], [11.4, 10.0]]) { box('white', x - .3, z - .3, x + .3, z + .3, 0, 1.0); box('chip', x - .17, z - .12, x + .17, z + .12, 1.0, 1.06); }
-box('grey', 5.5, 7.4, 6.1, 8.0, 0, 1.1); ball('white', 5.8, 1.42, 7.7, .3);   // a bust on its plinth
-box('black', 11.6, 10.95, 12.9, 11.6, 0, .95);                 // stamp desk A
+box('grey', 2.51, 2.92, 4.51, 3.42, 0, .45); box('grey', 2.51, 8.52, 4.51, 9.02, 0, .45);                 // 10 benches
+for (const [x, z] of [[3.9, .9], [6.13, .9], [.9, 3.66], [.9, 5.9], [.9, 8.15], [.9, 10.4]]) post(x, z, .92, 'black');   // 8 the line in front of the paintings
+box('black', 3.9, .88, 6.13, .92, .86, .9); box('black', .88, 3.66, .92, 10.4, .86, .9);
+box('hallWall', 3.61, 5.82, 4.51, 6.22, 0, .05); box('white', 3.61, 5.98, 4.51, 6.06, .05, 1.85);         // 9 A1 mission panel, 0.9 x 1.8
+box('white', 4.91, 8.02, 6.02, 9.12, 0, 1.1); box('staff', 5.16, 8.27, 5.76, 8.87, 1.1, 1.45); ball('stockWall', 5.46, 1.62, 8.57, .19);   // 10 David bust
+for (const x of [8.6, 10.2, 11.8]) { box('black', x, .6, x + 1.2, .7, 0, 2.2); box('black', x, .6, x + .08, 1.8, 0, 2.2); box('black', x + 1.12, .6, x + 1.2, 1.8, 0, 2.2);   // 11 sound booths, 1.2 x 1.2 x 2.2
+  box('hallWall', x + .3, .75, x + .9, .95, 0, .9); }
+box('bWall2', 9.02, 3.92, 10.62, 4.42, 0, .9);                                                            // writing shelf for A3
+for (const [x, z] of [[8.82, 6.62], [12.22, 6.62], [10.52, 8.82]]) { box('white', x, z, x + .8, z + .8, 0, 1.1); box('tan', x + .31, z + .35, x + .49, z + .45, 1.1, 1.35); }   // 12 plinths with the welcome chip
+cyl('white', 8.9, 9.1, .2, .03, .05); cyl('white', 12.3, 9.1, .2, .03, .05); cyl('white', 10.9, 11.1, .2, .03, .05);   // 12 photo spots
+box('hallWall', 11.62, 11.12, 12.82, 11.73, 0, 1); post(12.22, 11.25, 1.6, 'pole', .03); box('blue', 11.92, 11.22, 12.52, 11.28, 1.6, 1.9);   // 13 stamp desk A
+box('white', 4.41, 16.33, 5.01, 16.83, 0, 1.1);                                                           // 7 ticket podium
 // ---------- WORLD B ----------
-for (const [x, z] of [[19.6, 1.4], [26.6, 1.4], [19.6, 5.0], [26.6, 5.0]]) cyl('white', x, z, .06, 0, 1.0);
-box('red', 19.6, 1.38, 26.6, 1.42, .9, .96); box('red', 19.6, 4.98, 26.6, 5.02, .9, .96); box('red', 19.58, 1.4, 19.62, 5.0, .9, .96); box('red', 26.58, 1.4, 26.62, 5.0, .9, .96);
-wallZ('bWall', 6, 16, 22, P, [[18.2, 19.6]]); wallZ('bWall', 12, 16, 22, P, [[21.0, 22]]);
-wallZ('red', 6, 22, 29, P); wallX('red', 22, 6, 12, P, [[8.4, 9.6]]); wallZ('red', 12, 22, 29, P, [[27.3, 29]]);
-for (let i = 0; i < 4; i++) { box('grey', 16.2, 6.5 + i * 1.3, 16.9, 7.6 + i * 1.3, 0, 2.1); for (let k = 0; k < 3; k++) box('white', 16.3, 6.6 + i * 1.3 + k * .34, 16.75, 6.86 + i * 1.3 + k * .34, .9 + (k % 2) * .6, 1.2 + (k % 2) * .6); }
-box('black', 18.6, 8.0, 20.4, 9.2, 0, .9); for (let i = 0; i < 3; i++) box('white', 18.8 + i * .55, 8.4, 19.2 + i * .55, 8.7, .9, .92);
-box('black', 24.4, 8.4, 26.6, 9.4, 0, .8); box('grey', 24.9, 7.6, 25.4, 8.1, 0, .9); box('grey', 25.6, 9.7, 26.1, 10.2, 0, .9);
-box('mirror', 28.78, 7.4, 28.88, 10.6, .7, 2.2);              // the fake mirror
-box('black', 25.4, 16.9, 26.8, 17.6, 0, .95);                 // stamp desk B
-cyl('black', 21.2, 15.4, .05, 0, 1.6); box('black', 21.05, 15.3, 21.35, 15.5, 1.6, 1.8);   // the line-up camera
+box('red', 15.96, 1.11, 16.08, 3.32, 2.4, 2.95); post(16.02, 1.25, 2.4); post(16.02, 3.2, 2.4);           // 1 GATE B sign (S1)
+for (const x of [19, 22.5, 26]) { post(x, 1.5, 1.0, 'white', .04); post(x, 5, 1.0, 'white', .04); }       // 4 red tape cordon around the chalk circle
+box('red', 19, 1.48, 26, 1.52, .9, .96); box('red', 19, 4.98, 26, 5.02, .9, .96); box('red', 18.98, 1.5, 19.02, 5, .9, .96); box('red', 25.98, 1.5, 26.02, 5, .9, .96);
+box('bWall2', 16.12, 7.02, 16.72, 11.03, 0, 2);                                                           // 5 evidence shelf, 4.0 m
+for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) box('white', 16.73, 7.2 + c * .62, 16.76, 7.68 + c * .62, .35 + r * .4, .65 + r * .4);
+for (const z of [7.43, 9.84]) { box('hallWall', 18.33, z + .1, 20.33, z + 1.1, 0, .85); box('staff', 18.23, z, 20.43, z + 1.2, .85, .9);   // 6 B1 clue tables x 2, 1.2 m apart
+  for (let i = 0; i < 3; i++) box('white', 18.43 + i * .7, z + .4, 18.83 + i * .7, z + .7, .9, .93);
+  box('stockWall', 19.13, z + .4, 19.53, z + .8, 1.9, 2.05); cyl('pole', 19.33, z + .6, .01, 2.05, 2.4, 6); }
+box('mirror', 23, 6.1, 26.2, 6.18, .65, 1.9);                                                             // 7 fake two-way mirror, 3.2 m
+box('hallWall', 25.03, 8.03, 27.04, 9.12, 0, .75); box('bWall2', 25.63, 7.17, 26.08, 7.62, 0, .45); box('bWall2', 25.63, 9.38, 26.09, 9.83, 0, .45);   // 8 interrogation table, 2 chairs
+box('red', 25.66, 8.42, 25.76, 8.52, .75, .95); box('red', 26.3, 8.62, 26.4, 8.72, .75, .95);             // the two mics
+box('hallWall', 26.69, 6.1, 28.09, 6.2, 1.6, 2.32);                                                       // 9 ranking monitor, 55 inch
+box('grey', 16.63, 14.23, 17.13, 16.03, 0, 1.5);                                                          // 11 charge sign rack
+for (let i = 0; i < 6; i++) box('white', 17.14, 14.35 + i * .27, 17.17, 14.58 + i * .27, .55, 1.25);
+cyl('red', 21.78, 12.83, .2, .03, .05);                                                                   // 10 where you stand for the mugshot
+post(21.82, 16.34, 1.45, 'black', .03); box('hallWall', 21.68, 16.25, 21.96, 16.43, 1.45, 1.63);          // the camera, 3 m back
+for (const x of [20.05, 24.05]) { post(x + .25, 15.98, 1.7, 'black', .03); box('white', x, 15.93, x + .5, 16.03, 1.7, 2.2); }   // two softboxes
+box('hallWall', 25.13, 17.03, 26.33, 17.63, 0, 1); post(25.73, 17.2, 1.6, 'pole', .03); box('red', 25.43, 17.17, 26.03, 17.23, 1.6, 1.9);   // 12 stamp desk B
+// ---------- shared STOCK: the racks stand 0.7 m further in than on the board, so the door from the entrance hall is clear ----------
+for (const x of [15.72, 19.03, 22.33, 25.63]) { box('staff', x, 21.04, x + 2.8, 21.84, 0, 2.2);           // 13 four racks
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) box((r + c) % 2 ? 'tan' : 'white', x + .05 + c * .54, 21.84, x + .5 + c * .54, 22.04, .12 + r * .68, .58 + r * .68); }
+box('tan', 16.03, 23.24, 17.23, 24.24, 0, .15); box('white', 16.12, 23.34, 17.13, 24.14, .15, .75);
+box('tan', 25.04, 23.24, 26.24, 24.24, 0, .15); box('tan', 25.13, 23.34, 26.14, 24.14, .15, .95);
 // ---------- WORLD C ----------
-wallX('cWall', 37.7, 4.6, 12, P); wallZ('cWall', 12, 30.8, 37.7, P, [[33.4, 35.0]]); wallZ('cWall', 12, 37.7, 45, P, [[42.4, 44.3]]); wallX('cWall', 36.7, 12, 18, P);
-for (const x of [32.3, 34.0, 35.8]) { box('black', x - .55, 7.7, x + .55, 8.8, 0, 1.0); box('lime', x - .32, 8.0, x + .32, 8.5, 1.0, 1.06); }
-box('black', 39.0, 15.6, 40.8, 16.5, 0, .95);                 // stamp desk C
-box('white', 40.1, 6.0, 40.7, 6.4, 0, 1.15);                   // archive kiosk
-for (const z of [13.4, 14.4, 15.4]) cyl('black', 43.6, z, .05, 0, 1.0);
-// ---------- halls ----------
-for (let r = 0; r < 3; r++) for (let i = 0; i < 5; i++) cyl('black', 1.0 + r * 1.05, 19.3 + i * 1.15, .05, 0, 1.0, 10);
-for (let r = 0; r < 3; r++) box('black', .98 + r * 1.05, 19.3, 1.02 + r * 1.05, 23.9, .88, .93);
-for (const x of [5.6, 8.0, 10.4]) box('black', x, 21.2, x + 2, 21.9, 0, .95);
-for (const z of [19.2, 23.0]) box('white', 15.0, z, 28.2, z + .6, 0, 2.0);
-for (let i = 0; i < 4; i++) box('black', 36.9 + i * 1.08, 18.2, 37.85 + i * 1.08, 18.95, 0, 1.85);
-box('white', 42.4, 18.35, 44.6, 19.15, 0, .95); box('black', 31.1, 19.2, 31.9, 23.4, 0, 1.05);
-for (const x of [33.6, 36.6, 39.6]) box('grey', x, 21.3, x + 2, 21.9, 0, .8);
-box('red', 41.8, 22.3, 44.4, 23.2, 0, 1.0);
+box('grey', 29.64, 8.03, 30.44, 11.03, 0, .45);                                                           // the REST bench
+box('bWall2', 30.94, 13.42, 31.13, 16.63, 2.1, 2.45); box('lime', 30.9, 13.5, 30.93, 16.5, 2.06, 2.1); box('lime', 30.89, 13.93, 31.01, 15.93, 2.45, 2.95);   // 1 rolling shutter, lime LED, GATE C
+for (let i = 0; i < 4; i++) box('white', 32.24 + i * .9, 15.43, 32.84 + i * .9, 15.83, 0, .055);           // 2 floor stencil
+for (const x of [35.24, 42.85]) { box('hallWall', x, 2.42, x + .6, 2.82, 0, .9); for (let i = 0; i < 5; i++) box(i % 2 ? 'black' : 'lime', x + .06 + i * .1, 2.58, x + .13 + i * .1, 2.66, .9, 1.06); }   // 4 marker carts
+box('grey', 44.05, 2.52, 44.75, 3.02, 0, .6);                                                             // 4 BUFF tool box
+for (const x of [32.23, 34.33, 36.43]) { cyl('hallWall', x, 7.41, .6, 0, .9, 28); { const s = SOLID[SOLID.length - 1]; s[0] += .12; s[1] += .12; s[2] -= .12; s[3] -= .12; } cyl('lime', x, 7.41, .6, .9, .95, 28);    // 5 grip stations, dia 1.2 x 0.95
+  box('white', x + .2, 7.2, x + .36, 7.34, .95, 1.03); box('hallWall', x - .22, 7.5, x - .02, 7.62, .95, 1.03); }
+for (const x of [32.44, 34.54, 36.64]) { post(x + .1, 4.9, 1.7, 'pole', .03); post(x + .9, 4.9, 1.7, 'pole', .03); box('hallWall', x, 4.86, x + 1, 4.94, 1.7, 2.35); }   // 6 gauge screens
+post(43.7, 8.08, 1.2, 'white', .15);                                                                       // C3 QR stand
+box('hallWall', 39.65, 15.63, 41.65, 16.23, 0, 1); box('white', 39.65, 16.59, 41.65, 16.71, 1, 1.5);      // 9 C-05 desk: stamp C and CASE CLOSED
+box('grey', 42.55, 13.28, 44.15, 13.73, 0, .45);
+box('white', 41, 17.94, 43.2, 18.06, 2.4, 2.95); post(41.1, 18, 2.4); post(43.1, 18, 2.4);                // 10 OUT gate sign
+// ---------- exit hall ----------
+for (const x of [35.54, 36.59, 37.65, 38.7]) { box('hallWall', x, 18.63, x + .9, 19.43, 0, 1.9); box('red', x, 18.63, x + .9, 19.43, 1.9, 1.95); }   // 11 reward dispensers x 4
+box('hallWall', 42.25, 18.44, 44.85, 19.04, 0, 1.05);                                                     // 12 token exchange desk
+box('bWall2', 31.44, 19.94, 32.34, 22.44, 0, 1.05);                                                       // 13 soda bar
+for (let i = 0; i < 3; i++) box(['red', 'white', 'lime'][i], 31.7 + i * .25, 20.3, 31.84 + i * .25, 20.44, 1.05, 1.31);
+for (const x of [33.24, 36.04, 38.85]) box('rubber', x, 21.44, x + 2.2, 22.04, 0, 1.6);                   // 14 shop shelves x 3
+box('red', 41.85, 21.04, 44.45, 22.24, 0, 1.05); box('hallWall', 42.45, 21.44, 42.85, 21.74, 1.05, 1.3);  // 15 RED checkout
 // people, for scale (1.7 m)
-for (const [x, z] of [[2.1, 22.6], [6.4, 22.7], [4.6, 9.4], [11.6, 8.6], [18.9, 10.2], [25.2, 4.2], [20.6, 15.8], [33.3, 6.4], [41.8, 2.8], [39.5, 15.0], [34.6, 22.8], [43.2, 21.8], [12.6, 4.6]]) {
-  cyl('figure', x, z, .2, 0, 1.38, 12); ball('figure', x, 1.56, z, .15); }
+for (const [x, z, m] of [[2.8, 21.7, 'figureC'], [1.6, 22.7, 'figureB'], [6.3, 22.4, 'figureD'], [8.5, 22.4, 'figureD'], [10.7, 22.4, 'figureD'], [5.2, 15.7, 'figureB'], [2.4, 6.2, 'figureC'], [3.1, 10.8, 'figureD'],
+  [9.8, 8.6, 'figureD'], [12.3, 10.5, 'figureD'], [7, 3.2, 'figureB'], [17.4, 8.9, 'figureC'], [17.2, 6.75, 'figureB'], [24.5, 3.2, 'figureB'], [27.5, 10.6, 'figureD'], [25.7, 16.4, 'figureD'], [21.2, 15.2, 'figureC'],
+  [32.5, 9.7, 'figureD'], [36.2, 9.5, 'figureB'], [39.8, 1.2, 'figureD'], [37.3, 1.1, 'figureC'], [42, 1.6, 'figure'], [40.1, 15, 'figureD'], [43.4, 17.6, 'figureD'], [36.6, 20, 'figureC'], [36.5, 23.4, 'figureB'], [39.7, 23.8, 'figureC'], [42.9, 20.6, 'figureD'], [40.6, 8, 'figureC'], [30.8, 19.8, 'figureD']]) {
+  cyl(m, x, z, .2, 0, 1.38, 12); ball('skin', x, 1.56, z, .15); }
 
-// ---------- the walking line: IN, through A, B and C, OUT (traced from the 02 floor plan) ----------
-const px = (x, y) => [(x - 55) / 17.67, (y - 165) / 17.67];
-const LINE = [[80, 612], [80, 540], [100, 540], [100, 595], [125, 595], [125, 548], [145, 552], [280, 552], [280, 518], [198, 518], [198, 430], [103, 352], [103, 242], [195, 242],
-  [292, 250], [292, 365], [325, 365], [325, 232], [468, 232], [390, 355], [530, 355], [452, 440], [585, 440], [650, 455], [660, 350], [715, 345], [715, 212], [820, 212], [820, 425],
-  [775, 425], [775, 520], [635, 520], [635, 560], [820, 560], [820, 620]].map(p => px(...p));
-for (let i = 0; i < LINE.length - 1; i++) {
-  const [x0, z0] = LINE[i], [x1, z1] = LINE[i + 1], len = Math.hypot(x1 - x0, z1 - z0), ang = Math.atan2(z1 - z0, x1 - x0);
-  for (let d = 0; d < len; d += .62) { const l = Math.min(.36, len - d), g = new THREE.BoxGeometry(l, .02, .11);
-    g.rotateY(-ang); g.translate(x0 + Math.cos(ang) * (d + l / 2), .06, z0 + Math.sin(ang) * (d + l / 2)); route.push(g); }
-}
+// ---------- the floor tape: world colours, white in the halls and passages, grey on the shortcut ----------
+tape('#f5f5f2', [[4, 24.82], [4, 18]]);
+tape('#0e6edb', [[4, 18], [4, 3], [11, 3], [11, 10.2], [15, 10.2]]);
+tape('#f5f5f2', [[15, 10.2], [15, 2.2]]); tape('#f5f5f2', [[15, .6], [15, 17.5]], .08);                    // 14 BLACKOUT, the LED line on the floor
+tape('#e51212', [[15, 2.2], [21.2, 2.2], [21.2, 10.2], [25, 10.2], [25, 15.2], [30, 15.2]]);
+tape('#c4e313', [[30, 15.2], [34, 15.2], [34, 2.4], [41, 2.4], [41, 18]]);
+tape('#f5f5f2', [[41, 18], [42, 18], [42, 24.82]]);
+tape('#bdbdb9', [[30, 15.2], [30, 22.2], [31.6, 22.2]]);
+const LINE = [[4, 24.8], [4, 3], [11, 3], [11, 10.2], [15, 10.2], [15, 2.2], [21.2, 2.2], [21.2, 10.2], [25, 10.2], [25, 15.2], [34, 15.2], [34, 2.4], [41, 2.4], [41, 18], [42, 18], [42, 24.8]];
 
 // ---------- textures drawn on canvases (signs, the buff wall, screens) ----------
 const LOGO = [...document.querySelectorAll('#logo path')].map(p => new Path2D(p.getAttribute('d')));
@@ -662,50 +715,65 @@ const loader = new THREE.TextureLoader();
 const img = src => { const t = loader.load(src, () => kick()); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = aniso; return t; };
 
 function dress() {
-  // A: three works on the north wall, gold frames, the caption gate and the blue room
-  ART.paintings.forEach((p, i) => { const x = 2.4 + i * 2.6, w = 1.25, h = w * p.h / p.w;
-    box('gold', x - w / 2 - .08, .02, x + w / 2 + .08, .1, 1.75 - h / 2 - .08, 1.75 + h / 2 + .08);
-    plane(img(p.src), w, h, x, 1.75, .105); });
-  plane(paint(1024, 440, (g, w, h) => { g.fillStyle = '#f3f2ee'; g.fillRect(0, 0, w, h); g.fillStyle = '#1b1b1b'; g.textAlign = 'center';
+  const R90 = Math.PI / 2;
+  const sign = (txt, bg, fg, w, h, x, y, z, ry = 0) => plane(paint(1024, Math.round(1024 * h / w), (g, W, H) => { g.fillStyle = bg; g.fillRect(0, 0, W, H); g.fillStyle = fg; g.textAlign = 'center';
+    g.font = `900 ${Math.round(H * .52)}px Roboto`; g.fillText(txt, W / 2, H * .68); }), w, h, x, y, z, ry);
+  // A: three works, 1.8 x 2.4 m gold frames: one on the north wall, two on the west wall
+  const hang = (p, x, z, west) => { const fw = .9, y0 = .85, y1 = 3.25, w = 1.4, h = Math.min(2, w * p.h / p.w), ww = h * p.w / p.h, cy = (y0 + y1) / 2;
+    if (west) { box('gold', 0, z - fw, .08, z + fw, y0, y1); box('hallWall', .08, z - fw + .1, .1, z + fw - .1, y0 + .1, y1 - .1); plane(img(p.src), ww, h, .11, cy, z, R90); box('white', .08, z + fw + .12, .1, z + fw + .32, 1.3, 1.42); }
+    else { box('gold', x - fw, 0, x + fw, .08, y0, y1); box('hallWall', x - fw + .1, .08, x + fw - .1, .1, y0 + .1, y1 - .1); plane(img(p.src), ww, h, x, cy, .11); box('white', x + fw + .12, .08, x + fw + .32, .1, 1.3, 1.42); } };
+  hang(ART.paintings[0], 5, 0, false); hang(ART.paintings[1], 0, 5, true); hang(ART.paintings[2], 0, 9.3, true);
+  // A-00: the rule board, 3.0 x 2.4 m on the west wall, and the gate lettering
+  plane(paint(768, 614, (g, w, h) => { g.fillStyle = '#f5f5f2'; g.fillRect(0, 0, w, h); g.fillStyle = '#161616'; g.font = '900 56px Roboto'; g.fillText('HOUSE RULES', 44, 84);
+    g.font = '700 38px "Noto Sans KR"'; ['작품은 만져도 된다.', '크게 씹을수록 유리하다.', '벽에는 한 줄만 쓴다.'].forEach((t, i) => g.fillText(`0${i + 1}  ${t}`, 44, 190 + i * 88));
+    g.fillStyle = '#c9c8c3'; for (let i = 0; i < 3; i++) g.fillRect(44, 470 + i * 34, 620 - i * 120, 12); }), 3, 2.4, .11, 1.8, 15, R90);
+  plane(paint(1024, 440, (g, w, h) => { g.fillStyle = '#ecece8'; g.fillRect(0, 0, w, h); g.fillStyle = '#1b1b1b'; g.textAlign = 'center';
     g.font = 'italic 64px "Libre Baskerville"'; g.fillText('Museum of', w / 2, 190); g.fillText('Good Taste', w / 2, 280);
-    g.font = '500 22px "Roboto Mono"'; g.fillStyle = '#8f8f8a'; g.fillText('A-00   CAPTION GATE', w / 2, 360); }), 5.6, 2.4, 4.0, 1.2, 13.71);
-  plane(paint(1024, 410, (g, w, h) => { g.fillStyle = '#1f6fe5'; g.fillRect(0, 0, w, h); g.fillStyle = '#fbfbfb';
-    g.font = '900 96px Roboto'; g.fillText('PLEASE DO', 70, 190); g.fillText('NOT TOUCH.', 70, 290); }), 6.0, 2.4, 11.1, 1.2, 5.31);
-  // B: the empty frame, the case board, chalk outline, height chart
-  box('gold', 22.2, .02, 23.8, .14, 1.15, 1.3); box('gold', 22.2, .02, 23.8, .14, 2.95, 3.1); box('gold', 22.2, .02, 22.35, .14, 1.15, 3.1); box('gold', 23.65, .02, 23.8, .14, 1.15, 3.1);
-  plane(paint(256, 320, (g, w, h) => { g.fillStyle = '#202020'; g.fillRect(0, 0, w, h); g.fillStyle = '#e51212'; g.font = '500 26px "Roboto Mono"'; g.textAlign = 'center'; g.fillText('STOLEN', w / 2, h / 2 + 9); }), 1.3, 1.65, 23, 2.12, .11);
-  plane(paint(512, 640, (g, w, h) => { g.fillStyle = '#efeeea'; g.fillRect(0, 0, w, h); g.fillStyle = '#121212'; g.font = '500 40px "Roboto Mono"'; g.fillText('CASE NO.', 44, 92); g.font = '900 120px Roboto'; g.fillText('0412', 40, 220);
-    g.fillStyle = '#c9c8c3'; for (let i = 0; i < 6; i++) g.fillRect(44, 300 + i * 52, 420 - (i % 3) * 90, 14); }), .95, 1.2, 27.7, 1.9, .11);
-  plane(paint(512, 340, (g, w, h) => { g.clearRect(0, 0, w, h); g.strokeStyle = '#f4f4f0'; g.lineWidth = 7; g.setLineDash([22, 16]); g.beginPath();
-    g.moveTo(150, 60); g.bezierCurveTo(250, 20, 330, 90, 300, 150); g.lineTo(460, 120); g.lineTo(470, 175); g.lineTo(300, 205); g.bezierCurveTo(330, 300, 230, 310, 200, 250);
-    g.lineTo(60, 300); g.lineTo(40, 250); g.lineTo(180, 200); g.bezierCurveTo(90, 180, 80, 90, 150, 60); g.stroke(); }), 3.2, 2.1, 23.1, .07, 3.2, 0, {alpha: true}).rotation.x = -Math.PI / 2;
-  plane(paint(1024, 420, (g, w, h) => { g.fillStyle = '#d9d8d3'; g.fillRect(0, 0, w, h); g.fillStyle = '#2a2a2a'; g.font = '500 22px "Roboto Mono"';
-    for (let i = 0; i <= 10; i++) { const y = h - 20 - i * 37; g.fillRect(0, y, i % 2 ? 60 : 120, 4); g.fillRect(w - (i % 2 ? 60 : 120), y, i % 2 ? 60 : 120, 4); if (!(i % 2)) g.fillText(String(100 + i * 10), 132, y + 8); }
-    g.font = '900 64px Roboto'; g.fillText('LINE-UP', 380, 120); }), 4.8, 2.0, 18.9, 1.1, 12.11);
-  // C: the buff wall, 14 m of grey paint over yesterday, BLUFF on top
-  plane(paint(2048, 585, (g, w, h) => {
-    g.fillStyle = '#a2a29e'; g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(${Math.random() < .5 ? '0,0,0' : '255,255,255'},${Math.random() * .06})`; g.fillRect(Math.random() * w, Math.random() * h, 3, 3); }
-    const patch = [[60, 90, 520, 300, '#8d8d89'], [610, 60, 300, 250, '#b3b3ae'], [940, 140, 420, 260, '#91918d'], [1400, 70, 300, 330, '#b6b6b1'], [1730, 120, 260, 280, '#8a8a86'], [420, 360, 380, 160, '#999995'], [1160, 400, 360, 140, '#adada8']];
-    for (const [x, y, pw, ph, c] of patch) { g.fillStyle = c; g.fillRect(x, y, pw, ph); }
-    logo(g, 110, 110, 720, '#c6f21a', -.09);
-    g.fillStyle = '#c6f21a'; g.save(); g.translate(990, 250); g.rotate(-.05); g.font = 'italic 900 92px Roboto'; g.fillText('NO PAIN.', 0, 0); g.restore();
-    g.save(); g.translate(1440, 200); g.rotate(.04); g.font = '900 70px "Noto Sans KR"'; g.fillText('마감 3개 끝.', 0, 0); g.restore();
-    logo(g, 1700, 330, 260, '#c6f21a', -.14); logo(g, 640, 420, 200, '#1d1d1d', .06);
-    g.font = '500 26px "Roboto Mono"'; g.fillStyle = '#5d5d59'; g.fillText('C-02   THE BUFF WALL   14M', 60, 560);
-  }), 14.0, 4.0, 37.8, 2.0, .11);
+    g.font = '500 22px "Roboto Mono"'; g.fillStyle = '#8f8f8a'; g.fillText('A-00   CAPTION GATE', w / 2, 360); }), 4.2, 1.8, 6.75, 1.3, 12.11);
+  box('white', 9, 5.0, 13, 5.1, 2.05, 2.4); sign('PLEASE DO TOUCH.', '#f5f5f2', '#0e6edb', 4, .35, 11, 2.225, 5.11);   // over the door of the blue room
+  plane(paint(320, 640, (g, w, h) => { g.fillStyle = '#f5f5f2'; g.fillRect(0, 0, w, h); g.fillStyle = '#0e6edb'; g.font = '700 54px "Roboto Mono"'; g.fillText('A1', 34, 84); g.fillStyle = '#161616'; g.font = '900 40px Roboto'; g.fillText('SPOT THE', 34, 170); g.fillText('BLUFF', 34, 214);
+    g.fillStyle = '#c9c8c3'; for (let i = 0; i < 6; i++) g.fillRect(34, 280 + i * 44, 240 - (i % 3) * 50, 12); }), .88, 1.76, 4.06, .95, 6.07);
+  sign('GATE A', '#0e6edb', '#fbfbfb', 2.2, .55, 4.01, 2.675, 18.07);
+  // B: the empty gold frame, 2.2 x 2.8 m, the case panel, the chalk circle, the 5 m height wall, the ranking monitor
+  box('gold', 20.95, 0, 23.15, .12, .62, .82); box('gold', 20.95, 0, 23.15, .12, 3.22, 3.42); box('gold', 20.95, 0, 21.15, .12, .62, 3.42); box('gold', 22.95, 0, 23.15, .12, .62, 3.42);
+  plane(paint(256, 320, (g, w, h) => { g.fillStyle = '#202020'; g.fillRect(0, 0, w, h); g.fillStyle = '#e51212'; g.font = '500 26px "Roboto Mono"'; g.textAlign = 'center'; g.fillText('STOLEN', w / 2, h / 2 + 9); }), 1.8, 2.4, 22.05, 2.02, .08);
+  plane(paint(512, 400, (g, w, h) => { g.fillStyle = '#dcdcda'; g.fillRect(0, 0, w, h); g.fillStyle = '#121212'; g.font = '500 34px "Roboto Mono"'; g.fillText('CASE NO. 0412', 36, 66); g.font = '900 54px "Noto Sans KR"'; g.fillText('좋은 취향 도난', 34, 140);
+    g.fillStyle = '#9f9e99'; for (let i = 0; i < 5; i++) g.fillRect(36, 190 + i * 38, 430 - (i % 3) * 90, 12); }), 1.8, 1.4, 26.45, 1.91, .03);
+  plane(paint(512, 512, (g, w, h) => { g.clearRect(0, 0, w, h); g.strokeStyle = '#f5f5f2'; g.lineWidth = 12; g.beginPath(); g.arc(w / 2, h / 2, w / 2 - 12, 0, Math.PI * 2); g.stroke(); }), 3.1, 3.1, 22.52, .06, 3.2, 0, {alpha: true}).rotation.x = -R90;
+  plane(paint(1024, 492, (g, w, h) => { g.fillStyle = '#d9d8d3'; g.fillRect(0, 0, w, h); g.fillStyle = '#2a2a2a'; g.font = '500 20px "Roboto Mono"';
+    for (let i = 0; i <= 12; i++) { const v = 100 + i * 10, y = h - (v / 240) * h; g.fillRect(0, y, i % 2 ? 60 : 110, 3); g.fillRect(w - (i % 2 ? 60 : 110), y, i % 2 ? 60 : 110, 3); if (!(i % 2)) g.fillText(String(v), 120, y + 7); }
+    g.font = '900 64px Roboto'; g.fillText('LINE-UP', 380, 90); }), 5, 2.4, 22, 1.2, 12.11);
   const screen = (draw, w, h, x, y, z, ry = 0) => plane(paint(512, Math.round(512 * h / w), draw), w, h, x, y, z, ry, {basic: true});
-  screen((g, w, h) => { g.fillStyle = '#111'; g.fillRect(0, 0, w, h); g.fillStyle = '#c6f21a'; [.82, .55, .3].forEach((k, i) => g.fillRect(70 + i * 140, h - 40 - (h - 90) * k, 80, (h - 90) * k));
-    g.font = '500 22px "Roboto Mono"'; g.fillText('STRESS', 70, 40); }, 3.6, 1.1, 34.0, 1.75, 8.95);
-  box('black', 32.1, 8.85, 35.9, 8.92, 1.15, 2.35);
-  for (let i = 0; i < 4; i++) { const x = 38.9 + i * 1.5; cyl('black', x, 5.0, .04, 0, 1.15, 8);
-    screen((g, w, h) => { g.fillStyle = '#1a1a1a'; g.fillRect(0, 0, w, h); g.fillStyle = ['#8d8d89', '#b3b3ae', '#999995', '#adada8'][i]; g.fillRect(30, 40, w - 60, h - 80);
-      logo(g, 60 + i * 20, 80, 300, '#c6f21a', -.08 + i * .05); g.fillStyle = '#fbfbfb'; g.font = '500 20px "Roboto Mono"'; g.fillText('LAST NIGHT  0' + (i + 1), 30, 28); }, 1.2, .78, x, 1.55, 5.03); }
-  // halls: briefing screen, reward vending, the shop
-  screen((g, w, h) => { g.fillStyle = '#f4f3ef'; g.fillRect(0, 0, w, h); logo(g, 96, 40, 320, '#e51212'); g.fillStyle = '#121212'; g.font = '500 22px "Roboto Mono"'; g.textAlign = 'center'; g.fillText('CASE NO. 0412', w / 2, h - 34); }, 2.8, 1.25, 12.1, 1.75, 17.88);
-  for (let i = 0; i < 4; i++) screen((g, w, h) => { g.fillStyle = '#c6f21a'; g.fillRect(0, 0, w, h); g.fillStyle = '#151515'; g.fillRect(40, 60, w - 80, h * .55);
-    g.fillStyle = '#c6f21a'; for (let r = 0; r < 3; r++) for (let k = 0; k < 4; k++) g.fillRect(70 + k * 95, 90 + r * 130, 50, 80); g.fillStyle = '#151515'; g.fillRect(40, h - 150, 150, 70); }, .82, 1.5, 37.37 + i * 1.08, 1.0, 18.96);
-  ART.bags.forEach((b, i) => { for (let t = 0; t < 3; t++) plane(img(b.src), .34, .34 * b.h / b.w, 34.6 + t * 3 + (i - 1) * .55, .8 + .17 * b.h / b.w + .01, 21.6, 0, {alpha: true}); });
+  screen((g, w, h) => { g.fillStyle = '#111'; g.fillRect(0, 0, w, h); g.fillStyle = '#e51212'; g.font = '700 30px "Roboto Mono"'; g.fillText("TODAY'S LOUDEST", 28, 52); g.fillStyle = '#fbfbfb'; g.font = '900 54px Roboto'; ['97.4 dB', '95.1 dB', '93.8 dB'].forEach((t, i) => g.fillText(t, 28, 122 + i * 62)); }, 1.3, .64, 27.39, 1.96, 6.21);
+  sign('GATE B', '#e51212', '#fbfbfb', 2.2, .55, 15.95, 2.675, 2.21, -R90);
+  // C: the BUFF WALL, 14 m on the north wall: tag zone H0.5 to 2.2 in lime, grey paint above
+  plane(paint(2048, 585, (g, w, h) => {
+    g.fillStyle = '#a5a5a0'; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(${Math.random() < .5 ? '0,0,0' : '255,255,255'},${Math.random() * .06})`; g.fillRect(Math.random() * w, Math.random() * h, 3, 3); }
+    g.fillStyle = '#b4b4b0'; g.fillRect(310, 60, 410, 150); g.fillRect(1240, 40, 270, 130);
+    const m = h / 4, y0 = h - 2.2 * m, y1 = h - .5 * m; g.fillStyle = '#c4e313'; g.fillRect(0, y0, w, y1 - y0);
+    g.fillStyle = '#1d1d1d'; g.font = '700 26px "Noto Sans KR"';
+    const tags = ['월요일이 너무 길다, J', '고상한 척 그만, 민', '야근 3일째 :(, K', '다 부숴버려, 소', '오늘도 버텼다, H', '마감 3개 끝.', 'NO PAIN.', '비싼 게 뭔데', '내일은 쉰다', '퇴근하고 싶다, Y'];
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) { const i = r * 6 + c; g.save(); g.translate(40 + c * 330 + (r % 2) * 90 + (i * 53) % 50, y0 + 44 + r * 56 + (i * 31) % 16); g.rotate((i % 5 - 2) * .012); g.fillText(tags[(i * 3) % tags.length], 0, 0); g.restore(); }
+    logo(g, 1740, y0 + 70, 220, '#1d1d1d', -.08);
+    g.font = '500 26px "Roboto Mono"'; g.fillStyle = '#4d4d49'; g.fillText('C-02   THE BUFF WALL   14M', 60, 40); g.fillText('2026.11.02', 1820, 40);
+  }), 14.0, 4.0, 38.0, 2.0, .01);
+  for (const x of [32.94, 35.04, 37.14]) screen((g, w, h) => { g.fillStyle = '#111'; g.fillRect(0, 0, w, h); g.fillStyle = '#fbfbfb'; g.font = '700 34px "Roboto Mono"'; g.fillText('STRESS', 28, 56); g.fillStyle = '#2b2b2a'; g.fillRect(28, h - 92, w - 56, 54); g.fillStyle = '#c4e313'; g.fillRect(28, h - 92, (w - 56) * .68, 54); }, .98, .62, x, 2.025, 4.95);
+  sign('GATE C', '#c4e313', '#121212', 2, .5, 30.88, 2.7, 14.93, -R90);
+  // C-04: four photo panels of last night's wall on the partition, and the 3 m time-lapse screen
+  for (let i = 0; i < 4; i++) { const z = 5.2 + i * 1.5; box('hallWall', 38.1, z - .6, 38.14, z + .6, .4, 2.2);
+    screen((g, w, h) => { g.fillStyle = '#1a1a1a'; g.fillRect(0, 0, w, h); g.fillStyle = ['#8d8d89', '#b3b3ae', '#999995', '#adada8'][i]; g.fillRect(30, 60, w - 60, h - 110);
+      logo(g, 60 + i * 20, 140, 300, '#c4e313', -.08 + i * .05); g.fillStyle = '#fbfbfb'; g.font = '500 24px "Roboto Mono"'; g.fillText('LAST NIGHT  0' + (i + 1), 30, 40); }, 1.12, 1.72, 38.15, 1.3, z, R90); }
+  box('hallWall', 42.08, 4.1, 45, 4.18, .55, 1.95);
+  screen((g, w, h) => { g.fillStyle = '#62720a'; g.fillRect(0, 0, w, h); logo(g, 150, 30, 210, '#c4e313', -.06); g.fillStyle = '#fbfbfb'; g.font = '500 16px "Roboto Mono"'; g.fillText('MIDNIGHT ARCHIVE  TIME-LAPSE', 20, h - 18); }, 2.8, 1.28, 43.54, 1.25, 4.19);
+  sign('CASE CLOSED.', '#f5f5f2', '#161616', 2, .5, 40.65, 1.25, 16.72);
+  sign('OUT', '#f5f5f2', '#121212', 2.2, .55, 42.1, 2.675, 17.93, Math.PI);
+  // halls: the briefing screen, reward dispensers, the shop
+  screen((g, w, h) => { g.fillStyle = '#f4f3ef'; g.fillRect(0, 0, w, h); logo(g, 96, 40, 320, '#e51212'); g.fillStyle = '#121212'; g.font = '500 22px "Roboto Mono"'; g.textAlign = 'center'; g.fillText('CASE NO. 0412', w / 2, h - 34); }, 2.68, 1.5, 11.7, 1.54, 17.89);
+  for (const x of [35.99, 37.04, 38.1, 39.15]) screen((g, w, h) => { g.fillStyle = '#121212'; g.fillRect(0, 0, w, h); g.fillStyle = '#c4e313'; g.fillRect(30, 40, w - 60, h * .5); g.fillStyle = '#151515'; for (let r = 0; r < 3; r++) for (let k = 0; k < 3; k++) g.fillRect(60 + k * 130, 66 + r * 130, 90, 96);
+    g.fillStyle = '#e51212'; g.fillRect(30, h - 170, w - 60, 8); g.fillStyle = '#fbfbfb'; g.font = '700 28px "Roboto Mono"'; g.fillText('INSERT TOKEN', 30, h - 110); g.fillRect(30, h - 80, 150, 50); }, .82, 1.7, x, .98, 19.44);
+  for (const x of [34.34, 37.14, 39.95]) { const shelf = paint(512, 372, (g, w, h) => { g.fillStyle = '#1a1a1a'; g.fillRect(0, 0, w, h); const c = ['#e51212', '#f5f5f2', '#bea06e', '#c4e313']; for (let r = 0; r < 3; r++) for (let k = 0; k < 6; k++) { g.fillStyle = c[(k + r * 3 + (x | 0)) % 4]; g.fillRect(16 + k * 82, 18 + r * 120, 66, 96); } });
+    plane(shelf, 2.16, 1.56, x, .8, 22.05); plane(shelf, 2.16, 1.56, x, .8, 21.43, Math.PI); }
 }
 
 // ---------- labels: zone chips in the overview, mission pins inside a world ----------
@@ -715,7 +783,7 @@ for (const k of ORDER) { const Z = ZONES[k], b = document.createElement('button'
   b.className = 'chip'; b.type = 'button'; b.dataset.zone = k; b.style.setProperty('--zc', Z.color); if (Z.text) b.style.setProperty('--zt', Z.text);
   b.addEventListener('click', () => go(k));
   Z.tag = tag(b, Z.chip[0], 2.9, Z.chip[1]); }
-{ const s = document.createElement('span'); s.className = 'chip flat'; s.style.setProperty('--zc', '#efeeea'); s.style.setProperty('--zt', '#121212'); s.dataset.stock = '1'; tag(s, 21.6, 2.4, 21.4).stock = true; }
+{ const s = document.createElement('span'); s.className = 'chip flat'; s.style.setProperty('--zc', '#efeeea'); s.style.setProperty('--zt', '#121212'); s.dataset.stock = '1'; tag(s, 20.5, 2.6, 22.8).stock = true; }
 const pinStyle = (m) => { const Z = ZONES[m[1]]; return m[6] ? [Z.color, Z.text || '#fbfbfb'] : ['#fbfbfb', '#0c0c0c']; };
 for (const m of MISSIONS) { const b = document.createElement('button'); b.className = 'pin'; b.type = 'button'; b.dataset.m = m[0]; b.dataset.zone = m[1];
   const [c, t] = pinStyle(m); b.style.setProperty('--pc', c); b.style.setProperty('--pt', t); b.textContent = m[0];
@@ -749,7 +817,7 @@ function showTags() {
 // ---------- camera: a dollhouse view that flies into each world ----------
 const controls = new OrbitControls(camera, canvas);
 Object.assign(controls, {enableDamping: true, dampingFactor: .085, enablePan: false, rotateSpeed: .55, zoomSpeed: .7, minDistance: 16, maxDistance: 230,
-  minPolarAngle: deg(22), maxPolarAngle: deg(70), minAzimuthAngle: deg(-82), maxAzimuthAngle: deg(22)});
+  minPolarAngle: deg(22), maxPolarAngle: deg(70), minAzimuthAngle: deg(-16), maxAzimuthAngle: deg(84)});
 let shift = 0, mode = 'overview', fly = null;
 function frame() { camera.aspect = W / H; camera.setViewOffset(W, H, 0, Math.max(0, shift) * H * 1.4, W, H); camera.updateProjectionMatrix(); }
 function place(t, az, el, dist) { controls.target.set(...t);
@@ -810,11 +878,13 @@ function fillZone(k) {
   const Z = ZONES[k], dark = Z.text ? `--zt:${Z.text};` : '';
   zoneEl.style.cssText = `--zc:${Z.color};${dark}`;
   let body = `<p class="meta"><span class="code">${Z.code}</span><span>${Z.en}</span><span>${EN() && Z.meta_en ? Z.meta_en : Z.meta}</span></p><h2>${zName(Z)}</h2><p class="lead kr">${EN() ? Z.lead_en : Z.lead}</p>`;
-  if (Z.spaces) body += `<h3>${tr('공간', 'Spaces')}</h3><dl class="spaces">${Z.spaces.map(([c, n]) => `<dt>${c}</dt><dd>${n}</dd>`).join('')}</dl>`;
+  if (Z.spaces) body += `<h3>${tr('공간', 'Spaces')}</h3><dl class="spaces">${Z.spaces.map(([c, n, ko, en]) => `<dt>${c}</dt><dd>${n}<small class="kr">${EN() ? en : ko}</small></dd>`).join('')}</dl>`;
   if (Z.steps) body += `<h3>${tr('순서', 'Steps')}</h3><ol>${(EN() ? Z.steps_en : Z.steps).map(([n, d], i) => `<li style="--pc:#efeeea;--pt:#121212"><span class="dot">0${i + 1}</span><div><b>${n}</b><p class="kr">${d}</p></div></li>`).join('')}</ol>`;
   const ms = MISSIONS.filter(m => m[1] === k);
   if (ms.length) body += `<h3>${tr('미션', 'Missions')}</h3><ol>${ms.map(m => { const [c, t] = pinStyle(m);
     return `<li data-m="${m[0]}" style="--pc:${c};--pt:${t}"><span class="dot">${m[0]}</span><div><b>${mName(m)}</b><p class="kr">${mWhat(m)}</p><p class="tag">${mTag(m)}</p></div></li>`; }).join('')}</ol>`;
+  if (Z.stamp) body += `<h3>${tr('도장', 'Stamp')}</h3><p class="stamp">${Z.stamp[0]}</p><p class="note kr">${EN() ? Z.stamp[2] : Z.stamp[1]}</p>`;
+  if (Z.rewards) body += `<h3>${tr('보상 기준', 'Reward rule')}</h3><dl class="rewards kr">${Z.rewards.map(([a, b, c, d]) => `<dt>${EN() ? c : a}</dt><dd>${EN() ? d : b}</dd>`).join('')}</dl>`;
   zoneEl.innerHTML = body; zoneEl.scrollTop = 0;
   zoneEl.querySelectorAll('li[data-m]').forEach(li => { li.addEventListener('pointerenter', () => hot(li.dataset.m, true)); li.addEventListener('pointerleave', () => hot(li.dataset.m, false)); });
 }
@@ -839,7 +909,7 @@ addEventListener('keydown', e => {
 });
 
 // clicking the floor of a world walks into it; hovering lights its chip and route step
-const PICK = {in: [0, 18, 14.1, 25], a: [0, 0, 14.1, 18], b: [14.1, 0, 29, 18], c: [29, 0, 45, 18], out: [29, 18, 45, 25]};
+const PICK = {in: [0, 18, 14, 25], a: [0, 0, 14, 18], b: [16, 0, 29, 18], c: [31, 0, 45, 18], out: [31, 18, 45, 25]};
 const pickers = Object.entries(PICK).map(([k, [x0, z0, x1, z1]]) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0));
   m.rotation.x = -Math.PI / 2; m.position.set((x0 + x1) / 2, 1.2, (z0 + z1) / 2); m.updateMatrixWorld(); m.visible = false; m.userData.zone = k; return m; });
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
@@ -855,17 +925,16 @@ canvas.addEventListener('pointermove', e => { if (mode === 'walk' || hoverQueued
     routeEl.querySelectorAll('button').forEach(b => b.classList.toggle('hot', b.dataset.zone === k)); }); });
 
 // ---------- first person: walk the U-shaped route at eye height ----------
-const EYE = 1.62, RAD = .32, START = {x: 1.45, z: 23.4, yaw: 0, pitch: -.03};
+const EYE = 1.62, RAD = .32, START = {x: 4, z: 24.2, yaw: 0, pitch: -.03};
 const walk = {mx: 0, mz: 0, myaw: 0, on: false, x: 0, z: 0, yaw: 0, pitch: 0, vx: 0, vz: 0, bob: 0, keys: new Set(), near: null, card: null, zone: '', drag: false};
 let glide = null, walkOnly = null, mapBase = null, lockOK = false, dragOnly = false;
 const hud = $('#hud'), gate = $('#gate'), card = $('#card'), prompt = $('#prompt'), mapEl = $('#map'), mapG = mapEl.getContext('2d');
-SOLID.push([.5, 25, 2.4, 25.5], [42.4, 25, 44.3, 25.5]);          // the IN / OUT doors stay shut while walking
 
 // the parts only a walker sees: full-height near walls, a ceiling and its light lines
 function buildWalkOnly() {
   const g = new THREE.Group(), dark = new THREE.MeshStandardMaterial({color: 0x1d1d1c, roughness: .9}), white = new THREE.MeshStandardMaterial({color: 0xf3f2ee, roughness: .9});
   const add = (m, x0, z0, x1, z1, y0, y1) => { const b = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, y1 - y0, z1 - z0), m); b.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2); b.receiveShadow = true; g.add(b); };
-  add(dark, -.25, 24.99, 45.25, 25.25, 0, 4); add(white, -.25, -.25, .01, 18, 0, 4); add(dark, -.25, 18, .01, 25.25, 0, 4);
+  add(dark, -.25, 24.99, 45.25, 25.25, 0, 4); add(dark, 44.99, 18, 45.25, 25.25, 0, 4); add(white, 44.99, -.25, 45.25, 18, 0, 4);
   const ceil = new THREE.Mesh(new THREE.PlaneGeometry(46, 26), new THREE.MeshBasicMaterial({color: 0x141414}));
   ceil.rotation.x = Math.PI / 2; ceil.position.set(22.5, 4, 12.5); g.add(ceil);
   const lines = []; for (let z = 2; z < 25; z += 3) { const l = new THREE.BoxGeometry(44, .05, .12); l.translate(22.5, 3.97, z); lines.push(l); }
@@ -876,9 +945,9 @@ function buildWalkOnly() {
 function buildMap() {
   const c = document.createElement('canvas'); c.width = 552; c.height = 312; const g = c.getContext('2d'), s = 552 / 46.5, o = .75;
   const R = (col, x0, z0, x1, z1) => { g.fillStyle = col; g.fillRect((x0 + o) * s, (z0 + o) * s, (x1 - x0) * s, (z1 - z0) * s); };
-  R('#2a2a29', 0, 18, 14.1, 25); R('#4a4a47', 14.1, 18, 29, 25); R('#151515', 29, 0, 30.8, 25); R('#2a2a29', 30.8, 18, 45, 25);
-  R('#e6e5e1', 0, 0, 14.1, 18); R('#1f6fe5', 8.1, 5.2, 14.1, 12); R('#a4a39e', 9.2, 12, 14.1, 18); R('#151515', 14.1, 0, 16, 18);
-  R('#262625', 16, 0, 29, 18); R('#d81616', 22, 6, 29, 12); R('#8c8c88', 30.8, 0, 45, 18); R('#f2f1ed', 36.7, 12, 45, 18);
+  R('#2c2c2c', 0, 18, 14, 25); R('#6a6a67', 14, 18, 29, 25); R('#1a1a1a', 29, 0, 31, 25); R('#2c2c2c', 31, 18, 45, 25);
+  R('#d2d1cc', 0, 0, 8, 12); R('#d2d1cc', 0, 12, 9, 18); R('#1e1e1e', 8, 0, 14, 5); R('#0e6edb', 8, 5, 14, 12); R('#6e6e6b', 9, 12, 14, 18); R('#141414', 14, 0, 16, 18);
+  R('#242423', 16, 0, 29, 18); R('#e51212', 22, 6, 29, 12); R('#969692', 31, 0, 45, 4); R('#282828', 31, 4, 38, 12); R('#969692', 38, 4, 45, 12); R('#969692', 31, 12, 37, 18); R('#f5f5f2', 37, 12, 45, 18);
   g.fillStyle = 'rgba(90,90,87,.9)'; for (const [x0, z0, x1, z1] of SOLID) g.fillRect((x0 + o) * s, (z0 + o) * s, Math.max(1.5, (x1 - x0) * s), Math.max(1.5, (z1 - z0) * s));
   g.strokeStyle = 'rgba(251,251,251,.55)'; g.lineWidth = 2; g.setLineDash([5, 5]); g.beginPath(); LINE.forEach(([x, z], i) => g[i ? 'lineTo' : 'moveTo']((x + o) * s, (z + o) * s)); g.stroke();
   return {c, s, o};
@@ -892,8 +961,8 @@ function drawMap() {
   mapG.fillStyle = 'rgba(229,18,18,.22)'; mapG.beginPath(); mapG.moveTo(0, 0); mapG.arc(0, 0, 46, -Math.PI / 2 - .5, -Math.PI / 2 + .5); mapG.fill();
   mapG.fillStyle = '#e51212'; mapG.beginPath(); mapG.moveTo(0, -11); mapG.lineTo(8, 8); mapG.lineTo(0, 4); mapG.lineTo(-8, 8); mapG.closePath(); mapG.fill(); mapG.restore();
 }
-const PLACES = [['a', 0, 0, 14.1, 18], ['b', 16, 0, 29, 18], ['c', 30.8, 0, 45, 18], ['in', 0, 18, 14.1, 25], ['out', 30.8, 18, 45, 25],
-  [{code: 'BK', name: 'BLACKOUT', color: '#121212'}, 14.1, 0, 16, 18], [{code: 'R', name: 'REST · SHUTTER', color: '#121212'}, 29, 0, 30.8, 18], [{code: 'SC', name: 'SHORTCUT', color: '#121212'}, 29, 18, 30.8, 25]];
+const PLACES = [['a', 0, 0, 14, 18], ['b', 16, 0, 29, 18], ['c', 31, 0, 45, 18], ['in', 0, 18, 14, 25], ['out', 31, 18, 45, 25],
+  [{code: 'BK', name: 'BLACKOUT', color: '#121212'}, 14, 0, 16, 18], [{code: 'R', name: 'REST', color: '#121212'}, 29, 0, 31, 18], [{code: 'SC', name: 'SHORTCUT', color: '#121212'}, 29, 18, 31, 25], [{code: 'ST', name: '공용 STOCK', name_en: 'Shared stock', color: '#6e6e6b'}, 14, 18, 29, 25]];
 function whereAmI() {
   const hit = PLACES.find(([, x0, z0, x1, z1]) => walk.x >= x0 && walk.x < x1 && walk.z >= z0 && walk.z < z1); if (!hit) return;
   const Z = typeof hit[0] === 'string' ? ZONES[hit[0]] : hit[0], key = Z.code; walk.key = typeof hit[0] === 'string' ? hit[0] : ''; if (key === walk.zone) return; walk.zone = key;
@@ -1023,12 +1092,12 @@ async function start() {
   dress();
   for (const [name, b] of Object.entries(BUCKET)) { if (!b.geos.length) continue;
     const mesh = new THREE.Mesh(mergeGeometries(b.geos), b.mat); mesh.castShadow = b.shadow; mesh.receiveShadow = true; scene.add(mesh); b.geos.forEach(g => g.dispose()); }
-  scene.add(new THREE.Mesh(mergeGeometries(route), new THREE.MeshBasicMaterial({color: 0xf6f6f2, toneMapped: false})));
+  for (const [color, list] of Object.entries(TAPES)) scene.add(new THREE.Mesh(mergeGeometries(list), new THREE.MeshBasicMaterial({color, toneMapped: false})));
   renderer.shadowMap.needsUpdate = true;
   walkOnly = buildWalkOnly(); mapBase = buildMap();
   walkOnly.visible = true; renderer.compile(scene, camera); walkOnly.visible = false;   // compile the walk-only shaders now, not as a hitch on the first step inside
   const O = ZONES.overview; shift = O.shift; frame();
-  place(O.target, -6, 66, 210); controls.update();
+  place(O.target, 8, 66, 210); controls.update();
   routeEl.querySelector('[data-zone="overview"]').setAttribute('aria-current', '');
   renderer.render(scene, camera);
   document.body.classList.add('ready'); showTags();
@@ -1115,7 +1184,7 @@ const JOY = {f: 0, r: 0};
   pull(card, () => !!walk.card, () => closeCard(true));
 }
 
-window.__ar = {setLang, go, ZONES, renderer, scene, camera, enterWalk, leaveWalk, walk, openCard, kick};
+window.__ar = {SOLID, LINE, MISSIONS, DESKS, setLang, go, ZONES, renderer, scene, camera, enterWalk, leaveWalk, walk, openCard, kick};
 </script>
 </body>
 </html>
